@@ -13,6 +13,7 @@ export default function Header({ onNavigate }: HeaderProps) {
     { id: 'about', icon: '?' },
     { id: 'designs', icon: '◈' },
     { id: 'specification', icon: '⊞' },
+    { id: 'learn', icon: '📚' },
     { id: 'signup', icon: '+' }
   ];
 

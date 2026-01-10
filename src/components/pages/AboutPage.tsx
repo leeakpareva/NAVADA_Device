@@ -5,11 +5,11 @@ import ScrollablePage from '@/components/layout/ScrollablePage';
 export default function AboutPage() {
   return (
     <ScrollablePage>
-      <div className="bg-black text-white p-8">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8 text-white">About NAVADA</h1>
+      <div className="bg-black text-white">
+        <div className="max-w-4xl mx-auto px-8 pt-2">
+          <h1 className="text-4xl font-bold mb-4 text-white">About NAVADA</h1>
 
-          <div className="space-y-8">
+          <div className="space-y-6">
             <section>
               <p className="text-xl text-gray-300 mb-6">
                 Welcome to NAVADA - the revolutionary micro-display operating system designed for the future of computing.

@@ -10,13 +10,9 @@
   },
   "dependencies": {
     "@paper-design/shaders-react": "^0.0.69",
-    "@react-three/fiber": "^8.16.0",
-    "framer-motion": "^11.0.0",
-    "lucide-react": "^0.400.0",
     "next": "14.2.0",
     "react": "^18",
     "react-dom": "^18",
-    "three": "^0.182.0",
     "zustand": "^4.5.0"
   },
   "devDependencies": {

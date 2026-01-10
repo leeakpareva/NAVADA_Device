@@ -26,8 +26,8 @@ export default function SignupPage() {
 
   return (
     <ScrollablePage>
-      <div className="bg-black text-white p-8">
-        <div className="max-w-2xl mx-auto">
+      <div className="bg-black text-white">
+        <div className="max-w-2xl mx-auto px-8 pt-2">
           <h1 className="text-4xl font-bold mb-8 text-white">Sign Up for NAVADA</h1>
 
           <div className="space-y-8">

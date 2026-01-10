@@ -1,18 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import ScrollablePage from '@/components/layout/ScrollablePage';
 import Image from 'next/image';
+import type { GalleryItem } from '@/types';
 
-interface GalleryItem {
-  id: number;
-  title: string;
-  category: string;
-  image?: string;
-  filename?: string;
-}
-
-export default function DesignsPage() {
+function DesignsPage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,21 +29,21 @@ export default function DesignsPage() {
     fetchDesigns();
   }, []);
 
-  const openModal = (id: number) => {
+  const openModal = useCallback((id: number) => {
     setSelectedImage(id);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setSelectedImage(null);
-  };
+  }, []);
 
   return (
     <ScrollablePage>
-      <div className="bg-black text-white p-8">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8 text-white">Design Gallery</h1>
+      <div className="bg-black text-white">
+        <div className="max-w-6xl mx-auto px-8 pt-2">
+          <h1 className="text-4xl font-bold mb-4 text-white">Design Gallery</h1>
 
-          <div className="space-y-8">
+          <div className="space-y-6">
             <section>
               <p className="text-xl text-gray-300 mb-8">
                 Explore our innovative design concepts and user interface elements crafted specifically for micro-display environments. Click any image to view in detail.
@@ -224,3 +217,5 @@ export default function DesignsPage() {
     </ScrollablePage>
   );
 }
+
+export default memo(DesignsPage);

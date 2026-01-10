@@ -1,22 +1,6 @@
 import { create } from 'zustand';
-
-export interface WindowState {
-  id: string;
-  appId: string;
-  title: string;
-  isMinimized: boolean;
-  isMaximized: boolean;
-  zIndex: number;
-  position: { x: number; y: number };
-  size: { width: number; height: number };
-}
-
-export interface AppDefinition {
-  id: string;
-  name: string;
-  icon: string;
-  defaultSize?: { width: number; height: number };
-}
+import type { WindowState, AppDefinition } from '@/types';
+import { storage, STORAGE_KEYS } from '@/lib/storage';
 
 interface OSState {
   // Windows
@@ -49,19 +33,17 @@ const defaultApps: AppDefinition[] = [
   { id: 'screensaver', name: 'Screensaver', icon: '🖼️', defaultSize: { width: 300, height: 200 } },
 ];
 
-const getStoredBackground = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('navada-background') || (process.env.NODE_ENV === 'production' ? '#00FF41' : '#000000');
-  }
-  return process.env.NODE_ENV === 'production' ? '#00FF41' : '#000000';
-};
+const getStoredBackground = () => storage.getWithEnvironmentDefault(
+  STORAGE_KEYS.BACKGROUND,
+  '#00FF41',
+  '#000000'
+);
 
-const getStoredImage = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('navada-current-image') || (process.env.NODE_ENV === 'production' ? '/screensaver/Burn.png' : null);
-  }
-  return process.env.NODE_ENV === 'production' ? '/screensaver/Burn.png' : null;
-};
+const getStoredImage = () => storage.getWithEnvironmentDefault(
+  STORAGE_KEYS.CURRENT_IMAGE,
+  '/screensaver/Burn.png',
+  ''
+) || null;
 
 export const useOSStore = create<OSState>((set, get) => ({
   windows: [],
@@ -189,19 +171,15 @@ export const useOSStore = create<OSState>((set, get) => ({
 
   setGlobalBackground: (color: string) => {
     set({ globalBackground: color });
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('navada-background', color);
-    }
+    storage.set(STORAGE_KEYS.BACKGROUND, color);
   },
 
   setCurrentImage: (imagePath: string | null) => {
     set({ currentImage: imagePath });
-    if (typeof window !== 'undefined') {
-      if (imagePath) {
-        localStorage.setItem('navada-current-image', imagePath);
-      } else {
-        localStorage.removeItem('navada-current-image');
-      }
+    if (imagePath) {
+      storage.set(STORAGE_KEYS.CURRENT_IMAGE, imagePath);
+    } else {
+      storage.remove(STORAGE_KEYS.CURRENT_IMAGE);
     }
   },
 }));
