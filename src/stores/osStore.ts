@@ -23,10 +23,14 @@ interface OSState {
   windows: WindowState[];
   activeWindowId: string | null;
   highestZIndex: number;
-  
+
   // Apps
   apps: AppDefinition[];
-  
+
+  // Global Background
+  globalBackground: string;
+  currentImage: string | null;
+
   // Actions
   openApp: (appId: string) => void;
   closeWindow: (windowId: string) => void;
@@ -36,17 +40,36 @@ interface OSState {
   focusWindow: (windowId: string) => void;
   updateWindowPosition: (windowId: string, position: { x: number; y: number }) => void;
   updateWindowSize: (windowId: string, size: { width: number; height: number }) => void;
+  setGlobalBackground: (color: string) => void;
+  setCurrentImage: (imagePath: string | null) => void;
 }
 
 const defaultApps: AppDefinition[] = [
   { id: 'terminal', name: 'App', icon: '💻', defaultSize: { width: 280, height: 180 } },
+  { id: 'screensaver', name: 'Screensaver', icon: '🖼️', defaultSize: { width: 300, height: 200 } },
 ];
+
+const getStoredBackground = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('navada-background') || '#000000';
+  }
+  return '#000000';
+};
+
+const getStoredImage = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('navada-current-image') || null;
+  }
+  return null;
+};
 
 export const useOSStore = create<OSState>((set, get) => ({
   windows: [],
   activeWindowId: null,
   highestZIndex: 0,
   apps: defaultApps,
+  globalBackground: getStoredBackground(),
+  currentImage: getStoredImage(),
 
   openApp: (appId: string) => {
     const { windows, apps, highestZIndex } = get();
@@ -162,5 +185,23 @@ export const useOSStore = create<OSState>((set, get) => ({
         w.id === windowId ? { ...w, size } : w
       ),
     }));
+  },
+
+  setGlobalBackground: (color: string) => {
+    set({ globalBackground: color });
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('navada-background', color);
+    }
+  },
+
+  setCurrentImage: (imagePath: string | null) => {
+    set({ currentImage: imagePath });
+    if (typeof window !== 'undefined') {
+      if (imagePath) {
+        localStorage.setItem('navada-current-image', imagePath);
+      } else {
+        localStorage.removeItem('navada-current-image');
+      }
+    }
   },
 }));

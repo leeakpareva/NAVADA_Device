@@ -9,7 +9,7 @@ export default function DesktopIcons() {
   const iconSize = 24;
 
   return (
-    <div className="absolute flex items-start" style={{ top: '2.4mm', left: '0.3mm' }}>
+    <div className="absolute flex flex-col items-start gap-1" style={{ top: '2.4mm', left: '0.3mm' }}>
       {apps.map((app, index) => (
         <button
           key={app.id}

@@ -36,10 +36,10 @@ export default function Taskbar() {
       )}
 
       {/* Taskbar */}
-      <div className="absolute left-0 right-0 h-5 flex items-center gap-0.5 px-0.5" style={{bottom: '0.3mm', border: 'none', outline: 'none', backgroundColor: '#000000', opacity: 1, backdropFilter: 'none'}}>
+      <div className="absolute left-0 right-0 h-5 flex items-center gap-0.5 px-0.5" style={{bottom: '0.3mm', border: 'none', outline: 'none', backgroundColor: 'transparent', opacity: 1, backdropFilter: 'none'}}>
         {/* Open Windows */}
         <div className="flex-1 flex gap-0.5 overflow-x-auto">
-          {windows.map(window => (
+          {windows.filter(window => window.appId !== 'screensaver').map(window => (
             <button
               key={window.id}
               onClick={() => {
@@ -51,13 +51,13 @@ export default function Taskbar() {
               }}
               className={`h-3 px-1 text-[7px] font-medium truncate max-w-16 transition-all touch-btn ${
                 activeWindowId === window.id && !window.isMinimized
-                  ? 'bg-white text-black'
+                  ? 'bg-transparent text-white'
                   : window.isMinimized
-                  ? 'text-gray-400 bg-gray-800 hover:bg-gray-700'
-                  : 'text-white bg-gray-700 hover:bg-gray-600'
+                  ? 'text-white bg-transparent'
+                  : 'text-white bg-transparent'
               }`}
             >
-              {window.title}
+              {window.appId === 'screensaver' ? '🖼️' : window.title}
             </button>
           ))}
         </div>
