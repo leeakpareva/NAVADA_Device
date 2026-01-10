@@ -55,9 +55,9 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
     <AnimatedBackground className="w-full h-screen flex items-center justify-center device-container">
       <div
         ref={containerRef}
-        className="relative w-full h-full max-w-3xl max-h-[90vh] flex items-center justify-center"
+        className={`relative w-full h-full flex items-center justify-center ${isMobile ? 'overflow-hidden' : 'max-w-3xl max-h-[90vh]'}`}
       >
-        <div className={`relative w-full aspect-[16/10] max-h-full device-frame ${isMobile ? 'scale-[3] origin-center' : ''}`}>
+        <div className={`relative w-full aspect-[16/10] device-frame ${isMobile ? 'scale-[4] origin-center' : 'max-h-full'}`}>
           {/* Device Image */}
           <Image
             src={isMobile ? "/Web-Ready3.png" : "/Front-Website1.png"}
