@@ -36,43 +36,44 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
   }, []);
 
   return (
-    <AnimatedBackground className="w-full h-screen flex items-center justify-center">
+    <AnimatedBackground className="w-full h-screen flex items-center justify-center device-container">
       <div
         ref={containerRef}
-        className="relative w-full max-w-3xl aspect-[16/10] select-none"
-        style={{ maxHeight: '90vh' }}
+        className="relative w-full h-full max-w-3xl max-h-[90vh] flex items-center justify-center"
       >
-        {/* Device Image */}
-        <Image
-          src="/Front-Website1.png"
-          alt="NAVADA Device"
-          fill
-          priority
-          className="object-contain pointer-events-none relative z-10"
-          sizes="(max-width: 768px) 100vw, 672px"
-        />
+        <div className="relative w-full aspect-[16/10] max-h-full device-frame">
+          {/* Device Image */}
+          <Image
+            src="/Front-Website1.png"
+            alt="NAVADA Device"
+            fill
+            priority
+            className="object-contain pointer-events-none relative z-10"
+            sizes="(max-width: 768px) 90vw, (max-width: 1200px) 80vw, 672px"
+          />
 
-        {/* Interactive Screen Overlay */}
-        <div
-          className="absolute modern-screen overflow-hidden z-20"
-          style={{
-            top: `${screenPosition.top}%`,
-            left: `${screenPosition.left}%`,
-            width: `${screenPosition.width}%`,
-            height: `${screenPosition.height}%`,
-          }}
-        >
-          {/* Screen content with inner border for text spacing */}
-          <div className="relative w-full h-full bg-black" style={{ padding: '0.3mm' }}>
-            <div className="w-full h-full bg-black">
-              {children}
+          {/* Interactive Screen Overlay */}
+          <div
+            className="absolute modern-screen overflow-hidden z-20"
+            style={{
+              top: `${screenPosition.top}%`,
+              left: `${screenPosition.left}%`,
+              width: `${screenPosition.width}%`,
+              height: `${screenPosition.height}%`,
+            }}
+          >
+            {/* Screen content with inner border for text spacing */}
+            <div className="relative w-full h-full bg-black" style={{ padding: '0.3mm' }}>
+              <div className="w-full h-full bg-black">
+                {children}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Keyboard interaction hints (optional) */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-green-400/50 font-mono z-20">
-          {/* Could add keyboard shortcut hints here */}
+          {/* Keyboard interaction hints (optional) */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-green-400/50 font-mono z-20">
+            {/* Could add keyboard shortcut hints here */}
+          </div>
         </div>
       </div>
     </AnimatedBackground>
