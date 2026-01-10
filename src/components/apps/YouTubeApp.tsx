@@ -57,7 +57,7 @@ export default function YouTubeApp() {
   return (
     <div className="h-full w-full bg-black text-white overflow-auto custom-scrollbar">
       {/* Header with URL Input */}
-      <div className="bg-red-600 p-1">
+      <div className="bg-black p-1">
         <div className="flex items-center justify-center mb-1">
           <h1 className="text-[10px] font-bold text-white">📺 YouTube Player</h1>
         </div>
@@ -84,7 +84,7 @@ export default function YouTubeApp() {
 
           {/* Error message */}
           {error && (
-            <div className="text-[6px] text-red-200 mb-1">{error}</div>
+            <div className="text-[6px] text-gray-200 mb-1">{error}</div>
           )}
 
           {/* Clear button */}

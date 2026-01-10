@@ -70,10 +70,6 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
             </div>
           </div>
 
-          {/* Keyboard interaction hints (optional) */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-green-400/50 font-mono z-20">
-            {/* Could add keyboard shortcut hints here */}
-          </div>
         </div>
       </div>
     </AnimatedBackground>

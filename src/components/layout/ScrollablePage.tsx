@@ -89,7 +89,7 @@ export default function ScrollablePage({ children }: ScrollablePageProps) {
             <button
               onClick={scrollUp}
               disabled={!canScrollUp}
-              className={`w-12 h-12 rounded-full bg-red-600 text-white font-bold text-xl shadow-lg transition-all hover:bg-red-700 ${
+              className={`w-12 h-12 rounded-full bg-white text-black font-bold text-xl shadow-lg transition-all hover:bg-gray-200 ${
                 !canScrollUp ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
               }`}
               title="Scroll Up"
@@ -99,7 +99,7 @@ export default function ScrollablePage({ children }: ScrollablePageProps) {
             <button
               onClick={scrollDown}
               disabled={!canScrollDown}
-              className={`w-12 h-12 rounded-full bg-red-600 text-white font-bold text-xl shadow-lg transition-all hover:bg-red-700 ${
+              className={`w-12 h-12 rounded-full bg-white text-black font-bold text-xl shadow-lg transition-all hover:bg-gray-200 ${
                 !canScrollDown ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
               }`}
               title="Scroll Down"
@@ -135,7 +135,7 @@ export default function ScrollablePage({ children }: ScrollablePageProps) {
           {/* Scroll Progress Indicator */}
           <div className="fixed left-6 top-1/2 -translate-y-1/2 w-1 h-32 bg-gray-800 rounded-full z-50">
             <div
-              className="w-full bg-red-500 rounded-full transition-all duration-300"
+              className="w-full bg-white rounded-full transition-all duration-300"
               style={{
                 height: `${
                   scrollRef.current
@@ -148,10 +148,6 @@ export default function ScrollablePage({ children }: ScrollablePageProps) {
         </>
       )}
 
-      {/* Keyboard Navigation Hint */}
-      <div className="fixed bottom-6 left-6 text-gray-500 text-sm z-40">
-        <p>Use ↑↓ arrow keys or scroll wheel</p>
-      </div>
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function SignupPage() {
     <ScrollablePage>
       <div className="bg-black text-white p-8">
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8 text-red-500">Sign Up for NAVADA</h1>
+          <h1 className="text-4xl font-bold mb-8 text-white">Sign Up for NAVADA</h1>
 
           <div className="space-y-8">
             <section>
@@ -38,7 +38,7 @@ export default function SignupPage() {
             </section>
 
             <div className="bg-gray-900 p-8 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">Early Access Program</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-white">Early Access Program</h2>
               <p className="text-gray-300 mb-6">
                 Get priority access to hardware kits, beta software releases, and developer resources.
               </p>
@@ -54,7 +54,7 @@ export default function SignupPage() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-white"
                     required
                   />
                 </div>
@@ -69,7 +69,7 @@ export default function SignupPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-white"
                     required
                   />
                 </div>
@@ -84,7 +84,7 @@ export default function SignupPage() {
                     name="company"
                     value={formData.company}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-white"
                   />
                 </div>
 
@@ -97,7 +97,7 @@ export default function SignupPage() {
                     name="interest"
                     value={formData.interest}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-white"
                   >
                     <option value="">Select an option</option>
                     <option value="development">App Development</option>
@@ -109,7 +109,7 @@ export default function SignupPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md transition-colors"
+                  className="w-full bg-white hover:bg-gray-200 text-black font-bold py-3 px-4 rounded-md transition-colors"
                 >
                   Join Waitlist
                 </button>
@@ -117,7 +117,7 @@ export default function SignupPage() {
             </div>
 
             <div className="bg-gray-900 p-8 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">What You'll Get</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-white">What You'll Get</h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-lg font-medium text-white mb-2">🎯 Early Access</h3>

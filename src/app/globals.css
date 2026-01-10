@@ -471,3 +471,37 @@ body {
     -webkit-user-select: auto;
   }
 }
+
+/* Prevent text selection and any unwanted text elements */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea, [contenteditable] {
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+}
+
+/* Hide any debugging or unwanted text elements */
+.device-container::after,
+.device-frame::after,
+.modern-screen::after {
+  content: none !important;
+}
+
+/* Prevent any pseudo-elements from showing text */
+::before, ::after {
+  pointer-events: none;
+}
+
+/* Hide any potential dev tools or debugging text */
+body::after, body::before,
+html::after, html::before {
+  display: none !important;
+  content: none !important;
+}

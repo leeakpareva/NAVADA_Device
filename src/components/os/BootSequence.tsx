@@ -54,15 +54,15 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
       {/* Logo */}
       {showLogo && (
         <div className="mb-2 text-center">
-          <h1 className="text-lg font-bold text-white mb-1">🍓 NAVADA Pi</h1>
+          <h1 className="text-lg font-bold text-white mb-1">NAVADA Pi</h1>
           <p className="micro-text text-gray-300">Raspberry Pi OS</p>
-          <div className="w-6 h-0.5 bg-red-600 mx-auto mt-1 rounded"></div>
+          <div className="w-6 h-0.5 bg-white mx-auto mt-1 rounded"></div>
         </div>
       )}
 
       {/* Loading Spinner */}
       <div className="mb-2">
-        <div className="w-4 h-4 border border-gray-600 border-t-red-500 rounded-full animate-spin"></div>
+        <div className="w-4 h-4 border border-gray-600 border-t-white rounded-full animate-spin"></div>
       </div>
 
       {/* Current Message */}
@@ -78,7 +78,7 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
       <div className="w-16 mb-1">
         <div className="h-1 bg-gray-800 rounded">
           <div
-            className="h-full bg-red-500 rounded transition-all"
+            className="h-full bg-white rounded transition-all"
             style={{ width: `${progress}%` }}
           />
         </div>

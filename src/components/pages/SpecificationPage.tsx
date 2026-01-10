@@ -7,7 +7,7 @@ export default function SpecificationPage() {
     <ScrollablePage>
       <div className="bg-black text-white p-8">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8 text-red-500">Specifications</h1>
+          <h1 className="text-4xl font-bold mb-8 text-white">Specifications</h1>
 
           <div className="space-y-8">
             <section>
@@ -17,7 +17,7 @@ export default function SpecificationPage() {
             </section>
 
             <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">Display Specifications</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-white">Display Specifications</h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-medium text-white mb-3">Physical Dimensions</h3>
@@ -42,7 +42,7 @@ export default function SpecificationPage() {
             </section>
 
             <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">Hardware Requirements</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-white">Hardware Requirements</h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-medium text-white mb-3">Minimum Requirements</h3>
@@ -68,7 +68,7 @@ export default function SpecificationPage() {
             </section>
 
             <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">Connectivity & I/O</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-white">Connectivity & I/O</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
                   <h3 className="font-medium text-white mb-3">Wireless</h3>
@@ -102,7 +102,7 @@ export default function SpecificationPage() {
             </section>
 
             <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">Software Platform</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-white">Software Platform</h2>
               <div className="space-y-6">
                 <div>
                   <h3 className="font-medium text-white mb-3">NAVADA OS Core</h3>
@@ -132,19 +132,19 @@ export default function SpecificationPage() {
                   <h3 className="font-medium text-white mb-3">Performance Characteristics</h3>
                   <div className="grid md:grid-cols-4 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-red-500 mb-1">&lt; 1s</div>
+                      <div className="text-2xl font-bold text-white mb-1">&lt; 1s</div>
                       <p className="text-gray-400 text-sm">Boot Time</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-red-500 mb-1">60 FPS</div>
+                      <div className="text-2xl font-bold text-white mb-1">60 FPS</div>
                       <p className="text-gray-400 text-sm">UI Refresh</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-red-500 mb-1">&lt; 50ms</div>
+                      <div className="text-2xl font-bold text-white mb-1">&lt; 50ms</div>
                       <p className="text-gray-400 text-sm">Touch Latency</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-red-500 mb-1">72h</div>
+                      <div className="text-2xl font-bold text-white mb-1">72h</div>
                       <p className="text-gray-400 text-sm">Battery Life</p>
                     </div>
                   </div>
@@ -153,7 +153,7 @@ export default function SpecificationPage() {
             </section>
 
             <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">Environmental Specifications</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-white">Environmental Specifications</h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-medium text-white mb-3">Operating Conditions</h3>
@@ -177,7 +177,7 @@ export default function SpecificationPage() {
             </section>
 
             <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">Development Tools</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-white">Development Tools</h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-medium text-white mb-3">SDK & Tools</h3>
@@ -202,16 +202,16 @@ export default function SpecificationPage() {
               </div>
             </section>
 
-            <section className="bg-gradient-to-r from-red-900 to-red-800 p-8 rounded-lg text-center">
+            <section className="bg-gradient-to-r from-gray-800 to-gray-700 p-8 rounded-lg text-center">
               <h2 className="text-3xl font-bold mb-4 text-white">Ready to Build?</h2>
-              <p className="text-red-100 mb-6">
+              <p className="text-gray-200 mb-6">
                 Download the complete technical documentation and development kit.
               </p>
               <div className="flex justify-center space-x-4">
-                <button className="bg-white text-red-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors">
+                <button className="bg-black text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors">
                   Download SDK
                 </button>
-                <button className="border border-white text-white font-bold py-3 px-6 rounded-lg hover:bg-white hover:text-red-800 transition-colors">
+                <button className="border border-white text-white font-bold py-3 px-6 rounded-lg hover:bg-white hover:text-black transition-colors">
                   Hardware Kit
                 </button>
               </div>

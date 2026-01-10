@@ -29,7 +29,6 @@ export default function Header({ onNavigate }: HeaderProps) {
           className="flex items-center space-x-2 cursor-pointer"
           onClick={() => onNavigate('home')}
         >
-          <span className="text-red-500 text-xl font-bold">🍓</span>
           <h1 className="text-white text-xl font-bold">NAVADA</h1>
         </div>
 
@@ -39,9 +38,9 @@ export default function Header({ onNavigate }: HeaderProps) {
             <button
               key={item.id}
               onClick={() => handleMenuClick(item.id)}
-              className={`text-sm font-medium transition-colors hover:text-red-400 ${
+              className={`text-sm font-medium transition-colors hover:text-white ${
                 activeMenu === item.id
-                  ? 'text-red-500'
+                  ? 'text-white border-b border-white'
                   : 'text-gray-300'
               }`}
             >
