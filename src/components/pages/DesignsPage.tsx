@@ -64,7 +64,7 @@ export default function DesignsPage() {
                   <p className="text-gray-400">Loading designs...</p>
                 </div>
               ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 px-4 sm:px-0">
                 {galleryItems.map((item) => (
                   <div
                     key={item.id}
@@ -72,14 +72,15 @@ export default function DesignsPage() {
                     onClick={() => openModal(item.id)}
                   >
                     {/* Image */}
-                    <div className="relative aspect-square">
+                    <div className="relative aspect-square w-full">
                       {item.image ? (
                         <Image
                           src={item.image}
                           alt={item.title}
                           fill
                           className="object-contain"
-                          sizes="(max-width: 768px) 50vw, 25vw"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                          priority={item.id <= 4}
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg flex items-center justify-center">
@@ -150,16 +151,16 @@ export default function DesignsPage() {
       {/* Modal Popup */}
       {selectedImage && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={closeModal}
         >
           <div
-            className="relative max-w-4xl w-full max-h-full animate-popup"
+            className="relative max-w-4xl w-full max-h-[90vh] sm:max-h-full animate-popup"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
-              className="absolute -top-12 right-0 text-white hover:text-white transition-colors z-10"
+              className="absolute -top-10 sm:-top-12 right-2 sm:right-0 text-white hover:text-white transition-colors z-10"
               onClick={closeModal}
             >
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
