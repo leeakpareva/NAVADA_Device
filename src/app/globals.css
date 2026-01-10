@@ -1,0 +1,315 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #ffffff;
+  --primary-light: #cccccc;
+  --background: #000000;
+  --surface: #1a1a1a;
+  --border: #333333;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --accent: #ff6b6b;
+  --accent-hover: #ff5252;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  background: var(--background);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Clean modern screen */
+.modern-screen {
+  position: relative;
+  background: var(--background);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Modern window styles */
+.window {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.window-title {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Modern button styles */
+.modern-btn {
+  background: var(--primary);
+  color: var(--background);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modern-btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-1px);
+}
+
+.modern-btn:active {
+  transform: translateY(0);
+}
+
+.modern-btn-secondary {
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.modern-btn-secondary:hover {
+  background: var(--border);
+}
+
+/* Touch-optimized button for Osoyoo */
+.touch-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+/* Modern taskbar */
+.taskbar {
+  background: var(--surface);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon styles */
+.icon-modern {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.icon-modern:hover {
+  background: var(--surface);
+  transform: scale(1.05);
+}
+
+.icon-modern:active {
+  transform: scale(0.95);
+}
+
+/* Modern scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Loading animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Progress bar */
+.progress-bar {
+  background: var(--surface);
+  border-radius: 4px;
+  height: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: var(--accent);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Touch feedback for Osoyoo screen */
+.touch-feedback {
+  position: relative;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.touch-feedback:active {
+  opacity: 0.8;
+}
+
+/* Typography */
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Input styles */
+input, textarea {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Card component */
+.card {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px 0;
+}
+
+/* Optimized for 64x96mm micro display */
+@media (max-width: 800px) {
+  body {
+    font-size: 9px;
+    line-height: 1.1;
+  }
+
+  .window-title {
+    padding: 1px 2px;
+    font-size: 9px;
+    height: 12px;
+  }
+
+  .modern-btn {
+    font-size: 9px;
+    padding: 2px 4px;
+    min-height: 16px;
+    min-width: 16px;
+  }
+
+  .touch-btn {
+    min-height: 16px;
+    min-width: 16px;
+    padding: 1px 2px;
+    font-size: 9px;
+  }
+
+  .taskbar {
+    height: 20px;
+    padding: 1px 2px;
+    gap: 1px;
+    border: none !important;
+    background: #000000 !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+  }
+
+  h1 { font-size: 11px; line-height: 1.1; }
+  h2 { font-size: 10px; line-height: 1.1; }
+  h3 { font-size: 9px; line-height: 1.1; }
+  p { font-size: 9px; line-height: 1.1; }
+
+  .icon-modern {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Screen optimized text for micro display */
+  .screen-text {
+    font-size: 9px;
+    line-height: 1.1;
+  }
+
+  .screen-spacing {
+    margin: 0.5px;
+    padding: 0.5px;
+  }
+
+  /* Micro display specific optimizations */
+  .micro-text {
+    font-size: 7px;
+    line-height: 1.0;
+  }
+
+  input, textarea {
+    font-size: 9px;
+    padding: 1px 2px;
+  }
+}
