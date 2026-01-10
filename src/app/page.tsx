@@ -25,8 +25,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black flex items-center justify-center p-4 overflow-hidden">
-      
+    <main className="min-h-screen overflow-hidden">
       <DeviceFrame>
         {showBoot ? (
           <BootSequence onComplete={handleBootComplete} />

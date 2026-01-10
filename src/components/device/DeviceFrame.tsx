@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 interface DeviceFrameProps {
   children: ReactNode;
@@ -35,41 +36,43 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
   }, []);
 
   return (
-    <div 
-      ref={containerRef}
-      className="relative w-full max-w-3xl aspect-[16/10] select-none"
-      style={{ maxHeight: '90vh' }}
-    >
-      {/* Device Image */}
-      <Image
-        src="/Front-Website1.png"
-        alt="NAVADA Device"
-        fill
-        priority
-        className="object-contain pointer-events-none"
-        sizes="(max-width: 768px) 100vw, 672px"
-      />
-
-      {/* Interactive Screen Overlay */}
+    <AnimatedBackground className="w-full h-screen flex items-center justify-center">
       <div
-        className="absolute modern-screen overflow-hidden"
-        style={{
-          top: `${screenPosition.top}%`,
-          left: `${screenPosition.left}%`,
-          width: `${screenPosition.width}%`,
-          height: `${screenPosition.height}%`,
-        }}
+        ref={containerRef}
+        className="relative w-full max-w-3xl aspect-[16/10] select-none"
+        style={{ maxHeight: '90vh' }}
       >
-        {/* Screen content */}
-        <div className="relative w-full h-full bg-black">
-          {children}
+        {/* Device Image */}
+        <Image
+          src="/Front-Website1.png"
+          alt="NAVADA Device"
+          fill
+          priority
+          className="object-contain pointer-events-none relative z-10"
+          sizes="(max-width: 768px) 100vw, 672px"
+        />
+
+        {/* Interactive Screen Overlay */}
+        <div
+          className="absolute modern-screen overflow-hidden z-20"
+          style={{
+            top: `${screenPosition.top}%`,
+            left: `${screenPosition.left}%`,
+            width: `${screenPosition.width}%`,
+            height: `${screenPosition.height}%`,
+          }}
+        >
+          {/* Screen content - keep original black background */}
+          <div className="relative w-full h-full bg-black">
+            {children}
+          </div>
+        </div>
+
+        {/* Keyboard interaction hints (optional) */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-green-400/50 font-mono z-20">
+          {/* Could add keyboard shortcut hints here */}
         </div>
       </div>
-
-      {/* Keyboard interaction hints (optional) */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-green-400/50 font-mono">
-        {/* Could add keyboard shortcut hints here */}
-      </div>
-    </div>
+    </AnimatedBackground>
   );
 }
