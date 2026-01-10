@@ -51,16 +51,16 @@ const defaultApps: AppDefinition[] = [
 
 const getStoredBackground = () => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('navada-background') || '#000000';
+    return localStorage.getItem('navada-background') || (process.env.NODE_ENV === 'production' ? '#00FF41' : '#000000');
   }
-  return '#000000';
+  return process.env.NODE_ENV === 'production' ? '#00FF41' : '#000000';
 };
 
 const getStoredImage = () => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('navada-current-image') || null;
+    return localStorage.getItem('navada-current-image') || (process.env.NODE_ENV === 'production' ? '/screensaver/Burn.png' : null);
   }
-  return null;
+  return process.env.NODE_ENV === 'production' ? '/screensaver/Burn.png' : null;
 };
 
 export const useOSStore = create<OSState>((set, get) => ({
