@@ -57,7 +57,7 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
         ref={containerRef}
         className={`relative w-full h-full flex items-center justify-center ${isMobile ? 'overflow-hidden' : 'max-w-3xl max-h-[90vh]'}`}
       >
-        <div className={`relative w-full aspect-[16/10] device-frame ${isMobile ? 'scale-[5] origin-center -translate-y-[20%]' : 'max-h-full'}`}>
+        <div className={`relative w-full aspect-[16/10] device-frame ${isMobile ? 'scale-[5] origin-center -translate-y-[10%]' : 'max-h-full'}`}>
           {/* Device Image */}
           <Image
             src={isMobile ? "/Mobile.png" : "/Front-Website1.png"}
