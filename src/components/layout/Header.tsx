@@ -10,10 +10,10 @@ export default function Header({ onNavigate }: HeaderProps) {
   const [activeMenu, setActiveMenu] = useState('');
 
   const menuItems = [
-    { id: 'about', label: 'About' },
-    { id: 'designs', label: 'Designs' },
-    { id: 'specification', label: 'Specification' },
-    { id: 'signup', label: 'Signup' }
+    { id: 'about', icon: '?' },
+    { id: 'designs', icon: '◈' },
+    { id: 'specification', icon: '⊞' },
+    { id: 'signup', icon: '+' }
   ];
 
   const handleMenuClick = (menuId: string) => {
@@ -33,18 +33,21 @@ export default function Header({ onNavigate }: HeaderProps) {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="flex items-center space-x-6">
+        <nav className="flex items-center space-x-4">
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleMenuClick(item.id)}
-              className={`text-sm font-medium transition-colors hover:text-white ${
+              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all hover:bg-white/10 ${
                 activeMenu === item.id
-                  ? 'text-white border-b border-white'
-                  : 'text-gray-300'
+                  ? 'bg-white/20 shadow-lg'
+                  : 'text-gray-300 hover:text-white'
               }`}
+              title={item.id.charAt(0).toUpperCase() + item.id.slice(1)}
             >
-              {item.label}
+              <span className="text-lg text-white font-bold">
+                {item.icon}
+              </span>
             </button>
           ))}
         </nav>
