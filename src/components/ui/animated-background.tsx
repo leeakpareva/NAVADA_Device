@@ -20,7 +20,6 @@ export function AnimatedBackground({ className = '', children }: AnimatedBackgro
           className="w-full h-full absolute inset-0"
           colors={["#000000", "#1a1a1a", "#333333", "#ffffff"]}
           speed={speed}
-          backgroundColor="#000000"
         />
       )}
 
@@ -28,10 +27,6 @@ export function AnimatedBackground({ className = '', children }: AnimatedBackgro
         <div className="w-full h-full absolute inset-0 bg-black">
           <DotOrbit
             className="w-full h-full"
-            dotColor="#333333"
-            orbitColor="#1a1a1a"
-            speed={speed}
-            intensity={intensity}
           />
         </div>
       )}
@@ -42,16 +37,10 @@ export function AnimatedBackground({ className = '', children }: AnimatedBackgro
             className="w-full h-full absolute inset-0"
             colors={["#000000", "#1a1a1a", "#333333", "#ffffff"]}
             speed={speed * 0.5}
-            wireframe="true"
-            backgroundColor="#000000"
           />
           <div className="w-full h-full absolute inset-0 opacity-60">
             <DotOrbit
               className="w-full h-full"
-              dotColor="#333333"
-              orbitColor="#1a1a1a"
-              speed={speed * 1.5}
-              intensity={intensity * 0.8}
             />
           </div>
         </>
