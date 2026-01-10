@@ -62,9 +62,11 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
             height: `${screenPosition.height}%`,
           }}
         >
-          {/* Screen content - keep original black background */}
-          <div className="relative w-full h-full bg-black">
-            {children}
+          {/* Screen content with inner border for text spacing */}
+          <div className="relative w-full h-full bg-black" style={{ padding: '0.3mm' }}>
+            <div className="w-full h-full bg-black">
+              {children}
+            </div>
           </div>
         </div>
 

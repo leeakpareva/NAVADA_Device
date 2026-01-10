@@ -36,7 +36,7 @@ export default function Taskbar() {
       )}
 
       {/* Taskbar */}
-      <div className="absolute bottom-0 left-0 right-0 h-5 flex items-center gap-0.5 px-0.5" style={{border: 'none', outline: 'none', backgroundColor: '#000000', opacity: 1, backdropFilter: 'none'}}>
+      <div className="absolute left-0 right-0 h-5 flex items-center gap-0.5 px-0.5" style={{bottom: '0.3mm', border: 'none', outline: 'none', backgroundColor: '#000000', opacity: 1, backdropFilter: 'none'}}>
         {/* Open Windows */}
         <div className="flex-1 flex gap-0.5 overflow-x-auto">
           {windows.map(window => (

@@ -131,7 +131,8 @@ export default function TerminalApp() {
   return (
     <div
       ref={containerRef}
-      className="h-full bg-black p-0.5 font-mono text-[7px] text-green-400 overflow-auto custom-scrollbar leading-none"
+      className="h-full bg-black font-mono text-[7px] text-green-400 overflow-auto custom-scrollbar leading-none"
+      style={{ paddingTop: '0.5mm', paddingBottom: '0.5mm', paddingLeft: '1.2mm', paddingRight: '0.5mm' }}
       onClick={() => inputRef.current?.focus()}
     >
       {history.map((entry, index) => (
