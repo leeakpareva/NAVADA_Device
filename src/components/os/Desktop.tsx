@@ -35,7 +35,7 @@ export default function Desktop() {
       <Taskbar />
 
       {/* Clock overlay */}
-      <div className="absolute text-[6px] text-white" style={{ top: '0.3mm', right: '0.3mm' }}>
+      <div className="absolute text-[6px] text-white" style={{ top: '0.9mm', left: '1.0mm' }}>
         <SystemClock />
       </div>
     </div>

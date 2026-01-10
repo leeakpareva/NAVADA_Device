@@ -4,10 +4,16 @@ import { useState, useEffect } from 'react';
 import DeviceFrame from '@/components/device/DeviceFrame';
 import BootSequence from '@/components/os/BootSequence';
 import Desktop from '@/components/os/Desktop';
+import Header from '@/components/layout/Header';
+import AboutPage from '@/components/pages/AboutPage';
+import DesignsPage from '@/components/pages/DesignsPage';
+import SpecificationPage from '@/components/pages/SpecificationPage';
+import SignupPage from '@/components/pages/SignupPage';
 
 export default function Home() {
   const [bootComplete, setBootComplete] = useState(false);
   const [showBoot, setShowBoot] = useState(true);
+  const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
     // Skip boot on development hot reloads
@@ -24,15 +30,40 @@ export default function Home() {
     setTimeout(() => setShowBoot(false), 500);
   };
 
+  const handleNavigate = (page: string) => {
+    setCurrentPage(page);
+  };
+
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'about':
+        return <AboutPage />;
+      case 'designs':
+        return <DesignsPage />;
+      case 'specification':
+        return <SpecificationPage />;
+      case 'signup':
+        return <SignupPage />;
+      case 'home':
+      default:
+        return (
+          <main className="min-h-screen overflow-hidden">
+            <DeviceFrame>
+              {showBoot ? (
+                <BootSequence onComplete={handleBootComplete} />
+              ) : (
+                <Desktop />
+              )}
+            </DeviceFrame>
+          </main>
+        );
+    }
+  };
+
   return (
-    <main className="min-h-screen overflow-hidden">
-      <DeviceFrame>
-        {showBoot ? (
-          <BootSequence onComplete={handleBootComplete} />
-        ) : (
-          <Desktop />
-        )}
-      </DeviceFrame>
-    </main>
+    <>
+      <Header onNavigate={handleNavigate} />
+      {renderCurrentPage()}
+    </>
   );
 }
