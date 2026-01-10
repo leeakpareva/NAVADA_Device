@@ -60,7 +60,7 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
         <div className={`relative w-full aspect-[16/10] device-frame ${isMobile ? 'scale-[4] origin-center' : 'max-h-full'}`}>
           {/* Device Image */}
           <Image
-            src={isMobile ? "/Web-Ready3.png" : "/Front-Website1.png"}
+            src={isMobile ? "/Mobile.png" : "/Front-Website1.png"}
             alt="NAVADA Device"
             fill
             priority
