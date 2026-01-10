@@ -1,25 +1,40 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ScrollablePage from '@/components/layout/ScrollablePage';
+import Image from 'next/image';
+
+interface GalleryItem {
+  id: number;
+  title: string;
+  category: string;
+  image?: string;
+  filename?: string;
+}
 
 export default function DesignsPage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const galleryItems = [
-    { id: 1, title: 'NAVADA OS Interface', category: 'UI Design' },
-    { id: 2, title: 'Micro Display Layout', category: 'Hardware' },
-    { id: 3, title: 'Desktop Icons Design', category: 'UI Elements' },
-    { id: 4, title: 'Navigation Patterns', category: 'UX Design' },
-    { id: 5, title: 'Typography System', category: 'Design System' },
-    { id: 6, title: 'Color Palette', category: 'Visual Identity' },
-    { id: 7, title: 'Touch Interactions', category: 'Interactive' },
-    { id: 8, title: 'Device Frame Design', category: 'Hardware' },
-    { id: 9, title: 'App Layouts', category: 'UI Design' },
-    { id: 10, title: 'System Components', category: 'UI Library' },
-    { id: 11, title: 'User Flow Diagrams', category: 'UX Design' },
-    { id: 12, title: 'Responsive Layouts', category: 'Responsive' },
-  ];
+  useEffect(() => {
+    // Fetch images from API
+    const fetchDesigns = async () => {
+      try {
+        const response = await fetch('/api/designs');
+        const data = await response.json();
+        if (data.images && data.images.length > 0) {
+          setGalleryItems(data.images);
+        }
+      } catch (error) {
+        console.error('Error fetching designs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDesigns();
+  }, []);
 
   const openModal = (id: number) => {
     setSelectedImage(id);
@@ -43,9 +58,12 @@ export default function DesignsPage() {
             </section>
 
             {/* Gallery Grid */}
-            <section className="bg-gray-900 p-8 rounded-lg">
-              <h2 className="text-3xl font-semibold mb-8 text-white">Design Showcase</h2>
-
+            <section>
+              {loading ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-400">Loading designs...</p>
+                </div>
+              ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {galleryItems.map((item) => (
                   <div
@@ -53,39 +71,32 @@ export default function DesignsPage() {
                     className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
                     onClick={() => openModal(item.id)}
                   >
-                    {/* Image Placeholder */}
-                    <div className="relative bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-white/20 transition-all duration-300">
-                      <div className="aspect-square flex items-center justify-center border-2 border-gray-600 group-hover:border-white transition-colors duration-300">
-                        {/* Placeholder content */}
-                        <div className="text-center p-4">
-                          <div className="w-12 h-12 bg-white rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                            <span className="text-black text-lg font-bold">{item.id}</span>
+                    {/* Image */}
+                    <div className="relative aspect-square">
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-contain"
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg flex items-center justify-center">
+                          <div className="text-center p-4">
+                            <div className="w-12 h-12 bg-white rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                              <span className="text-black text-lg font-bold">{item.id}</span>
+                            </div>
+                            <div className="w-full h-2 bg-gray-600 rounded mb-2"></div>
+                            <div className="w-3/4 h-2 bg-gray-600 rounded mx-auto"></div>
                           </div>
-                          <div className="w-full h-2 bg-gray-600 rounded mb-2"></div>
-                          <div className="w-3/4 h-2 bg-gray-600 rounded mx-auto"></div>
                         </div>
-
-                        {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-white bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                          <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Image Info */}
-                      <div className="p-4">
-                        <h3 className="text-white font-semibold text-sm mb-1 group-hover:text-white transition-colors">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-400 text-xs">{item.category}</p>
-                      </div>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
+              )}
             </section>
 
             {/* Featured Designs */}
@@ -158,38 +169,36 @@ export default function DesignsPage() {
 
             {/* Modal Content */}
             <div className="bg-gray-900 rounded-lg overflow-hidden shadow-2xl transform transition-all duration-300">
-              {/* Modal Image Placeholder */}
-              <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-700 flex items-center justify-center border-b border-gray-700">
-                <div className="text-center p-8">
-                  <div className="w-24 h-24 bg-white rounded-lg mx-auto mb-4 flex items-center justify-center">
-                    <span className="text-black text-3xl font-bold">{selectedImage}</span>
+              {/* Modal Image */}
+              <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-700 flex items-center justify-center border-b border-gray-700 relative">
+                {galleryItems.find(item => item.id === selectedImage)?.image ? (
+                  <Image
+                    src={galleryItems.find(item => item.id === selectedImage)?.image || ''}
+                    alt={galleryItems.find(item => item.id === selectedImage)?.title || 'Design Preview'}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 1200px) 100vw, 1200px"
+                  />
+                ) : (
+                  <div className="text-center p-8">
+                    <div className="w-24 h-24 bg-white rounded-lg mx-auto mb-4 flex items-center justify-center">
+                      <span className="text-black text-3xl font-bold">{selectedImage}</span>
+                    </div>
+                    <h3 className="text-black text-2xl font-semibold mb-2">
+                      {galleryItems.find(item => item.id === selectedImage)?.title || 'Design Preview'}
+                    </h3>
+                    <p className="text-gray-400">
+                      {galleryItems.find(item => item.id === selectedImage)?.category || 'Featured Design'}
+                    </p>
+                    <div className="mt-6 space-y-2">
+                      <div className="w-full h-3 bg-gray-600 rounded"></div>
+                      <div className="w-4/5 h-3 bg-gray-600 rounded mx-auto"></div>
+                      <div className="w-3/5 h-3 bg-gray-600 rounded mx-auto"></div>
+                    </div>
                   </div>
-                  <h3 className="text-black text-2xl font-semibold mb-2">
-                    {galleryItems.find(item => item.id === selectedImage)?.title || 'Design Preview'}
-                  </h3>
-                  <p className="text-gray-400">
-                    {galleryItems.find(item => item.id === selectedImage)?.category || 'Featured Design'}
-                  </p>
-                  <div className="mt-6 space-y-2">
-                    <div className="w-full h-3 bg-gray-600 rounded"></div>
-                    <div className="w-4/5 h-3 bg-gray-600 rounded mx-auto"></div>
-                    <div className="w-3/5 h-3 bg-gray-600 rounded mx-auto"></div>
-                  </div>
-                </div>
+                )}
               </div>
 
-              {/* Modal Info */}
-              <div className="p-6">
-                <p className="text-gray-300 mb-4">
-                  This space will contain the detailed design image and specifications for the selected concept.
-                  Each design showcases NAVADA OS's approach to micro-display optimization.
-                </p>
-                <div className="flex justify-between items-center text-sm text-gray-400">
-                  <span>Resolution: 1920x1080</span>
-                  <span>Format: PNG</span>
-                  <span>Category: {galleryItems.find(item => item.id === selectedImage)?.category}</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
