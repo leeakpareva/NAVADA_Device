@@ -6,8 +6,8 @@ import Image from 'next/image';
 export default function DesktopIcons() {
   const { apps, openApp } = useOSStore();
 
-  // Increased icon size and spacing to prevent text collision
-  const iconSize = 36;
+  // Adjusted icon size for 5 apps layout
+  const iconSize = 32;
 
   const renderIcon = (icon: string, appName: string) => {
     // Check if icon is an image path (starts with /)
@@ -16,18 +16,18 @@ export default function DesktopIcons() {
         <Image
           src={icon}
           alt={`${appName} icon`}
-          width={32}
-          height={32}
+          width={28}
+          height={28}
           className="object-contain"
         />
       );
     }
-    // Otherwise render as emoji (sized to match 32px images)
-    return <span className="text-xl" style={{ fontSize: '32px' }}>{icon}</span>;
+    // Otherwise render as emoji (sized to match 28px images)
+    return <span className="text-xl" style={{ fontSize: '28px' }}>{icon}</span>;
   };
 
   return (
-    <div className="absolute grid grid-cols-4 gap-1" style={{ top: '2.4mm', left: '1mm', width: '88%' }}>
+    <div className="absolute grid grid-cols-5 gap-1" style={{ top: '2.4mm', left: '0.5mm', width: '92%' }}>
       {apps.map((app, index) => (
         <button
           key={app.id}
@@ -36,7 +36,7 @@ export default function DesktopIcons() {
           className="group flex flex-col items-center p-1 hover:bg-gray-800 transition-all touch-feedback"
           style={{ width: iconSize }}
         >
-          <div className="w-8 h-8 flex items-center justify-center bg-transparent group-hover:bg-gray-700">
+          <div className="w-7 h-7 flex items-center justify-center bg-transparent group-hover:bg-gray-700">
             {renderIcon(app.icon, app.name)}
           </div>
           <span className="text-[8px] text-white font-medium text-center leading-tight w-full mt-0.5 break-words">

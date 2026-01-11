@@ -9,12 +9,14 @@ import TerminalApp from '@/components/apps/TerminalApp';
 import ScreensaverApp from '@/components/apps/ScreensaverApp';
 import YouTubeApp from '@/components/apps/YouTubeApp';
 import AIAgentApp from '@/components/apps/AIAgentApp';
+import RavenApp from '@/components/apps/RavenApp';
 
 const appComponents: Record<string, React.ComponentType> = {
   terminal: TerminalApp,
   screensaver: ScreensaverApp,
   youtube: YouTubeApp,
   'ai-agent': AIAgentApp,
+  raven: RavenApp,
 };
 
 export default function Desktop() {

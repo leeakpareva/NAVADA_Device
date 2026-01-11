@@ -7,113 +7,109 @@ export default function AboutPage() {
     <ScrollablePage>
       <div className="bg-black text-white">
         <div className="max-w-4xl mx-auto px-8 pt-2">
-          <h1 className="text-4xl font-bold mb-4 text-white">About NAVADA</h1>
+          <div className="space-y-8 text-white leading-relaxed">
 
-          <div className="space-y-6">
             <section>
-              <p className="text-xl text-gray-300 mb-6">
-                Welcome to NAVADA - the revolutionary micro-display operating system designed for the future of computing.
+              <h1 className="text-3xl font-bold mb-6">ABOUT RAVEN</h1>
+              <p className="mb-4">
+                RAVEN is a builder focused initiative designed to make artificial intelligence, edge computing, and modern hardware accessible to everyone.
+              </p>
+              <p className="mb-4">
+                RAVEN is not a finished product.<br />
+                It is a gateway.
+              </p>
+              <p className="mb-4">
+                The project exists to help people learn by building using real hardware, real code, and real world constraints. In an era dominated by abstract AI tools, RAVEN brings learning back to the edge where computation meets the physical world.
+              </p>
+              <p>
+                At its core, RAVEN is a 360 degree learning and creation gateway powered by Raspberry Pi, designed to teach the future of technology through hands on experimentation.
               </p>
             </section>
 
-            <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-white">Our Mission</h2>
-              <p className="text-gray-300 leading-relaxed">
-                To create the most advanced micro-display interface that brings full computing power to ultra-compact devices. We believe that the future of computing lies in miniaturization without compromise.
-              </p>
-            </section>
-
-            <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-white">The Vision</h2>
-              <p className="text-gray-300 leading-relaxed mb-4">
-                NAVADA represents a paradigm shift in how we interact with technology. Our 64x96mm micro-display platform demonstrates that powerful computing experiences don't require large screens.
-              </p>
-              <ul className="space-y-2 text-gray-400">
-                <li>• Ultra-compact form factor for maximum portability</li>
-                <li>• Full-featured operating system in minimal space</li>
-                <li>• Touch-optimized interface for micro interactions</li>
-                <li>• Extensible app ecosystem for specialized applications</li>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">THE RAVEN DEVICE</h2>
+              <p className="mb-4">The RAVEN device is built using:</p>
+              <ul className="space-y-2 ml-6 mb-4">
+                <li>• Raspberry Pi 4B</li>
+                <li>• OSOYOO 3.5 inch touch screen</li>
+                <li>• Custom 3D printed enclosure and hardware</li>
+                <li>• Local and edge first AI workflows</li>
+                <li>• Secure connectivity to initiative servers</li>
               </ul>
-            </section>
-
-            <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-white">Innovation at Scale</h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-medium mb-3 text-white">Hardware Excellence</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    Our custom-designed hardware platform leverages the latest ARM architecture with optimized power consumption and thermal management for sustained performance in ultra-compact environments.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium mb-3 text-white">Software Innovation</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    NAVADA OS is built from the ground up for micro-displays, featuring a completely reimagined user interface that maximizes functionality while maintaining intuitive operation.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-white">Applications</h2>
-              <div className="space-y-4">
-                <div className="border-l-4 border-white pl-4">
-                  <h3 className="font-medium text-white">Wearable Computing</h3>
-                  <p className="text-gray-400 text-sm">Perfect for smartwatches, fitness devices, and augmented reality interfaces.</p>
-                </div>
-                <div className="border-l-4 border-white pl-4">
-                  <h3 className="font-medium text-white">IoT Devices</h3>
-                  <p className="text-gray-400 text-sm">Ideal for smart home controllers, industrial monitors, and embedded systems.</p>
-                </div>
-                <div className="border-l-4 border-white pl-4">
-                  <h3 className="font-medium text-white">Medical Devices</h3>
-                  <p className="text-gray-400 text-sm">Enabling precise control interfaces for medical equipment and patient monitoring.</p>
-                </div>
-                <div className="border-l-4 border-white pl-4">
-                  <h3 className="font-medium text-white">Automotive</h3>
-                  <p className="text-gray-400 text-sm">Compact displays for vehicle controls, navigation, and passenger entertainment.</p>
-                </div>
-              </div>
-            </section>
-
-            <section className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4 text-white">Team</h2>
-              <p className="text-gray-300 leading-relaxed mb-4">
-                Our team combines decades of experience in embedded systems, user interface design, and hardware engineering. We're passionate about pushing the boundaries of what's possible in micro-computing.
+              <p className="mb-4">
+                The physical case and supporting hardware are fully 3D printed. All design files have been created to encourage learning, modification, and experimentation.
               </p>
-              <div className="grid md:grid-cols-3 gap-4 text-center">
-                <div className="bg-gray-800 p-4 rounded">
-                  <div className="w-16 h-16 bg-white rounded-full mx-auto mb-2 flex items-center justify-center text-black font-bold">
-                    JD
-                  </div>
-                  <h3 className="font-medium text-white">John Doe</h3>
-                  <p className="text-gray-400 text-sm">CEO & Founder</p>
-                </div>
-                <div className="bg-gray-800 p-4 rounded">
-                  <div className="w-16 h-16 bg-white rounded-full mx-auto mb-2 flex items-center justify-center text-black font-bold">
-                    JS
-                  </div>
-                  <h3 className="font-medium text-white">Jane Smith</h3>
-                  <p className="text-gray-400 text-sm">CTO</p>
-                </div>
-                <div className="bg-gray-800 p-4 rounded">
-                  <div className="w-16 h-16 bg-white rounded-full mx-auto mb-2 flex items-center justify-center text-black font-bold">
-                    MJ
-                  </div>
-                  <h3 className="font-medium text-white">Mike Johnson</h3>
-                  <p className="text-gray-400 text-sm">Head of Design</p>
-                </div>
-              </div>
+              <p className="mb-4">
+                When users sign up, the complete set of STL files is provided free of charge, allowing anyone to print, modify, and rebuild the device independently.
+              </p>
+              <p className="mb-4">This setup enables users to:</p>
+              <ul className="space-y-2 ml-6">
+                <li>• Build and run AI models locally</li>
+                <li>• Experiment with edge computing</li>
+                <li>• Learn systems thinking across hardware, software, and AI</li>
+                <li>• Prototype real world intelligent systems</li>
+                <li>• Understand how modern AI works end to end</li>
+              </ul>
+              <p className="mt-4">
+                RAVEN is designed for students, creatives, engineers, artists, and curious minds. No prior experience is required.
+              </p>
             </section>
 
-            <section className="bg-gradient-to-r from-gray-800 to-gray-700 p-8 rounded-lg text-center">
-              <h2 className="text-3xl font-bold mb-4 text-white">Ready to Experience NAVADA?</h2>
-              <p className="text-gray-200 mb-6">
-                Join our beta program and be among the first to experience the future of micro-computing.
+            <section>
+              <h2 className="text-2xl font-bold mb-4">THE RAVEN INITIATIVE AND SERVERS</h2>
+              <p className="mb-4">
+                RAVEN extends beyond the physical device.
               </p>
-              <button className="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors">
-                Get Early Access
-              </button>
+              <p className="mb-4">
+                The initiative servers provide a support layer that includes learning packs, guided challenges, AI models optimized for edge use, experimentation tooling, and community driven knowledge sharing.
+              </p>
+              <p>
+                This hybrid approach combining a local device with connected infrastructure prepares builders for the future of technology where intelligence is distributed, private, efficient, and close to the real world.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold mb-4">LEAD DEVELOPER AND DESIGNER</h2>
+              <p className="mb-2 font-semibold">Leslie Akpareva, MBA, MA</p>
+              <p className="mb-4 italic">Lead Developer and Designer</p>
+              <p className="mb-4">
+                Leslie Akpareva is a builder, AI engineer, and systems thinker working at the intersection of artificial intelligence, hardware, design, and real world impact.
+              </p>
+              <p>
+                His work focuses on removing barriers to advanced technology by turning learning into a tactile, transparent, and practical process. RAVEN reflects a belief that the future belongs to people who build, break, and rebuild systems rather than simply use them.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold mb-4">PROJECT SPONSOR</h2>
+              <p className="mb-2 font-semibold">Chopstix</p>
+              <p className="mb-4 italic">Music Producer and Creative Sponsor</p>
+              <p className="mb-4">
+                Chopstix is an established music producer known for blending creativity with technology. As project sponsor, he brings a creative first perspective to RAVEN, ensuring the initiative speaks not only to engineers but also to artists, creators, and cultural innovators.
+              </p>
+              <p>
+                His involvement reinforces the idea that AI and technology are creative instruments shaping the future of culture, not just technical tools.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold mb-4">AN OPEN INVITATION</h2>
+              <p className="mb-4">
+                RAVEN is built on a simple belief.
+              </p>
+              <p className="mb-4 text-xl font-medium">
+                Anyone can learn to build the future.
+              </p>
+              <p className="mb-4">
+                If you are curious about AI, edge computing, hardware, or the future of technology, RAVEN is for you.
+              </p>
+              <p className="mb-4">
+                Sign up today to receive a free RAVEN starter pack within 72 hours.<br />
+                This includes access to learning materials, server resources, and the full set of 3D printable STL files for the RAVEN device.
+              </p>
+              <p className="text-lg font-medium">
+                No cost. No gatekeeping. Just an invitation to build.
+              </p>
             </section>
 
             <div className="h-20"></div> {/* Bottom padding for scroll */}

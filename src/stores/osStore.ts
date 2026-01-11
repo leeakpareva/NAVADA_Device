@@ -33,6 +33,7 @@ const defaultApps: AppDefinition[] = [
   { id: 'youtube', name: 'YouTube', icon: '/App icons/Youtube.png', defaultSize: { width: 280, height: 180 } },
   { id: 'ai-agent', name: 'Leslie', icon: '/App icons/Leslie.png', defaultSize: { width: 250, height: 180 } },
   { id: 'screensaver', name: 'Screensaver', icon: '/App icons/ScreenSaver.png', defaultSize: { width: 250, height: 160 } },
+  { id: 'raven', name: 'Python', icon: '/App icons/Python.png', defaultSize: { width: 280, height: 180 } },
 ];
 
 const getStoredBackground = () => storage.getWithEnvironmentDefault(
