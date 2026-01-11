@@ -19,13 +19,8 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
-    // Skip boot on development hot reloads
-    const hasBooted = sessionStorage.getItem('navada-booted');
-    if (hasBooted) {
-      setShowCover(false);
-      setShowBoot(false);
-      setBootComplete(true);
-    }
+    // Always show cover page first, regardless of previous boot status
+    // Users must click cover page to enter the app
   }, []);
 
   const handleCoverClick = () => {
