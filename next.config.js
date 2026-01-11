@@ -3,6 +3,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-}
+  turbopack: {
+    root: '.',
+  }
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

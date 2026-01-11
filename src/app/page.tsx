@@ -6,7 +6,6 @@ import CoverPage from '@/components/layout/CoverPage';
 import BootLoader from '@/components/layout/BootLoader';
 import Desktop from '@/components/os/Desktop';
 import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import AboutPage from '@/components/pages/AboutPage';
 import DesignsPage from '@/components/pages/DesignsPage';
 import LearnPage from '@/components/pages/LearnPage';

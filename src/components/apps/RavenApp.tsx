@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useOSStore } from '@/stores/osStore';
 
 interface RavenAppProps {
-  windowId: string;
+  windowId?: string;
 }
 
 interface Message {
@@ -16,7 +16,7 @@ interface Message {
 
 export default function RavenApp({ windowId }: RavenAppProps) {
   const { closeWindow, windows } = useOSStore();
-  const currentWindow = windows.find(w => w.appId === 'raven');
+  const currentWindow = windows.find(w => windowId ? w.id === windowId : w.appId === 'raven');
 
   const [messages, setMessages] = useState<Message[]>([
     {

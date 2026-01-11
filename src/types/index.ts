@@ -1,11 +1,3 @@
-export interface GalleryItem {
-  id: number;
-  title: string;
-  category: string;
-  image?: string;
-  filename?: string;
-}
-
 export interface WindowState {
   id: string;
   appId: string;
@@ -21,5 +13,13 @@ export interface AppDefinition {
   id: string;
   name: string;
   icon: string;
-  defaultSize?: { width: number; height: number };
+  defaultSize: { width: number; height: number };
+}
+
+export interface GalleryItem {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
 }

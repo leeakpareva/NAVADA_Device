@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef, useState, useEffect, ReactNode } from 'react';
-import { useOSStore, WindowState } from '@/stores/osStore';
+import { useOSStore } from '@/stores/osStore';
+import type { WindowState } from '@/types';
 
 interface WindowProps {
   windowState: WindowState;
