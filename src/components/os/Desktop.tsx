@@ -7,10 +7,12 @@ import Taskbar from './Taskbar';
 import DesktopIcons from './DesktopIcons';
 import TerminalApp from '@/components/apps/TerminalApp';
 import ScreensaverApp from '@/components/apps/ScreensaverApp';
+import YouTubeApp from '@/components/apps/YouTubeApp';
 
 const appComponents: Record<string, React.ComponentType> = {
   terminal: TerminalApp,
   screensaver: ScreensaverApp,
+  youtube: YouTubeApp,
 };
 
 export default function Desktop() {

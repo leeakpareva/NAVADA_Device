@@ -12,8 +12,7 @@ export default function Header({ onNavigate }: HeaderProps) {
   const menuItems = [
     { id: 'about', icon: '?' },
     { id: 'designs', icon: '◈' },
-    { id: 'specification', icon: '⊞' },
-    { id: 'learn', icon: '📚' },
+    { id: 'learn', icon: '⊞' },
     { id: 'signup', icon: '+' }
   ];
 
@@ -28,7 +27,10 @@ export default function Header({ onNavigate }: HeaderProps) {
         {/* Logo */}
         <div
           className="flex items-center space-x-2 cursor-pointer"
-          onClick={() => onNavigate('home')}
+          onClick={() => {
+            onNavigate('home');
+            window.location.reload();
+          }}
         >
           <h1 className="text-white text-xl font-bold">NAVADA</h1>
         </div>

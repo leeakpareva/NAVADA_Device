@@ -7,7 +7,6 @@ import Desktop from '@/components/os/Desktop';
 import Header from '@/components/layout/Header';
 import AboutPage from '@/components/pages/AboutPage';
 import DesignsPage from '@/components/pages/DesignsPage';
-import SpecificationPage from '@/components/pages/SpecificationPage';
 import LearnPage from '@/components/pages/LearnPage';
 import SignupPage from '@/components/pages/SignupPage';
 
@@ -41,8 +40,6 @@ export default function Home() {
         return <AboutPage />;
       case 'designs':
         return <DesignsPage />;
-      case 'specification':
-        return <SpecificationPage />;
       case 'learn':
         return <LearnPage />;
       case 'signup':

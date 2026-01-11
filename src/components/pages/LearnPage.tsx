@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, memo } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import ScrollablePage from '@/components/layout/ScrollablePage';
 
 interface PDFDocument {
@@ -13,23 +13,27 @@ interface PDFDocument {
 
 function LearnPage() {
   const [selectedPDF, setSelectedPDF] = useState<PDFDocument | null>(null);
+  const [pdfDocuments, setPdfDocuments] = useState<PDFDocument[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const pdfDocuments: PDFDocument[] = [
-    {
-      id: 'navada-ai-education',
-      title: 'NAVADA: A Protocol for Open AI Education',
-      description: 'Comprehensive protocol for implementing open AI education systems',
-      filename: 'NAVADA_A_Protocol_for_Open_AI_Education.pdf',
-      path: '/pdfs/NAVADA_A_Protocol_for_Open_AI_Education.pdf'
-    },
-    {
-      id: 'navada-not-device',
-      title: 'NAVADA Protocol: Not a Device',
-      description: 'Understanding NAVADA as a protocol framework rather than hardware',
-      filename: 'NAVADA_Protocol_Not_a_Device.pdf',
-      path: '/pdfs/NAVADA_Protocol_Not_a_Device.pdf'
-    }
-  ];
+  useEffect(() => {
+    // Fetch PDFs from API
+    const fetchPDFs = async () => {
+      try {
+        const response = await fetch('/api/pdfs');
+        const data = await response.json();
+        if (data.pdfs && data.pdfs.length > 0) {
+          setPdfDocuments(data.pdfs);
+        }
+      } catch (error) {
+        console.error('Error fetching PDFs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPDFs();
+  }, []);
 
   const selectPDF = useCallback((pdf: PDFDocument) => {
     setSelectedPDF(pdf);
@@ -54,8 +58,17 @@ function LearnPage() {
 
             {/* PDF Documents Grid */}
             <section>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-4 sm:px-0">
-                {pdfDocuments.map((pdf) => (
+              {loading ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-400">Loading PDFs...</p>
+                </div>
+              ) : pdfDocuments.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-400">No PDFs available. Add PDF files to the /public/pdfs/ folder.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-4 sm:px-0">
+                  {pdfDocuments.map((pdf) => (
                   <div
                     key={pdf.id}
                     className="bg-gray-900 rounded-lg p-4 sm:p-6 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:bg-gray-800 border border-gray-700 hover:border-white active:scale-95"
@@ -81,7 +94,8 @@ function LearnPage() {
                     </div>
                   </div>
                 ))}
-              </div>
+                </div>
+              )}
             </section>
 
             <div className="h-20"></div>

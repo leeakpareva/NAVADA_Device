@@ -7,6 +7,7 @@ export default function YouTubeApp() {
   const [videoId, setVideoId] = useState<string | null>(null);
   const [isValidUrl, setIsValidUrl] = useState(false);
   const [error, setError] = useState('');
+  const [showMenu, setShowMenu] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Extract YouTube video ID from URL
@@ -55,90 +56,70 @@ export default function YouTubeApp() {
   };
 
   return (
-    <div className="h-full w-full bg-black text-white overflow-auto custom-scrollbar">
-      {/* Header with URL Input */}
-      <div className="bg-black p-1">
-        <div className="flex items-center justify-center mb-1">
-          <h1 className="text-[10px] font-bold text-white">📺 YouTube Player</h1>
-        </div>
+    <div className="h-full w-full bg-black text-white flex flex-col">
 
-        {/* URL Input */}
-        <form onSubmit={handleSubmit} className="w-full">
-          <div className="flex bg-gray-800 rounded mb-1">
-            <input
-              ref={inputRef}
-              type="text"
-              value={youtubeUrl}
-              onChange={(e) => setYoutubeUrl(e.target.value)}
-              placeholder="Paste YouTube URL here..."
-              className="flex-1 bg-transparent outline-none text-white text-[8px] px-1 py-0.5"
-              style={{ fontSize: '8px' }}
-            />
-            <button
-              type="submit"
-              className="bg-gray-700 hover:bg-gray-600 px-1 text-[6px] text-white"
-            >
-              ▶️
-            </button>
-          </div>
-
-          {/* Error message */}
-          {error && (
-            <div className="text-[6px] text-gray-200 mb-1">{error}</div>
-          )}
-
-          {/* Clear button */}
-          {videoId && (
-            <button
-              onClick={clearVideo}
-              className="bg-gray-700 hover:bg-gray-600 text-[6px] text-white px-1 py-0.5 rounded"
-            >
-              Clear Video
-            </button>
-          )}
-        </form>
-      </div>
-
-      {/* YouTube Video Player */}
-      {videoId && (
-        <div className="p-1">
-          <div className="w-full bg-gray-900 rounded overflow-hidden">
-            <iframe
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`}
-              className="w-full aspect-video"
-              style={{ height: '60px', minHeight: '60px' }}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title="YouTube Video Player"
-            />
-          </div>
-          <div className="text-[6px] text-gray-400 mt-1 text-center">
-            Video ID: {videoId}
-          </div>
+      {/* URL Input Bar */}
+      {!videoId && (
+        <div className="bg-gray-900 p-1 flex-shrink-0">
+          <form onSubmit={handleSubmit} className="w-full">
+            <div className="flex bg-gray-700 rounded">
+              <input
+                ref={inputRef}
+                type="text"
+                value={youtubeUrl}
+                onChange={(e) => setYoutubeUrl(e.target.value)}
+                placeholder="Paste YouTube URL here..."
+                className="flex-1 bg-transparent outline-none text-white text-[7px] px-1 py-1"
+              />
+              <button
+                type="submit"
+                className="bg-gray-600 hover:bg-gray-500 px-2 text-[7px] text-white"
+              >
+                Play
+              </button>
+            </div>
+            {error && (
+              <div className="text-[6px] text-red-400 mt-1">{error}</div>
+            )}
+          </form>
         </div>
       )}
 
-      {/* Instructions */}
-      {!videoId && (
-        <div className="p-1">
-          <div className="text-[8px] font-medium mb-1 text-gray-300 text-center">
-            How to use:
-          </div>
-          <div className="space-y-1">
-            <div className="text-[6px] text-gray-400 text-center">
-              1. Copy a YouTube URL
-            </div>
-            <div className="text-[6px] text-gray-400 text-center">
-              2. Paste it in the input above
-            </div>
-            <div className="text-[6px] text-gray-400 text-center">
-              3. Click ▶️ to play
-            </div>
-          </div>
+      {/* Clear Video Button - Only when video is playing */}
+      {videoId && (
+        <div className="bg-gray-900 p-1 flex-shrink-0">
+          <button
+            onClick={clearVideo}
+            className="bg-gray-600 hover:bg-gray-500 px-2 py-1 text-[7px] text-white rounded"
+          >
+            Clear Video
+          </button>
+        </div>
+      )}
 
-          <div className="mt-2 text-[6px] text-gray-500 text-center">
-            Supports: youtube.com, youtu.be, shorts
+      {/* YouTube Video Player - Full Screen */}
+      {videoId ? (
+        <div className="flex-1 relative bg-black min-h-0">
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&showinfo=0&controls=1&disablekb=1&fs=0&iv_load_policy=3&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+            className="absolute inset-0 w-full h-full"
+            style={{
+              border: 'none',
+              outline: 'none',
+              width: '100%',
+              height: '100%',
+              minWidth: '100%',
+              minHeight: '100%'
+            }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            sandbox="allow-scripts allow-same-origin allow-presentation"
+            title="YouTube Video Player"
+          />
+        </div>
+      ) : (
+        <div className="flex-1 flex items-center justify-center bg-gray-900">
+          <div className="text-[8px] text-gray-400">
+            Enter YouTube URL above to start watching
           </div>
         </div>
       )}
