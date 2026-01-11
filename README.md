@@ -23,9 +23,9 @@ A modern, intelligent operating system interface optimized for 64x96mm micro-dis
 | **Terminal** | 💻 | Advanced terminal app with multiple commands and system info |
 | **YouTube** | 📺 | Full-featured YouTube video player with URL support |
 | **Leslie (AI)** | 🤖 | OpenAI-powered AI assistant with chat interface |
-| **Python (AI)** | 🐍 | Anthropic Claude-powered Python development assistant |
+| **RAVEN (Python AI)** | 🐍 | Anthropic Claude-powered Python development assistant |
+| **DeepSeek AI** | 🧠 | DeepSeek-powered AI agent for advanced reasoning |
 | **Screensaver** | 🖼️ | Dynamic image gallery and screensaver system |
-| **Emails** | 📧 | Secure email database viewer with lock protection (Code: 2222) |
 
 ## 🌐 Web Pages
 
@@ -111,23 +111,27 @@ npm run studio
 
 ## 🎨 Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 16.1.1 (App Router with Turbopack)
 - **AI Integration**:
   - OpenAI GPT-3.5-turbo API (Leslie Assistant)
-  - Anthropic Claude 3.5 Haiku (Python Assistant)
+  - Anthropic Claude 3.5 Haiku (Python/RAVEN Assistant)
+  - DeepSeek API (DeepSeek AI Agent)
 - **Database**: SQLite3 with Prisma ORM and TypeScript types
 - **Database Management**: Prisma Studio for visual data management
 - **Styling**: Tailwind CSS with glass morphism effects
 - **State Management**: Zustand for window and app management
 - **Language**: TypeScript with strict type checking
+- **Linting**: ESLint v9 with flat config
+- **Build Tool**: Turbopack for faster builds
 - **UI Components**: Custom micro-display optimized components
 - **Target Hardware**: Raspberry Pi 4B + micro touchscreen displays
+- **Deployment**: Vercel with automatic GitHub integration
 
 ## 📱 Layout Architecture
 
 ### Desktop Layout
 ```
-Row 1: [App 💻] [YouTube 📺] [Leslie 🤖] [Python 🐍] [Screensaver 🖼️] [Emails 📧]
+Row 1: [Terminal 💻] [YouTube 📺] [Leslie 🤖] [RAVEN 🐍] [DeepSeek 🧠] [Screensaver 🖼️]
 ```
 
 ### Navigation
@@ -219,7 +223,52 @@ raven-os/
 2. Add environment variables in Vercel dashboard:
    - `OPENAI_API_KEY`: Your OpenAI API key
    - `ANTHROPIC_API_KEY`: Your Anthropic API key
+   - `DEEPSEEK_API_KEY`: Your DeepSeek API key
+   - `TTS_PROMPT_ID`: Your TTS prompt ID
 3. Deploy automatically on push to main branch
+
+#### ⚠️ Common Deployment Issues & Fixes
+
+**Issue: "Environment Variable 'OPENAI_API_KEY' references Secret 'openai_api_key', which does not exist"**
+
+This error occurs when `vercel.json` contains secret references (`@secret_name`) instead of using environment variables directly.
+
+**Solution:**
+1. Remove secret references from `vercel.json`:
+   ```json
+   {
+     "functions": {
+       "src/app/api/ai/chat/route.ts": { "maxDuration": 30 }
+     }
+   }
+   ```
+   ❌ Remove this section if present:
+   ```json
+   "env": {
+     "OPENAI_API_KEY": "@openai_api_key"
+   }
+   ```
+
+2. Use Vercel CLI to add environment variables properly:
+   ```bash
+   # Add for all environments
+   echo "your_api_key" | npx vercel env add OPENAI_API_KEY production
+   echo "your_api_key" | npx vercel env add OPENAI_API_KEY preview
+   echo "your_api_key" | npx vercel env add OPENAI_API_KEY development
+   ```
+
+3. If CLI deployment fails, create fresh project:
+   ```bash
+   npx vercel remove project-name --yes
+   rm -rf .vercel
+   npx vercel --prod --yes
+   ```
+
+**Fix Summary:**
+- Remove secret references from `vercel.json`
+- Add environment variables via CLI or dashboard
+- Use plain encrypted values, not secret references
+- Delete and recreate project if persistent issues
 
 ### Local Production
 ```bash
