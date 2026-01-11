@@ -5,11 +5,11 @@ import { useOSStore } from '@/stores/osStore';
 export default function DesktopIcons() {
   const { apps, openApp } = useOSStore();
 
-  // Realistic app icon size proportional to screen dimensions - reduced by 0.5x
-  const iconSize = 24;
+  // Increased icon size and spacing to prevent text collision
+  const iconSize = 32;
 
   return (
-    <div className="absolute flex flex-col items-start gap-1" style={{ top: '2.4mm', left: '0.3mm' }}>
+    <div className="absolute grid grid-cols-3 gap-2" style={{ top: '2.4mm', left: '0.3mm', width: '90%' }}>
       {apps.map((app, index) => (
         <button
           key={app.id}
@@ -21,7 +21,7 @@ export default function DesktopIcons() {
           <div className="w-5 h-5 flex items-center justify-center text-lg bg-transparent group-hover:bg-gray-700">
             {app.icon}
           </div>
-          <span className="text-[9px] text-white font-medium text-center leading-tight w-full mt-0.5 whitespace-nowrap overflow-visible">
+          <span className="text-[8px] text-white font-medium text-center leading-tight w-full mt-0.5 truncate">
             {app.name}
           </span>
         </button>

@@ -1,0 +1,15 @@
+{
+  "env": {
+    "OPENAI_API_KEY": "@openai_api_key"
+  },
+  "build": {
+    "env": {
+      "OPENAI_API_KEY": "@openai_api_key"
+    }
+  },
+  "functions": {
+    "src/app/api/ai/chat/route.ts": {
+      "maxDuration": 30
+    }
+  }
+}

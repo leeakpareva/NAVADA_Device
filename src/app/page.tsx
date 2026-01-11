@@ -64,10 +64,9 @@ export default function Home() {
   return (
     <>
       <Header onNavigate={handleNavigate} />
-      <div className="pt-16 pb-16">
+      <div className="pt-16">
         {renderCurrentPage()}
       </div>
-      <Footer />
     </>
   );
 }
