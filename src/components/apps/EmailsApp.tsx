@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useOSStore } from '@/stores/osStore';
 import type { SignupEntry } from '@/lib/database';
 
 interface EmailsAppProps {
@@ -8,6 +9,8 @@ interface EmailsAppProps {
 }
 
 export default function EmailsApp({ windowId }: EmailsAppProps) {
+  const { windows, closeWindow } = useOSStore();
+  const currentWindow = windows.find(w => w.id === windowId);
   const [emails, setEmails] = useState<SignupEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -69,6 +72,12 @@ export default function EmailsApp({ windowId }: EmailsAppProps) {
     }
   };
 
+  const handleClose = () => {
+    if (currentWindow) {
+      closeWindow(currentWindow.id);
+    }
+  };
+
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -95,7 +104,16 @@ export default function EmailsApp({ windowId }: EmailsAppProps) {
       <div className="h-full w-full bg-gray-900 text-white font-mono flex flex-col text-xs">
         {/* Header */}
         <div className="bg-gray-800 p-2 border-b border-gray-600 flex-shrink-0">
-          <span className="text-red-400 font-bold">🔒 Email Database - LOCKED</span>
+          <div className="flex items-center justify-between">
+            <span className="text-red-400 font-bold">🔒 Email Database - LOCKED</span>
+            <button
+              onClick={handleClose}
+              className="text-red-400 hover:text-red-300 font-bold text-xs px-2 cursor-pointer"
+              title="Close"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Lock Screen */}
@@ -162,6 +180,13 @@ export default function EmailsApp({ windowId }: EmailsAppProps) {
               title="Lock app"
             >
               🔒
+            </button>
+            <button
+              onClick={handleClose}
+              className="text-red-400 hover:text-red-300 font-bold text-xs px-2 cursor-pointer"
+              title="Close"
+            >
+              ✕
             </button>
           </div>
         </div>

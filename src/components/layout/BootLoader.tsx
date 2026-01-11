@@ -71,8 +71,10 @@ export default function BootLoader({ onComplete }: BootLoaderProps) {
   return (
     <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
       <div className="text-center">
-        <div className="text-white text-sm">
-          Loading{dots}
+        {/* Round spinner with lines */}
+        <div className="relative w-8 h-8 mx-auto">
+          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-white animate-spin"></div>
+          <div className="absolute inset-1 rounded-full border-2 border-transparent border-t-gray-400 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
         </div>
       </div>
     </div>

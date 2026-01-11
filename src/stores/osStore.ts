@@ -34,7 +34,6 @@ const defaultApps: AppDefinition[] = [
   { id: 'ai-agent', name: 'Leslie', icon: '/App icons/Leslie.png', defaultSize: { width: 250, height: 180 } },
   { id: 'screensaver', name: 'Screensaver', icon: '/App icons/ScreenSaver.png', defaultSize: { width: 250, height: 160 } },
   { id: 'raven', name: 'Python', icon: '/App icons/Python.png', defaultSize: { width: 280, height: 180 } },
-  { id: 'emails', name: 'Emails', icon: '/App icons/App.png', defaultSize: { width: 280, height: 200 } },
   { id: 'deepseek', name: 'DeepSeek', icon: '/App icons/DeepSeek.png', defaultSize: { width: 280, height: 180 } },
 ];
 
@@ -77,10 +76,11 @@ export const useOSStore = create<OSState>((set, get) => ({
 
     const newZIndex = highestZIndex + 1;
     const windowId = `window-${Date.now()}`;
-    
+
     // Calculate position (stagger windows)
     const offset = (windows.length % 5) * 15;
-    
+    const position = { x: 10 + offset, y: 10 + offset };
+
     const newWindow: WindowState = {
       id: windowId,
       appId: app.id,
@@ -88,7 +88,7 @@ export const useOSStore = create<OSState>((set, get) => ({
       isMinimized: false,
       isMaximized: false,
       zIndex: newZIndex,
-      position: { x: 10 + offset, y: 10 + offset },
+      position,
       size: app.defaultSize || { width: 250, height: 160 },
     };
 
