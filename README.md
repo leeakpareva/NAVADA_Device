@@ -1,29 +1,50 @@
-# NAVADA OS - Protocol 26/1
+# RAVEN OS - AI-Powered Micro-Display Operating System
 
-A modern, clean operating system interface optimized for 64x96mm Osoyoo touchscreen displays and Raspberry Pi 4B. Features a dark Raspberry Pi-inspired design with ultra-compact layouts for micro displays.
+A modern, intelligent operating system interface optimized for 64x96mm micro-displays with integrated AI assistant. Features a sleek dark design with ultra-compact layouts and OpenAI-powered chat capabilities.
 
-![NAVADA Device](public/Front-Website1.png)
+![RAVEN Device](public/Front-Website1.png)
 
-## Features
+## 🚀 Features
 
-- 📱 **Micro Display Optimized** - Designed specifically for 64x96mm Osoyoo touchscreen displays
-- 🎨 **Raspberry Pi Theme** - Dark background with green accents matching Pi OS aesthetics
-- 🪟 **Ultra-Compact Windows** - Touch-friendly micro-sized windows and controls
-- 🚀 **Minimal Interface** - Single app design with micro text (6-8px fonts)
-- ⌨️ **Touch-Optimized** - All elements sized appropriately for tiny screen dimensions
-- 📱 **Raspberry Pi 4B Ready** - Optimized for extremely small display real estate
+- 📱 **Micro Display Optimized** - Designed specifically for 64x96mm touchscreen displays
+- 🤖 **AI Assistant (Leslie)** - Integrated OpenAI GPT-3.5-turbo powered chat assistant
+- 🎨 **Modern Dark Theme** - Sleek interface with transparent glass effects
+- 🪟 **Multi-Window System** - Full window management with drag, resize, minimize, maximize
+- 📺 **YouTube Integration** - Built-in YouTube video player with full-screen viewing
+- 🖼️ **Dynamic Content** - Auto-loading image galleries and PDF viewers
+- 📚 **Learn Center** - PDF document management and viewing system
+- 💬 **Real-time Chat** - AI conversations with message history and timestamps
+- ⌨️ **Touch-Optimized** - All elements sized for micro screen interactions
 
-## Applications Included
+## 🎯 Applications Included
 
-| App | Description |
-|-----|-------------|
-| App | Single simplified terminal application optimized for micro display |
+| App | Icon | Description |
+|-----|------|-------------|
+| **Terminal** | 💻 | Advanced terminal app with multiple commands and system info |
+| **YouTube** | 📺 | Full-featured YouTube video player with URL support |
+| **Leslie (AI)** | 🤖 | OpenAI-powered AI assistant with chat interface |
+| **Screensaver** | 🖼️ | Dynamic image gallery and screensaver system |
 
-## Getting Started
+## 🌐 Web Pages
+
+- **About** - Comprehensive product information and team details
+- **Designs** - Auto-loading image gallery from `/public/Designs/` folder
+- **Learn** - PDF document center with auto-detection from `/public/Learn/` folder
+- **Signup** - Email capture system with SQLite database storage
+
+## 🛠️ Getting Started
 
 ```bash
+# Clone the repository
+git clone https://github.com/leeakpareva/NAVADA_Device.git
+cd navada-os
+
 # Install dependencies
 npm install
+
+# Set up environment variables
+cp .env.local.example .env.local
+# Add your OpenAI API key to .env.local
 
 # Run development server
 npm run dev
@@ -37,172 +58,178 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-## Tech Stack
+## 🔧 Environment Setup
+
+Create a `.env.local` file with:
+
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+## 💾 Database Features
+
+- **Email Capture**: Automatic SQLite database for signup emails
+- **Auto-Creation**: Database and tables created automatically on first run
+- **Email Validation**: Built-in email format validation and duplicate prevention
+- **Statistics**: Real-time signup counter display
+
+### Database API Endpoints
+
+- `POST /api/signup` - Add email to waitlist
+- `GET /api/signup?action=count` - Get total signup count
+- `GET /api/signup?action=list` - Get all signup emails (admin use)
+
+## 🎨 Tech Stack
 
 - **Framework**: Next.js 14 (App Router)
-- **Styling**: Tailwind CSS with custom touch optimizations
-- **State Management**: Zustand
-- **Design System**: Clean, modern with accessibility focus
-- **Language**: TypeScript
-- **Target Hardware**: Raspberry Pi 4B + Osoyoo Touchscreen
+- **AI Integration**: OpenAI GPT-3.5-turbo API
+- **Database**: SQLite3 with TypeScript types
+- **Styling**: Tailwind CSS with glass morphism effects
+- **State Management**: Zustand for window and app management
+- **Language**: TypeScript with strict type checking
+- **UI Components**: Custom micro-display optimized components
+- **Target Hardware**: Raspberry Pi 4B + micro touchscreen displays
 
-## Customization
+## 📱 Layout Architecture
 
-### Screen Position Calibration
-
-⚠️ **IMPORTANT**: The screen position is **LOCKED** and calibrated for optimal display.
-
-The screen overlay position is defined in `src/components/device/DeviceFrame.tsx`:
-
-```typescript
-const screenPosition = {
-  top: 11.425,    // % from top - LOCKED
-  left: 32.5,     // % from left - LOCKED
-  width: 34.75,   // % of device width - LOCKED
-  height: 35.05,  // % of device height - LOCKED
-};
+### Desktop Layout
+```
+Row 1: [App 💻] [YouTube 📺] [Leslie 🤖]
+Row 2: [Screensaver 🖼️]
 ```
 
-**DO NOT MODIFY** these values when changing the `Front-Website1.png` image. The position has been precisely calibrated to fit the screen area perfectly.
+### Navigation
+- **Fixed Header**: Transparent glass effect with RAVEN branding
+- **Page Navigation**: About | Designs | Learn | Signup
+- **Window Controls**: Standard minimize, maximize, close functionality
 
-### 64x96mm Micro Display Optimization Rules
+## 🔧 Core Features
 
-⚠️ **CRITICAL**: All future development MUST follow these micro display optimization rules:
+### AI Assistant (Leslie)
+- **OpenAI Integration**: GPT-3.5-turbo powered responses
+- **Chat Interface**: Real-time messaging with history
+- **Window Controls**: Full window management capabilities
+- **Smart Responses**: Context-aware conversations optimized for micro-displays
 
-#### Text Sizing Rules
-- **Base font size**: 7-9px optimal range
-- **Terminal text**: 7px (`text-[7px]`)
-- **Window titles**: 7px (`text-[7px]`)
-- **Window controls**: 9.3px (`text-[9.3px]`) - no background colors, text-only
-- **Desktop icon text**: 9px (`text-[9px]`)
-- **Clock overlay**: 6px (`text-[6px]`)
-- **Line height**: Use `leading-none` or `leading-tight`
+### Dynamic Content Management
+- **Auto Image Detection**: Scans `/public/Designs/` for new images
+- **PDF Auto-Loading**: Automatically detects PDFs in `/public/Learn/`
+- **API-Driven**: RESTful endpoints for content management
 
-#### Component Sizing Rules
-- **Window control buttons**: Text-only symbols (−□×) with 4px spacing (`gap-1`)
-- **Desktop icons**: 20px (w-5 h-5) with transparent background, no borders
-- **Icon container**: 24px width maximum
-- **Taskbar height**: 20px maximum
-- **Window title bar**: 12px height maximum
-- **Padding/margins**: Use 0.5px, 1px, 2px maximum
+### Window System
+- **Draggable Windows**: Click and drag window title bars
+- **Resize Support**: Responsive window sizing
+- **Z-Index Management**: Proper window layering
+- **Focus Management**: Click to bring windows to front
+- **Standardized Sizing**: All apps fit within screen dimensions
 
-#### Layout Rules
-- **No borders** on desktop icons (use `bg-transparent`)
-- **No background colors** on window controls - text-only symbols
-- **Minimize gaps**: Use `gap-0`, `gap-0.5`, `gap-1` for optimal spacing
-- **Ultra-compact spacing**: Prefer `p-0.5`, `m-0.5`, `px-1`, `py-1`
-- **Clock positioning**: Top-right corner with minimal padding
-
-#### Performance Rules
-- **Single app maximum** - interface cannot handle multiple apps
-- **Minimal animations** - reduce visual overhead
-- **Essential elements only** - every pixel counts
-- **Clean codebase** - removed unused app components for optimization
-
-#### Testing Requirements
-Before committing any changes, verify:
-1. All text is readable on 64x96mm display
-2. Touch targets are accessible (minimum 16px)
-3. No UI elements extend beyond screen boundaries
-4. Text fits within designated containers
-5. Icons scale proportionally to screen dimensions
-
-**FAILURE TO FOLLOW THESE RULES WILL BREAK THE MICRO DISPLAY OPTIMIZATION**
-
-### Adding New Apps
-
-1. Create component in `src/components/apps/YourApp.tsx`
-2. Add app definition to `src/stores/osStore.ts` in the `defaultApps` array
-3. Import and register component in `src/components/os/Desktop.tsx`
-
-### Customizing Boot Sequence
-
-Edit `src/components/os/BootSequence.tsx` to modify:
-- ASCII art logo
-- Boot messages and timing
-- Progress bar behavior
-
-## Terminal Commands
-
-- `help` - Show available commands
-- `about` - System information
-- `neofetch` - Display system info art
-- `ls` - List files
-- `cat <file>` - View file contents
-- `clear` - Clear terminal
-- `date` - Show current date/time
-- `whoami` - Current user
-- `echo <text>` - Echo text
-- `matrix` - Easter egg 🐰
-
-## Project Structure
+## 📂 Project Structure
 
 ```
-navada-os/
+raven-os/
 ├── public/
-│   └── Front-Website1.png   # Device frame image (DO NOT change screen position when updating)
+│   ├── Designs/              # Auto-loading image gallery
+│   ├── Learn/                # Auto-loading PDF documents
+│   └── Front-Website1.png    # Device frame image
 ├── src/
 │   ├── app/
-│   │   ├── globals.css      # Global styles optimized for 64x96mm display
-│   │   ├── layout.tsx       # Root layout with fonts
-│   │   └── page.tsx         # Main page component
+│   │   ├── api/
+│   │   │   ├── ai/chat/      # OpenAI chat endpoint
+│   │   │   ├── designs/      # Dynamic image API
+│   │   │   ├── pdfs/         # PDF auto-detection API
+│   │   │   └── signup/       # Email capture API
+│   │   ├── globals.css       # Micro-display optimized styles
+│   │   ├── layout.tsx        # Root layout
+│   │   └── page.tsx          # Main application
 │   ├── components/
+│   │   ├── apps/
+│   │   │   ├── AIAgentApp.tsx    # Leslie AI chat interface
+│   │   │   ├── YouTubeApp.tsx    # YouTube video player
+│   │   │   ├── TerminalApp.tsx   # Advanced terminal
+│   │   │   └── ScreensaverApp.tsx # Image gallery
 │   │   ├── device/
-│   │   │   └── DeviceFrame.tsx    # Device wrapper with locked screen position
+│   │   │   └── DeviceFrame.tsx   # Device wrapper
+│   │   ├── layout/
+│   │   │   ├── Header.tsx        # Navigation header
+│   │   │   └── ScrollablePage.tsx # Scrollable page wrapper
 │   │   ├── os/
-│   │   │   ├── BootSequence.tsx   # Boot animation
-│   │   │   ├── Desktop.tsx        # Main desktop
-│   │   │   ├── DesktopIcons.tsx   # Micro-optimized app icons
-│   │   │   ├── Taskbar.tsx        # Ultra-compact taskbar
-│   │   │   └── Window.tsx         # Micro-sized draggable window
-│   │   └── apps/
-│   │       └── TerminalApp.tsx    # Single optimized terminal app
+│   │   │   ├── Desktop.tsx       # Main desktop environment
+│   │   │   ├── DesktopIcons.tsx  # App icon grid
+│   │   │   ├── Window.tsx        # Window management
+│   │   │   └── Taskbar.tsx       # Bottom taskbar
+│   │   └── pages/
+│   │       ├── AboutPage.tsx     # About page
+│   │       ├── DesignsPage.tsx   # Image gallery page
+│   │       ├── LearnPage.tsx     # PDF viewer page
+│   │       └── SignupPage.tsx    # Email capture page
+│   ├── lib/
+│   │   ├── database.ts       # SQLite database utilities
+│   │   └── storage.ts        # Local storage management
 │   └── stores/
-│       └── osStore.ts             # Zustand state (single app config)
-├── tailwind.config.js
-├── tsconfig.json
+│       └── osStore.ts        # Window and app state management
+├── data/
+│   └── signups.db           # SQLite database (auto-created)
+├── vercel.json              # Vercel deployment config
 └── package.json
 ```
 
-## Deployment
+## 🚀 Deployment
 
-### Raspberry Pi 4B Setup
+### Vercel (Recommended)
+1. Connect your GitHub repository to Vercel
+2. Add environment variables in Vercel dashboard:
+   - `OPENAI_API_KEY`: Your OpenAI API key
+3. Deploy automatically on push to main branch
 
-1. **Install Raspberry Pi OS Lite**
-2. **Install Node.js**:
-   ```bash
-   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-   sudo apt-get install -y nodejs
-   ```
-3. **Clone and build the project**:
-   ```bash
-   git clone <repository>
-   cd navada-os
-   npm install
-   npm run build
-   npm start
-   ```
-4. **Configure Osoyoo display** (follow manufacturer instructions)
-5. **Set up auto-start** (optional)
-
-### Other Deployment Options
-
-Deploy to Vercel:
+### Local Production
 ```bash
 npm run build
-# Then deploy via Vercel CLI or GitHub integration
+npm start
 ```
 
-Or any static hosting:
-```bash
-npm run build
-npm run start
-```
+### Raspberry Pi Setup
+1. Install Node.js 18+ on Raspberry Pi OS
+2. Clone repository and install dependencies
+3. Configure environment variables
+4. Set up systemd service for auto-start
+5. Connect micro-display hardware
 
-## License
+## 📊 Analytics & Data
 
-MIT © NAVADA
+- **Email Signups**: Captured in local SQLite database
+- **Real-time Counters**: Live signup statistics
+- **Data Export**: Admin endpoints for data retrieval
+- **Privacy**: All data stored locally, no external analytics
+
+## 🔐 Security Features
+
+- **Input Validation**: Email format validation and sanitization
+- **SQL Injection Protection**: Parameterized queries
+- **Rate Limiting**: Built-in request throttling
+- **Environment Variables**: Secure API key management
+- **CORS Protection**: Configured for production deployment
+
+## 🎯 Roadmap
+
+- [ ] User authentication system
+- [ ] Multi-language AI responses
+- [ ] Voice integration
+- [ ] Mobile app companion
+- [ ] Hardware integration APIs
+- [ ] Plugin system for custom apps
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+## 📄 License
+
+MIT © RAVEN OS
 
 ---
 
-Built with 💜 by NAVADA | Protocol 26/1
+**Built with 🤖 AI and 💜 by RAVEN Team | Version 2.0**

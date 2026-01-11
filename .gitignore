@@ -43,3 +43,9 @@ next-env.d.ts
 # API keys and secrets
 .env.example
 api-keys.txt
+
+# Database
+/data/
+*.db
+*.sqlite
+*.sqlite3

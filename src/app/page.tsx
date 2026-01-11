@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import DeviceFrame from '@/components/device/DeviceFrame';
-import BootSequence from '@/components/os/BootSequence';
+import BootLoader from '@/components/layout/BootLoader';
 import Desktop from '@/components/os/Desktop';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -50,11 +50,7 @@ export default function Home() {
         return (
           <main className="h-full overflow-hidden">
             <DeviceFrame>
-              {showBoot ? (
-                <BootSequence onComplete={handleBootComplete} />
-              ) : (
-                <Desktop />
-              )}
+              <Desktop />
             </DeviceFrame>
           </main>
         );
@@ -63,9 +59,12 @@ export default function Home() {
 
   return (
     <>
-      <Header onNavigate={handleNavigate} />
-      <div className="pt-16">
-        {renderCurrentPage()}
+      {showBoot && <BootLoader onComplete={handleBootComplete} />}
+      <div className={`transition-opacity duration-500 ${showBoot ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <Header onNavigate={handleNavigate} />
+        <div className="pt-16">
+          {renderCurrentPage()}
+        </div>
       </div>
     </>
   );

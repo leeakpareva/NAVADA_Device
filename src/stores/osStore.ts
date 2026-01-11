@@ -29,10 +29,10 @@ interface OSState {
 }
 
 const defaultApps: AppDefinition[] = [
-  { id: 'terminal', name: 'App', icon: '💻', defaultSize: { width: 250, height: 160 } },
-  { id: 'youtube', name: 'YouTube', icon: '📺', defaultSize: { width: 280, height: 180 } },
-  { id: 'ai-agent', name: 'Leslie', icon: '🤖', defaultSize: { width: 250, height: 180 } },
-  { id: 'screensaver', name: 'Screensaver', icon: '🖼️', defaultSize: { width: 250, height: 160 } },
+  { id: 'terminal', name: 'App', icon: '/App icons/App.png', defaultSize: { width: 250, height: 160 } },
+  { id: 'youtube', name: 'YouTube', icon: '/App icons/Youtube.png', defaultSize: { width: 280, height: 180 } },
+  { id: 'ai-agent', name: 'Leslie', icon: '/App icons/Leslie.png', defaultSize: { width: 250, height: 180 } },
+  { id: 'screensaver', name: 'Screensaver', icon: '/App icons/ScreenSaver.png', defaultSize: { width: 250, height: 160 } },
 ];
 
 const getStoredBackground = () => storage.getWithEnvironmentDefault(

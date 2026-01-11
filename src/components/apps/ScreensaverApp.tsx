@@ -15,30 +15,45 @@ const retroColors = [
   { name: 'Lime', value: '#32CD32' },
 ];
 
-const sampleImages = [
-  '/screensaver/Burn.png',
-  // Add more images here as you put them in /public/screensaver/
-  // Example: '/screensaver/yourimage.jpg',
-];
+// Images will be dynamically loaded from API
 
 export default function ScreensaverApp() {
   const { globalBackground, currentImage, setGlobalBackground, setCurrentImage } = useOSStore();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [images, setImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch images from API
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch('/api/screensaver');
+        const data = await response.json();
+        setImages(data.images || []);
+      } catch (error) {
+        console.error('Failed to fetch screensaver images:', error);
+        setImages([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   const nextImage = () => {
-    if (sampleImages.length > 0) {
-      const newIndex = (currentImageIndex + 1) % sampleImages.length;
+    if (images.length > 0) {
+      const newIndex = (currentImageIndex + 1) % images.length;
       setCurrentImageIndex(newIndex);
-      setCurrentImage(sampleImages[newIndex]);
+      setCurrentImage(images[newIndex]);
     }
   };
 
   const prevImage = () => {
-    if (sampleImages.length > 0) {
-      const newIndex = (currentImageIndex - 1 + sampleImages.length) % sampleImages.length;
+    if (images.length > 0) {
+      const newIndex = (currentImageIndex - 1 + images.length) % images.length;
       setCurrentImageIndex(newIndex);
-      setCurrentImage(sampleImages[newIndex]);
+      setCurrentImage(images[newIndex]);
     }
   };
 
@@ -46,6 +61,20 @@ export default function ScreensaverApp() {
   const resetToBlack = () => {
     setGlobalBackground('#000000');
     setCurrentImage(null);
+  };
+
+  const refreshImages = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/screensaver');
+      const data = await response.json();
+      setImages(data.images || []);
+      setCurrentImageIndex(0);
+    } catch (error) {
+      console.error('Failed to refresh screensaver images:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,10 +86,17 @@ export default function ScreensaverApp() {
 
       {/* Control Panel */}
       <div className="p-3 space-y-3">
+        {/* Loading Message */}
+        {loading && (
+          <div className="text-center py-4">
+            <div className="text-white text-xs">Loading images...</div>
+          </div>
+        )}
+
         {/* Images Section */}
-        {sampleImages.length > 0 && (
+        {!loading && images.length > 0 && (
           <div className="space-y-2">
-            <div className="text-white text-xs font-medium">Images:</div>
+            <div className="text-white text-xs font-medium">Images ({images.length}):</div>
             <div className="flex items-center justify-between">
               <button
                 onClick={prevImage}
@@ -69,7 +105,7 @@ export default function ScreensaverApp() {
                 ←
               </button>
               <span className="text-white text-xs">
-                {currentImageIndex + 1} / {sampleImages.length}
+                {currentImageIndex + 1} / {images.length}
               </span>
               <button
                 onClick={nextImage}
@@ -79,7 +115,7 @@ export default function ScreensaverApp() {
               </button>
             </div>
             <button
-              onClick={() => setCurrentImage(sampleImages[currentImageIndex])}
+              onClick={() => setCurrentImage(images[currentImageIndex])}
               className="w-full px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-500 transition-colors"
             >
               Set Background
@@ -88,10 +124,28 @@ export default function ScreensaverApp() {
         )}
 
         {/* No Images Message */}
-        {sampleImages.length === 0 && (
+        {!loading && images.length === 0 && (
           <div className="text-center py-4">
             <div className="text-white text-xs mb-1">No images found</div>
-            <div className="text-gray-400 text-xs">Add images to /public/screensaver/</div>
+            <div className="text-gray-400 text-xs mb-2">Add images to /public/screensaver/</div>
+            <button
+              onClick={refreshImages}
+              className="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-500 transition-colors"
+            >
+              🔄 Refresh
+            </button>
+          </div>
+        )}
+
+        {/* Refresh Button */}
+        {!loading && images.length > 0 && (
+          <div className="flex justify-center">
+            <button
+              onClick={refreshImages}
+              className="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-500 transition-colors"
+            >
+              🔄 Refresh Images
+            </button>
           </div>
         )}
 

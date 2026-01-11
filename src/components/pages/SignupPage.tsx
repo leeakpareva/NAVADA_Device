@@ -11,10 +11,38 @@ export default function SignupPage() {
     interest: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+  const [totalSignups, setTotalSignups] = useState<number | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formData.email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('🎉 Thank you for signing up! You\'re on the waitlist.');
+        setTotalSignups(data.totalSignups);
+        setFormData({ name: '', email: '', company: '', interest: '' });
+      } else {
+        setMessage(data.error || 'An error occurred. Please try again.');
+      }
+    } catch (error) {
+      setMessage('Network error. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -27,8 +55,8 @@ export default function SignupPage() {
   return (
     <ScrollablePage>
       <div className="bg-black text-white">
-        <div className="max-w-2xl mx-auto px-8 pt-2">
-          <h1 className="text-4xl font-bold mb-8 text-white">Sign Up for NAVADA</h1>
+        <div className="max-w-2xl mx-auto px-4 sm:px-8 pt-2">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-8 text-white">Sign Up for RAVEN</h1>
 
           <div className="space-y-8">
             <section>
@@ -44,6 +72,15 @@ export default function SignupPage() {
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                {message && (
+                  <div className={`p-4 rounded-md ${message.includes('🎉') ? 'bg-green-900 text-green-100' : 'bg-red-900 text-red-100'}`}>
+                    {message}
+                    {totalSignups !== null && (
+                      <div className="mt-2 text-sm">Total signups: {totalSignups}</div>
+                    )}
+                  </div>
+                )}
+
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
                     Full Name
@@ -109,9 +146,10 @@ export default function SignupPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-white hover:bg-gray-200 text-black font-bold py-3 px-4 rounded-md transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full bg-white hover:bg-gray-200 disabled:bg-gray-400 disabled:cursor-not-allowed text-black font-bold py-3 px-4 rounded-md transition-colors"
                 >
-                  Join Waitlist
+                  {isSubmitting ? 'Submitting...' : 'Join Waitlist'}
                 </button>
               </form>
             </div>
