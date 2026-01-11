@@ -85,21 +85,19 @@ export default function YouTubeApp() {
         </div>
       )}
 
-      {/* Clear Video Button - Only when video is playing */}
-      {videoId && (
-        <div className="bg-gray-900 p-1 flex-shrink-0">
-          <button
-            onClick={clearVideo}
-            className="bg-gray-600 hover:bg-gray-500 px-2 py-1 text-[7px] text-white rounded"
-          >
-            Clear Video
-          </button>
-        </div>
-      )}
 
       {/* YouTube Video Player - Full Screen */}
       {videoId ? (
-        <div className="flex-1 relative bg-black min-h-0">
+        <div className="flex-1 relative bg-black min-h-0 overflow-hidden">
+          {/* Close Button Overlay */}
+          <button
+            onClick={clearVideo}
+            className="absolute top-1 right-1 z-50 bg-black bg-opacity-70 hover:bg-opacity-90 text-white rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold"
+            style={{ zIndex: 1000 }}
+          >
+            ×
+          </button>
+
           <iframe
             src={`https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&showinfo=0&controls=1&disablekb=1&fs=0&iv_load_policy=3&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
             className="absolute inset-0 w-full h-full"
@@ -108,8 +106,7 @@ export default function YouTubeApp() {
               outline: 'none',
               width: '100%',
               height: '100%',
-              minWidth: '100%',
-              minHeight: '100%'
+              aspectRatio: 'unset'
             }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             sandbox="allow-scripts allow-same-origin allow-presentation"
