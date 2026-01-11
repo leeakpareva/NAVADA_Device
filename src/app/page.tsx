@@ -5,6 +5,7 @@ import DeviceFrame from '@/components/device/DeviceFrame';
 import BootSequence from '@/components/os/BootSequence';
 import Desktop from '@/components/os/Desktop';
 import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import AboutPage from '@/components/pages/AboutPage';
 import DesignsPage from '@/components/pages/DesignsPage';
 import LearnPage from '@/components/pages/LearnPage';
@@ -47,7 +48,7 @@ export default function Home() {
       case 'home':
       default:
         return (
-          <main className="min-h-screen overflow-hidden">
+          <main className="h-full overflow-hidden">
             <DeviceFrame>
               {showBoot ? (
                 <BootSequence onComplete={handleBootComplete} />
@@ -63,7 +64,10 @@ export default function Home() {
   return (
     <>
       <Header onNavigate={handleNavigate} />
-      {renderCurrentPage()}
+      <div className="pt-16 pb-16">
+        {renderCurrentPage()}
+      </div>
+      <Footer />
     </>
   );
 }

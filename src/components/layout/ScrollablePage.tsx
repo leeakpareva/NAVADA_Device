@@ -72,7 +72,7 @@ export default function ScrollablePage({ children }: ScrollablePageProps) {
   };
 
   return (
-    <div className="relative h-screen bg-black">
+    <div className="relative h-full bg-black">
       <div
         ref={scrollRef}
         className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900 bg-black"

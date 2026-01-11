@@ -22,7 +22,7 @@ export default function Header({ onNavigate }: HeaderProps) {
   };
 
   return (
-    <header className="w-full bg-black border-b border-gray-800 px-4 py-2">
+    <header className="fixed top-0 left-0 w-full bg-transparent backdrop-blur-sm border-b border-gray-800/20 px-4 py-2 z-50">
       <div className="flex items-center justify-between max-w-6xl mx-auto">
         {/* Logo */}
         <div
