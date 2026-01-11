@@ -32,7 +32,7 @@ export default function Header({ onNavigate }: HeaderProps) {
             window.location.reload();
           }}
         >
-          <h1 className="text-white text-xl font-bold">NAVADA</h1>
+          <h1 className="text-white text-xl font-bold">RAVEN</h1>
         </div>
 
         {/* Navigation Menu */}
