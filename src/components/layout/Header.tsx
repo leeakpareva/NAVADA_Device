@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface HeaderProps {
   onNavigate: (page: string) => void;
@@ -32,7 +33,13 @@ export default function Header({ onNavigate }: HeaderProps) {
             window.location.reload();
           }}
         >
-          <h1 className="text-white text-xl font-bold">RAVEN</h1>
+          <Image
+            src="/App icons/RAVENloading.png"
+            alt="RAVEN"
+            width={80}
+            height={30}
+            className="object-contain"
+          />
         </div>
 
         {/* Navigation Menu */}
@@ -43,8 +50,8 @@ export default function Header({ onNavigate }: HeaderProps) {
               onClick={() => handleMenuClick(item.id)}
               className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all hover:bg-white/10 ${
                 activeMenu === item.id
-                  ? 'bg-white/20 shadow-lg'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'bg-white/20'
+                  : ''
               }`}
               title={item.id.charAt(0).toUpperCase() + item.id.slice(1)}
             >

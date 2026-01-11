@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import DeviceFrame from '@/components/device/DeviceFrame';
+import CoverPage from '@/components/layout/CoverPage';
 import BootLoader from '@/components/layout/BootLoader';
 import Desktop from '@/components/os/Desktop';
 import Header from '@/components/layout/Header';
@@ -12,18 +13,25 @@ import LearnPage from '@/components/pages/LearnPage';
 import SignupPage from '@/components/pages/SignupPage';
 
 export default function Home() {
+  const [showCover, setShowCover] = useState(true);
   const [bootComplete, setBootComplete] = useState(false);
-  const [showBoot, setShowBoot] = useState(true);
+  const [showBoot, setShowBoot] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
     // Skip boot on development hot reloads
     const hasBooted = sessionStorage.getItem('navada-booted');
     if (hasBooted) {
+      setShowCover(false);
       setShowBoot(false);
       setBootComplete(true);
     }
   }, []);
+
+  const handleCoverClick = () => {
+    setShowCover(false);
+    setShowBoot(true);
+  };
 
   const handleBootComplete = () => {
     sessionStorage.setItem('navada-booted', 'true');
@@ -59,13 +67,16 @@ export default function Home() {
 
   return (
     <>
+      {showCover && <CoverPage onContinue={handleCoverClick} />}
       {showBoot && <BootLoader onComplete={handleBootComplete} />}
-      <div className={`transition-opacity duration-500 ${showBoot ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-        <Header onNavigate={handleNavigate} />
-        <div className="pt-16">
-          {renderCurrentPage()}
+      {!showCover && !showBoot && (
+        <div className={`transition-opacity duration-500 ${bootComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <Header onNavigate={handleNavigate} />
+          <div className="pt-16">
+            {renderCurrentPage()}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

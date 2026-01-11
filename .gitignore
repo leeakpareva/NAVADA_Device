@@ -49,3 +49,5 @@ api-keys.txt
 *.db
 *.sqlite
 *.sqlite3
+
+/src/generated/prisma

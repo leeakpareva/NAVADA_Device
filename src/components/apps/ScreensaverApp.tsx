@@ -78,10 +78,13 @@ export default function ScreensaverApp() {
   };
 
   return (
-    <div className="h-full w-full overflow-auto custom-scrollbar bg-gray-900">
+    <div className="h-full w-full overflow-auto custom-scrollbar bg-black">
       {/* Header */}
-      <div className="bg-gray-800 p-2 border-b border-gray-700">
-        <span className="text-white font-medium text-xs">🖼️ Screensaver Control</span>
+      <div className="bg-gray-900 p-2 border-b border-gray-600">
+        <div className="flex items-center justify-between">
+          <span className="text-white font-bold text-xs">🖼️ Screensaver Control</span>
+          <span className="text-gray-400 text-xs">Current: {currentImage ? 'Image' : globalBackground}</span>
+        </div>
       </div>
 
       {/* Control Panel */}
@@ -150,23 +153,33 @@ export default function ScreensaverApp() {
         )}
 
         {/* Color Palette */}
-        <div className="space-y-2">
-          <div className="text-white text-xs font-medium">Background Colors:</div>
-          <div className="grid grid-cols-4 gap-1">
+        <div className="space-y-2 border-t border-gray-700 pt-3">
+          <div className="text-white text-xs font-bold">🎨 Background Colors:</div>
+          <div className="grid grid-cols-4 gap-2">
             {retroColors.map((color) => (
               <button
                 key={color.value}
-                onClick={() => setGlobalBackground(color.value)}
-                className={`w-8 h-8 rounded border-2 transition-all hover:scale-110 ${
-                  globalBackground === color.value
-                    ? 'border-white shadow-lg'
-                    : 'border-gray-500'
+                onClick={() => {
+                  setGlobalBackground(color.value);
+                  setCurrentImage(null); // Clear image when selecting color
+                }}
+                className={`relative h-10 rounded-lg border-2 transition-all hover:scale-105 ${
+                  globalBackground === color.value && !currentImage
+                    ? 'border-white ring-2 ring-white/50'
+                    : 'border-gray-600 hover:border-gray-400'
                 }`}
                 style={{ backgroundColor: color.value }}
                 title={color.name}
-              />
+              >
+                {globalBackground === color.value && !currentImage && (
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-white text-xs font-bold bg-black/50 px-1 rounded">✓</span>
+                  </span>
+                )}
+              </button>
             ))}
           </div>
+          <div className="text-gray-400 text-xs text-center">Click any color to apply</div>
         </div>
 
 
@@ -174,9 +187,9 @@ export default function ScreensaverApp() {
         <div className="pt-2 border-t border-gray-700">
           <button
             onClick={resetToBlack}
-            className="w-full px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-500 transition-colors"
+            className="w-full px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-500 transition-colors"
           >
-            Reset to Black
+            🔄 Reset to Black
           </button>
         </div>
       </div>

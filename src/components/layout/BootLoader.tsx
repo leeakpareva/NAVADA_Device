@@ -71,44 +71,8 @@ export default function BootLoader({ onComplete }: BootLoaderProps) {
   return (
     <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
       <div className="text-center">
-        {/* NAVADA Logo */}
-        <div className="mb-8">
-          <div className="text-white text-4xl font-bold tracking-wider mb-2">
-            NAVADA
-          </div>
-          <div className="text-gray-400 text-sm tracking-widest">
-            OPERATING SYSTEM
-          </div>
-          <div className="text-gray-500 text-xs mt-1">
-            Protocol 26/1
-          </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="w-80 mx-auto mb-6">
-          <div className="bg-gray-800 h-1 rounded-full overflow-hidden">
-            <div
-              className="bg-white h-full transition-all duration-100 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Status Text */}
-        <div className="text-white text-sm mb-2">
-          {getStageText()}{dots}
-        </div>
-
-        {/* Progress Percentage */}
-        <div className="text-gray-400 text-xs">
-          {progress}%
-        </div>
-
-        {/* System Info */}
-        <div className="mt-12 text-gray-500 text-xs space-y-1">
-          <div>Build: 2025.01.11</div>
-          <div>Architecture: ARM64</div>
-          <div>Display: 64x96mm Micro-Display</div>
+        <div className="text-white text-sm">
+          Loading{dots}
         </div>
       </div>
     </div>

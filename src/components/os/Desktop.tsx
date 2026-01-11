@@ -10,13 +10,17 @@ import ScreensaverApp from '@/components/apps/ScreensaverApp';
 import YouTubeApp from '@/components/apps/YouTubeApp';
 import AIAgentApp from '@/components/apps/AIAgentApp';
 import RavenApp from '@/components/apps/RavenApp';
+import EmailsApp from '@/components/apps/EmailsApp';
+import DeepSeekApp from '@/components/apps/DeepSeekApp';
 
-const appComponents: Record<string, React.ComponentType> = {
+const appComponents: Record<string, React.ComponentType<{ windowId?: string }>> = {
   terminal: TerminalApp,
   screensaver: ScreensaverApp,
   youtube: YouTubeApp,
   'ai-agent': AIAgentApp,
   raven: RavenApp,
+  emails: EmailsApp,
+  deepseek: DeepSeekApp,
 };
 
 export default function Desktop() {
@@ -43,7 +47,7 @@ export default function Desktop() {
 
         return (
           <Window key={window.id} windowState={window}>
-            <AppComponent />
+            <AppComponent windowId={window.id} />
           </Window>
         );
       })}

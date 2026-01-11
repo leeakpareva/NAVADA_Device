@@ -3,8 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useOSStore } from '@/stores/osStore';
 
-interface RavenAppProps {
-  windowId: string;
+interface DeepSeekAppProps {
+  windowId?: string;
 }
 
 interface Message {
@@ -14,15 +14,15 @@ interface Message {
   timestamp: Date;
 }
 
-export default function RavenApp({ windowId }: RavenAppProps) {
+export default function DeepSeekApp({ windowId }: DeepSeekAppProps) {
   const { closeWindow, windows } = useOSStore();
-  const currentWindow = windows.find(w => w.appId === 'raven');
+  const currentWindow = windows.find(w => w.appId === 'deepseek');
 
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       type: 'system',
-      content: '🐍 Python AI Agent v2.0 - Powered by Anthropic Claude - Ready for Python development assistance',
+      content: '🚀 DeepSeek AI Assistant - Advanced coding and reasoning model',
       timestamp: new Date()
     }
   ]);
@@ -55,19 +55,19 @@ export default function RavenApp({ windowId }: RavenAppProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/ai/python', {
+      const response = await fetch('/api/ai/deepseek', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           message: input.trim(),
-          history: messages.slice(-10) // Last 10 messages for context
+          history: messages.slice(-10)
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response from Python AI');
+        throw new Error('Failed to get response from DeepSeek');
       }
 
       const data = await response.json();
@@ -81,11 +81,11 @@ export default function RavenApp({ windowId }: RavenAppProps) {
 
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Python AI Error:', error);
+      console.error('DeepSeek Error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'system',
-        content: '⚠️ Error: Unable to connect to Python AI services',
+        content: '⚠️ Error: Unable to connect to DeepSeek services',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -102,11 +102,11 @@ export default function RavenApp({ windowId }: RavenAppProps) {
   };
 
   return (
-    <div className="h-full w-full bg-black text-green-400 font-mono flex flex-col">
+    <div className="h-full w-full bg-black text-blue-400 font-mono flex flex-col">
       {/* Header */}
-      <div className="bg-gray-900 p-1 border-b border-green-600 flex-shrink-0">
+      <div className="bg-gray-900 p-1 border-b border-blue-600 flex-shrink-0">
         <div className="flex items-center justify-between">
-          <span className="text-green-400 font-bold text-xs">🐍 Python AI - Powered by Claude</span>
+          <span className="text-blue-400 font-bold text-xs">🚀 DeepSeek AI - Advanced Reasoning</span>
           <button
             onClick={handleClose}
             className="text-red-400 hover:text-red-300 font-bold text-xs px-2 cursor-pointer"
@@ -122,24 +122,24 @@ export default function RavenApp({ windowId }: RavenAppProps) {
         {messages.map((message) => (
           <div key={message.id} className="flex flex-col">
             <div className="flex items-center gap-1 text-xs">
-              <span className="text-gray-500">
+              <span className="text-blue-500">
                 [{message.timestamp.toLocaleTimeString()}]
               </span>
               <span className={`font-bold ${
                 message.type === 'user'
                   ? 'text-cyan-400'
                   : message.type === 'assistant'
-                  ? 'text-green-400'
+                  ? 'text-blue-400'
                   : 'text-yellow-400'
               }`}>
-                {message.type === 'user' ? 'USER' : message.type === 'assistant' ? 'RAVEN' : 'SYSTEM'}:
+                {message.type === 'user' ? 'USER' : message.type === 'assistant' ? 'DEEPSEEK' : 'SYSTEM'}:
               </span>
             </div>
             <div className={`text-xs leading-relaxed ml-2 ${
               message.type === 'user'
                 ? 'text-cyan-300'
                 : message.type === 'assistant'
-                ? 'text-green-300'
+                ? 'text-blue-300'
                 : 'text-yellow-300'
             }`}>
               <pre className="whitespace-pre-wrap font-mono">{message.content}</pre>
@@ -149,9 +149,9 @@ export default function RavenApp({ windowId }: RavenAppProps) {
 
         {isLoading && (
           <div className="flex items-center gap-1 text-xs">
-            <span className="text-gray-500">[{new Date().toLocaleTimeString()}]</span>
-            <span className="text-green-400 font-bold">RAVEN:</span>
-            <span className="text-green-300 animate-pulse">Processing...</span>
+            <span className="text-blue-500">[{new Date().toLocaleTimeString()}]</span>
+            <span className="text-blue-400 font-bold">DEEPSEEK:</span>
+            <span className="text-blue-300 animate-pulse">Thinking...</span>
           </div>
         )}
 
@@ -159,16 +159,16 @@ export default function RavenApp({ windowId }: RavenAppProps) {
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="border-t border-green-600 p-1 flex-shrink-0">
+      <form onSubmit={handleSubmit} className="border-t border-blue-700 p-1 flex-shrink-0">
         <div className="flex items-center gap-1">
-          <span className="text-green-400 text-xs">$</span>
+          <span className="text-blue-400 text-xs">{'>'}</span>
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask RAVEN about Python, terminal commands, or development..."
-            className="flex-1 bg-transparent text-green-400 text-xs outline-none placeholder-green-700"
+            placeholder="Ask DeepSeek about coding, math, or complex reasoning..."
+            className="flex-1 bg-transparent text-blue-400 text-xs outline-none placeholder-blue-700"
             disabled={isLoading}
             autoFocus
           />

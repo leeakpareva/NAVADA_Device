@@ -23,7 +23,9 @@ A modern, intelligent operating system interface optimized for 64x96mm micro-dis
 | **Terminal** | 💻 | Advanced terminal app with multiple commands and system info |
 | **YouTube** | 📺 | Full-featured YouTube video player with URL support |
 | **Leslie (AI)** | 🤖 | OpenAI-powered AI assistant with chat interface |
+| **Python (AI)** | 🐍 | Anthropic Claude-powered Python development assistant |
 | **Screensaver** | 🖼️ | Dynamic image gallery and screensaver system |
+| **Emails** | 📧 | Secure email database viewer with lock protection (Code: 2222) |
 
 ## 🌐 Web Pages
 
@@ -44,10 +46,13 @@ npm install
 
 # Set up environment variables
 cp .env.local.example .env.local
-# Add your OpenAI API key to .env.local
+# Add your API keys to .env.local
 
 # Run development server
 npm run dev
+
+# Run Prisma Studio (Database Management)
+npm run studio
 
 # Build for production
 npm run build
@@ -64,6 +69,7 @@ Create a `.env.local` file with:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```
 
 ## 💾 Database Features
@@ -72,6 +78,30 @@ OPENAI_API_KEY=your_openai_api_key_here
 - **Auto-Creation**: Database and tables created automatically on first run
 - **Email Validation**: Built-in email format validation and duplicate prevention
 - **Statistics**: Real-time signup counter display
+- **Prisma Studio**: Visual database management interface
+- **Secure Access**: Email app requires lock code "2222" for viewing
+
+### Database Management
+
+#### Frontend Email Viewer (In-App)
+- **App Name**: Emails
+- **Lock Code**: `2222`
+- **Features**: View emails, copy to clipboard, export as .txt file
+- **Security**: Password-protected interface with lock/unlock functionality
+
+#### Backend Database Management (Prisma Studio)
+```bash
+# Start Prisma Studio
+npm run studio
+```
+- **URL**: http://localhost:5555
+- **Features**:
+  - Visual data browser and editor
+  - Export data as CSV/JSON
+  - Advanced query builder
+  - Real-time data editing
+  - Database schema visualization
+  - Full CRUD operations
 
 ### Database API Endpoints
 
@@ -82,8 +112,11 @@ OPENAI_API_KEY=your_openai_api_key_here
 ## 🎨 Tech Stack
 
 - **Framework**: Next.js 14 (App Router)
-- **AI Integration**: OpenAI GPT-3.5-turbo API
-- **Database**: SQLite3 with TypeScript types
+- **AI Integration**:
+  - OpenAI GPT-3.5-turbo API (Leslie Assistant)
+  - Anthropic Claude 3.5 Haiku (Python Assistant)
+- **Database**: SQLite3 with Prisma ORM and TypeScript types
+- **Database Management**: Prisma Studio for visual data management
 - **Styling**: Tailwind CSS with glass morphism effects
 - **State Management**: Zustand for window and app management
 - **Language**: TypeScript with strict type checking
@@ -94,8 +127,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 ### Desktop Layout
 ```
-Row 1: [App 💻] [YouTube 📺] [Leslie 🤖]
-Row 2: [Screensaver 🖼️]
+Row 1: [App 💻] [YouTube 📺] [Leslie 🤖] [Python 🐍] [Screensaver 🖼️] [Emails 📧]
 ```
 
 ### Navigation
@@ -134,7 +166,9 @@ raven-os/
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   ├── ai/chat/      # OpenAI chat endpoint
+│   │   │   ├── ai/
+│   │   │   │   ├── chat/      # OpenAI chat endpoint (Leslie)
+│   │   │   │   └── python/    # Anthropic Claude endpoint (Python AI)
 │   │   │   ├── designs/      # Dynamic image API
 │   │   │   ├── pdfs/         # PDF auto-detection API
 │   │   │   └── signup/       # Email capture API
@@ -143,7 +177,9 @@ raven-os/
 │   │   └── page.tsx          # Main application
 │   ├── components/
 │   │   ├── apps/
-│   │   │   ├── AIAgentApp.tsx    # Leslie AI chat interface
+│   │   │   ├── AIAgentApp.tsx    # Leslie AI chat interface (OpenAI)
+│   │   │   ├── RavenApp.tsx      # Python AI assistant (Anthropic)
+│   │   │   ├── EmailsApp.tsx     # Secure email database viewer
 │   │   │   ├── YouTubeApp.tsx    # YouTube video player
 │   │   │   ├── TerminalApp.tsx   # Advanced terminal
 │   │   │   └── ScreensaverApp.tsx # Image gallery
@@ -167,9 +203,12 @@ raven-os/
 │   │   └── storage.ts        # Local storage management
 │   └── stores/
 │       └── osStore.ts        # Window and app state management
+├── prisma/
+│   └── schema.prisma        # Prisma database schema
 ├── data/
 │   └── signups.db           # SQLite database (auto-created)
 ├── vercel.json              # Vercel deployment config
+├── prisma.config.ts         # Prisma configuration
 └── package.json
 ```
 
@@ -179,6 +218,7 @@ raven-os/
 1. Connect your GitHub repository to Vercel
 2. Add environment variables in Vercel dashboard:
    - `OPENAI_API_KEY`: Your OpenAI API key
+   - `ANTHROPIC_API_KEY`: Your Anthropic API key
 3. Deploy automatically on push to main branch
 
 ### Local Production
