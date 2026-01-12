@@ -22,12 +22,12 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
     height: 35.05,  // % of device height
   };
 
-  // iPhone screen position for mobile devices
+  // iPhone screen position for mobile devices - optimized for iOS web
   const iphoneScreenPosition = {
-    top: 12,        // % from top
-    left: 16,       // % from left
-    width: 68,      // % of device width
-    height: 76,     // % of device height
+    top: 11.5,      // % from top - adjusted for iOS viewport
+    left: 15.5,     // % from left - slightly adjusted
+    width: 69,      // % of device width - slightly wider
+    height: 77,     // % of device height - slightly taller
   };
 
   // Mobile detection
@@ -89,7 +89,7 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  // Mobile view - iPhone PNG only with header, no screen overlay
+  // Mobile view - iPhone PNG with interactive screen overlay
   if (isMobile) {
     return (
       <div className="w-full h-screen bg-black relative overflow-hidden">
@@ -109,7 +109,21 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
               key={iphoneImageSrc} // Force re-render when image source changes
             />
 
-            {/* No screen overlay for mobile - just the iPhone PNG */}
+            {/* Interactive Screen Overlay for Mobile */}
+            <div
+              className="absolute overflow-hidden z-20"
+              style={{
+                top: `${iphoneScreenPosition.top}%`,
+                left: `${iphoneScreenPosition.left}%`,
+                width: `${iphoneScreenPosition.width}%`,
+                height: `${iphoneScreenPosition.height}%`,
+              }}
+            >
+              {/* Mobile screen content */}
+              <div className="relative w-full h-full bg-black">
+                {children}
+              </div>
+            </div>
           </div>
         </div>
       </div>
