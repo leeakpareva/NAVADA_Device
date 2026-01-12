@@ -10,7 +10,7 @@ export default function PasscodeAuth({ onAuthenticated }: PasscodeAuthProps) {
   const [passcode, setPasscode] = useState('');
   const [error, setError] = useState('');
 
-  const CORRECT_PASSCODE = '2222';
+  const CORRECT_PASSCODE = '2705';
 
   const handlePasscodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
