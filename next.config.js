@@ -1,10 +1,12 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   images: {
     unoptimized: true,
   },
   turbopack: {
-    root: '.',
+    root: path.resolve(__dirname),
   }
 };
 
