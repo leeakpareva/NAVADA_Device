@@ -9,6 +9,7 @@ import Header from '@/components/layout/Header';
 import AboutPage from '@/components/pages/AboutPage';
 import DesignsPage from '@/components/pages/DesignsPage';
 import LearnPage from '@/components/pages/LearnPage';
+import RavenPage from '@/components/pages/RavenPage';
 import SignupPage from '@/components/pages/SignupPage';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import PasscodeAuth from '@/components/auth/PasscodeAuth';
@@ -64,6 +65,8 @@ export default function Home() {
         return <DesignsPage />;
       case 'learn':
         return <LearnPage />;
+      case 'raven':
+        return <RavenPage />;
       case 'signup':
         return <SignupPage />;
       case 'home':
