@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 interface HeaderProps {
@@ -9,6 +9,8 @@ interface HeaderProps {
 
 export default function Header({ onNavigate }: HeaderProps) {
   const [activeMenu, setActiveMenu] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const menuItems = [
     { id: 'about', icon: '?' },
@@ -17,6 +19,46 @@ export default function Header({ onNavigate }: HeaderProps) {
     { id: 'raven', icon: '◯' },
     { id: 'signup', icon: '+' }
   ];
+
+  // Auto-play music when component mounts
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      // Set audio properties
+      audio.loop = true;
+      audio.volume = 0.3; // Set to 30% volume
+
+      // Try to auto-play
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((error) => {
+            // Auto-play was prevented, user needs to interact first
+            console.log('Auto-play prevented:', error);
+            setIsPlaying(false);
+          });
+      }
+    }
+  }, []);
+
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+      } else {
+        audio.play().then(() => {
+          setIsPlaying(true);
+        }).catch((error) => {
+          console.log('Play failed:', error);
+        });
+      }
+    }
+  };
 
   const handleMenuClick = (menuId: string) => {
     setActiveMenu(menuId);
@@ -45,6 +87,17 @@ export default function Header({ onNavigate }: HeaderProps) {
 
         {/* Navigation Menu */}
         <nav className="flex items-center space-x-4">
+          {/* Music Player */}
+          <button
+            onClick={toggleMusic}
+            className="w-8 h-8 flex items-center justify-center rounded-lg transition-all hover:bg-white/10"
+            title={isPlaying ? 'Pause Music' : 'Play Music'}
+          >
+            <span className="text-lg text-white font-bold">
+              {isPlaying ? '⏸' : '▶'}
+            </span>
+          </button>
+
           {menuItems.map((item) => (
             <button
               key={item.id}
@@ -62,6 +115,16 @@ export default function Header({ onNavigate }: HeaderProps) {
             </button>
           ))}
         </nav>
+
+        {/* Hidden Audio Element */}
+        <audio
+          ref={audioRef}
+          preload="auto"
+          style={{ display: 'none' }}
+        >
+          <source src="/Sound.wav" type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
       </div>
     </header>
   );
