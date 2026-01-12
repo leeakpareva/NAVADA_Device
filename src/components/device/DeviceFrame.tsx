@@ -11,6 +11,7 @@ interface DeviceFrameProps {
 export default function DeviceFrame({ children }: DeviceFrameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
   // Desktop screen position as percentage of device image
   const screenPosition = {
@@ -19,6 +20,29 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
     width: 34.75,   // % of device width
     height: 35.05,  // % of device height
   };
+
+  // iPhone screen position for mobile devices
+  const iphoneScreenPosition = {
+    top: 12,        // % from top
+    left: 16,       // % from left
+    width: 68,      // % of device width
+    height: 76,     // % of device height
+  };
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      const isMobileUserAgent = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      setIsMobile(isMobileUserAgent || (isTouchDevice && isSmallScreen));
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -33,6 +57,33 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
+  // Mobile view - iPhone PNG only with header, no screen overlay
+  if (isMobile) {
+    return (
+      <div className="w-full h-screen bg-black relative overflow-hidden">
+        <div
+          ref={containerRef}
+          className="relative w-full h-full flex items-center justify-center"
+        >
+          <div className="relative w-full max-w-sm h-full">
+            {/* iPhone Image */}
+            <Image
+              src="/App icons/Iphone.png"
+              alt="iPhone"
+              fill
+              priority
+              className="object-contain pointer-events-none relative z-10"
+              sizes="(max-width: 768px) 100vw, 400px"
+            />
+
+            {/* No screen overlay for mobile - just the iPhone PNG */}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop view - original layout with animated background
   return (
     <AnimatedBackground className="w-full h-screen flex items-center justify-center device-container">
       <div
