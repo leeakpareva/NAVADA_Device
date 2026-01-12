@@ -14,30 +14,71 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [iphoneImageSrc, setIphoneImageSrc] = useState('/App icons/Iphone.png');
 
+  // iPhone screen position for mobile devices - more precise iOS alignment
+  const iphoneScreenPosition = {
+    top: 15,        // % from top - adjusted for better screen area match
+    left: 19,       // % from left - centered more accurately
+    width: 62,      // % of device width - reduced for better fit
+    height: 70,     // % of device height - adjusted for proper aspect ratio
+  };
+
+  const [mobileScreenPosition, setMobileScreenPosition] = useState(iphoneScreenPosition);
+
   // Desktop screen position as percentage of device image
-  const screenPosition = {
+  const desktopScreenPosition = {
     top: 11.425,    // % from top
     left: 32.4,     // % from left - moved out by 0.1
     width: 34.75,   // % of device width
     height: 35.05,  // % of device height
   };
 
-  // iPhone screen position for mobile devices - optimized for iOS web
-  const iphoneScreenPosition = {
-    top: 11.5,      // % from top - adjusted for iOS viewport
-    left: 15.5,     // % from left - slightly adjusted
-    width: 69,      // % of device width - slightly wider
-    height: 77,     // % of device height - slightly taller
-  };
-
-  // Mobile detection
+  // Mobile detection and screen positioning adjustment
   useEffect(() => {
     const checkMobile = () => {
       const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       const isSmallScreen = window.innerWidth < 1024;
       const isMobileUserAgent = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
       setIsMobile(isMobileUserAgent || (isTouchDevice && isSmallScreen));
+
+      // Adjust screen position based on device characteristics
+      if (isIOS) {
+        const screenHeight = window.screen.height;
+        const screenWidth = window.screen.width;
+        const aspectRatio = screenHeight / screenWidth;
+
+        // Different positioning for different iOS devices
+        let adjustedPosition = { ...iphoneScreenPosition };
+
+        if (aspectRatio > 2.1) {
+          // iPhone X/11/12/13/14/15 Pro and newer (taller screens)
+          adjustedPosition = {
+            top: 16,
+            left: 20,
+            width: 60,
+            height: 68,
+          };
+        } else if (aspectRatio > 1.9) {
+          // iPhone 6/7/8 Plus
+          adjustedPosition = {
+            top: 14,
+            left: 18,
+            width: 64,
+            height: 72,
+          };
+        } else if (aspectRatio > 1.7) {
+          // iPhone 6/7/8
+          adjustedPosition = {
+            top: 15,
+            left: 19,
+            width: 62,
+            height: 70,
+          };
+        }
+
+        setMobileScreenPosition(adjustedPosition);
+      }
     };
 
     checkMobile();
@@ -89,7 +130,7 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  // Mobile view - iPhone PNG with interactive screen overlay
+  // Mobile view - iPhone PNG only
   if (isMobile) {
     return (
       <div className="w-full h-screen bg-black relative overflow-hidden">
@@ -108,22 +149,6 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
               sizes="(max-width: 768px) 100vw, 400px"
               key={iphoneImageSrc} // Force re-render when image source changes
             />
-
-            {/* Interactive Screen Overlay for Mobile */}
-            <div
-              className="absolute overflow-hidden z-20"
-              style={{
-                top: `${iphoneScreenPosition.top}%`,
-                left: `${iphoneScreenPosition.left}%`,
-                width: `${iphoneScreenPosition.width}%`,
-                height: `${iphoneScreenPosition.height}%`,
-              }}
-            >
-              {/* Mobile screen content */}
-              <div className="relative w-full h-full bg-black">
-                {children}
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -152,10 +177,10 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
           <div
             className="absolute modern-screen overflow-hidden z-20"
             style={{
-              top: `${screenPosition.top}%`,
-              left: `${screenPosition.left}%`,
-              width: `${screenPosition.width}%`,
-              height: `${screenPosition.height}%`,
+              top: `${desktopScreenPosition.top}%`,
+              left: `${desktopScreenPosition.left}%`,
+              width: `${desktopScreenPosition.width}%`,
+              height: `${desktopScreenPosition.height}%`,
             }}
           >
             {/* Screen content with inner border for text spacing */}
