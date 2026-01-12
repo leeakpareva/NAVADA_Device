@@ -11,6 +11,7 @@ import DesignsPage from '@/components/pages/DesignsPage';
 import LearnPage from '@/components/pages/LearnPage';
 import SignupPage from '@/components/pages/SignupPage';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import PasscodeAuth from '@/components/auth/PasscodeAuth';
 
 export default function Home() {
   const [showCover, setShowCover] = useState(true);

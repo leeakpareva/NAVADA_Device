@@ -11,6 +11,7 @@ import YouTubeApp from '@/components/apps/YouTubeApp';
 import AIAgentApp from '@/components/apps/AIAgentApp';
 import RavenApp from '@/components/apps/RavenApp';
 import DeepSeekApp from '@/components/apps/DeepSeekApp';
+import PasscodeAuth from '@/components/auth/PasscodeAuth';
 
 const appComponents: Record<string, React.ComponentType<{ windowId?: string }>> = {
   terminal: TerminalApp,
@@ -23,6 +24,17 @@ const appComponents: Record<string, React.ComponentType<{ windowId?: string }>> 
 
 export default function Desktop() {
   const { windows, globalBackground, currentImage } = useOSStore();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Always start locked - remove localStorage check for now
+  // useEffect(() => {
+  //   const authenticated = localStorage.getItem('navada-authenticated');
+  //   setIsAuthenticated(authenticated === 'true');
+  // }, []);
+
+  const handleAuthenticated = () => {
+    setIsAuthenticated(true);
+  };
 
   return (
     <div
@@ -35,34 +47,37 @@ export default function Desktop() {
         backgroundRepeat: 'no-repeat'
       }}
     >
-      {/* Desktop Icons */}
-      <DesktopIcons />
-
-      {/* Windows */}
-      {windows.map(window => {
-        const AppComponent = appComponents[window.appId];
-        if (!AppComponent || window.isMinimized) return null;
-
-        return (
-          <Window key={window.id} windowState={window}>
-            <AppComponent windowId={window.id} />
-          </Window>
-        );
-      })}
-
-      {/* Taskbar */}
-      <Taskbar />
-
-      {/* Clock overlay */}
+      {/* Always show clock and status icons */}
       <div className="absolute text-[6px] text-white" style={{ top: '0.9mm', left: '1.0mm' }}>
         <SystemClock />
       </div>
-
-      {/* Status icons overlay - Battery and WiFi */}
       <div className="absolute flex items-center gap-0.5 text-[6px] text-white" style={{ top: '0.9mm', right: '1.0mm' }}>
         <WiFiIcon />
         <BatteryIcon />
       </div>
+
+      {!isAuthenticated ? (
+        // Show passcode screen when not authenticated
+        <PasscodeAuth onAuthenticated={handleAuthenticated} />
+      ) : (
+        // Show normal desktop when authenticated
+        <>
+          <DesktopIcons />
+
+          {windows.map(window => {
+            const AppComponent = appComponents[window.appId];
+            if (!AppComponent || window.isMinimized) return null;
+
+            return (
+              <Window key={window.id} windowState={window}>
+                <AppComponent windowId={window.id} />
+              </Window>
+            );
+          })}
+
+          <Taskbar />
+        </>
+      )}
     </div>
   );
 }
