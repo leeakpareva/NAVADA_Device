@@ -8,36 +8,22 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setMessage('');
 
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          message: `New waitlist signup from: ${email}`
-        }),
-      });
+    // Open mailto link with the signup email
+    const subject = encodeURIComponent('NAVADA/RAVEN Waitlist Signup');
+    const body = encodeURIComponent(`New waitlist signup from: ${email}\n\nPlease add me to the NAVADA/RAVEN early access list.`);
+    window.location.href = `mailto:lee@navada.info?subject=${subject}&body=${body}`;
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage('🎉 Thank you for signing up! You\'re on the waitlist.');
-        setEmail('');
-      } else {
-        setMessage(data.error || 'An error occurred. Please try again.');
-      }
-    } catch (error) {
-      setMessage('Network error. Please check your connection and try again.');
-    } finally {
+    // Show success message
+    setTimeout(() => {
+      setMessage('🎉 Thank you! Your email client should open to complete signup.');
+      setEmail('');
       setIsSubmitting(false);
-    }
+    }, 500);
   };
 
 
@@ -85,9 +71,23 @@ export default function SignupPage() {
                 </button>
               </form>
 
-              <p className="text-gray-400 text-xs text-center mt-4">
-                For inquiries: lee@navada.info
-              </p>
+              <div className="text-center mt-4 space-y-2">
+                <p className="text-gray-400 text-xs">Contact us directly:</p>
+                <div className="flex justify-center gap-4">
+                  <a
+                    href="mailto:lee@navada.info"
+                    className="text-blue-400 hover:text-blue-300 text-xs underline"
+                  >
+                    lee@navada.info
+                  </a>
+                  <a
+                    href="mailto:Send2chopstix@gmail.com"
+                    className="text-blue-400 hover:text-blue-300 text-xs underline"
+                  >
+                    Send2chopstix@gmail.com
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className="bg-gray-900 p-6 rounded-lg">
