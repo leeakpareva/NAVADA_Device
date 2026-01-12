@@ -10,12 +10,15 @@ import AboutPage from '@/components/pages/AboutPage';
 import DesignsPage from '@/components/pages/DesignsPage';
 import LearnPage from '@/components/pages/LearnPage';
 import SignupPage from '@/components/pages/SignupPage';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function Home() {
   const [showCover, setShowCover] = useState(true);
   const [bootComplete, setBootComplete] = useState(false);
   const [showBoot, setShowBoot] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
+  const [isPageLoading, setIsPageLoading] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
 
   useEffect(() => {
     // Always show cover page first, regardless of previous boot status
@@ -34,7 +37,22 @@ export default function Home() {
   };
 
   const handleNavigate = (page: string) => {
-    setCurrentPage(page);
+    if (page === currentPage) return; // Don't reload same page
+
+    // Start page transition
+    setPageVisible(false);
+    setIsPageLoading(true);
+
+    // Simulate loading time for smooth transition
+    setTimeout(() => {
+      setCurrentPage(page);
+      setIsPageLoading(false);
+
+      // Fade in new page
+      setTimeout(() => {
+        setPageVisible(true);
+      }, 50);
+    }, 600); // 600ms loading time
   };
 
   const renderCurrentPage = () => {
@@ -66,8 +84,23 @@ export default function Home() {
       {!showCover && !showBoot && (
         <div className={`transition-opacity duration-500 ${bootComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <Header onNavigate={handleNavigate} />
-          <div className="pt-16">
-            {renderCurrentPage()}
+          <div className="pt-16 relative">
+            {/* Page Loading Spinner */}
+            {isPageLoading && (
+              <div className="fixed inset-0 z-40 bg-black bg-opacity-50 flex items-center justify-center">
+                <LoadingSpinner
+                  size="medium"
+                  showText={true}
+                  text="Loading page..."
+                  className="text-white"
+                />
+              </div>
+            )}
+
+            {/* Page Content with Fade Transition */}
+            <div className={`transition-opacity duration-500 ${pageVisible ? 'opacity-100' : 'opacity-0'}`}>
+              {renderCurrentPage()}
+            </div>
           </div>
         </div>
       )}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 interface BootLoaderProps {
   onComplete: () => void;
@@ -71,10 +72,18 @@ export default function BootLoader({ onComplete }: BootLoaderProps) {
   return (
     <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
       <div className="text-center">
-        {/* Round spinner with lines */}
-        <div className="relative w-8 h-8 mx-auto">
-          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-white animate-spin"></div>
-          <div className="absolute inset-1 rounded-full border-2 border-transparent border-t-gray-400 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+        <LoadingSpinner
+          size="medium"
+          showText={true}
+          text={`${getStageText()}${dots}`}
+        />
+
+        {/* Progress Bar */}
+        <div className="mt-6 w-48 bg-gray-800 rounded-full h-1">
+          <div
+            className="bg-white h-1 rounded-full transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
       </div>
     </div>

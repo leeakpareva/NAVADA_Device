@@ -9,6 +9,22 @@ function DesignsPage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      const isMobileUserAgent = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      setIsMobile(isMobileUserAgent || (isTouchDevice && isSmallScreen));
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     // Fetch images from API
@@ -40,13 +56,18 @@ function DesignsPage() {
   return (
     <ScrollablePage>
       <div className="bg-black text-white">
-        <div className="max-w-6xl mx-auto px-8 pt-2">
-          <h1 className="text-4xl font-bold mb-4 text-white">Design Gallery</h1>
+        <div className={`mx-auto px-4 sm:px-8 pt-2 ${isMobile ? 'max-w-sm' : 'max-w-6xl'}`}>
+          <h1 className={`font-bold mb-4 text-white ${isMobile ? 'text-2xl text-center' : 'text-4xl'}`}>
+            Design Gallery
+          </h1>
 
           <div className="space-y-6">
             <section>
-              <p className="text-xl text-gray-300 mb-8">
-                Explore our innovative design concepts and user interface elements crafted specifically for micro-display environments. Click any image to view in detail.
+              <p className={`text-gray-300 mb-8 ${isMobile ? 'text-sm text-center' : 'text-xl'}`}>
+                {isMobile
+                  ? 'Our design concepts for micro-displays'
+                  : 'Explore our innovative design concepts and user interface elements crafted specifically for micro-display environments. Click any image to view in detail.'
+                }
               </p>
             </section>
 
@@ -57,7 +78,11 @@ function DesignsPage() {
                   <p className="text-gray-400">Loading designs...</p>
                 </div>
               ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 px-4 sm:px-0">
+              <div className={`grid gap-4 sm:gap-6 px-4 sm:px-0 ${
+                isMobile
+                  ? 'grid-cols-2 gap-3'
+                  : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+              }`}>
                 {galleryItems.map((item) => (
                   <div
                     key={item.id}
@@ -65,24 +90,26 @@ function DesignsPage() {
                     onClick={() => openModal(item.id)}
                   >
                     {/* Image */}
-                    <div className="relative aspect-square w-full">
+                    <div className={`relative w-full ${isMobile ? 'aspect-square' : 'aspect-square'}`}>
                       {item.image ? (
                         <Image
                           src={item.image}
                           alt={item.title}
                           fill
                           className="object-contain"
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                          sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, 25vw"
                           priority={item.id <= 4}
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg flex items-center justify-center">
-                          <div className="text-center p-4">
-                            <div className="w-12 h-12 bg-white rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                              <span className="text-black text-lg font-bold">{item.id}</span>
+                          <div className="text-center p-2 sm:p-4">
+                            <div className={`bg-white rounded-lg mx-auto mb-2 sm:mb-3 flex items-center justify-center group-hover:bg-gray-200 transition-colors ${
+                              isMobile ? 'w-8 h-8' : 'w-12 h-12'
+                            }`}>
+                              <span className={`text-black font-bold ${isMobile ? 'text-sm' : 'text-lg'}`}>{item.id}</span>
                             </div>
-                            <div className="w-full h-2 bg-gray-600 rounded mb-2"></div>
-                            <div className="w-3/4 h-2 bg-gray-600 rounded mx-auto"></div>
+                            <div className={`w-full bg-gray-600 rounded mb-1 sm:mb-2 ${isMobile ? 'h-1' : 'h-2'}`}></div>
+                            <div className={`w-3/4 bg-gray-600 rounded mx-auto ${isMobile ? 'h-1' : 'h-2'}`}></div>
                           </div>
                         </div>
                       )}
@@ -94,25 +121,39 @@ function DesignsPage() {
             </section>
 
             {/* Featured Designs */}
-            <section className="bg-gray-900 p-8 rounded-lg">
-              <h2 className="text-2xl font-semibold mb-6 text-white">Featured Design Concepts</h2>
+            <section className={`bg-gray-900 rounded-lg ${isMobile ? 'p-4' : 'p-8'}`}>
+              <h2 className={`font-semibold mb-6 text-white ${isMobile ? 'text-lg text-center' : 'text-2xl'}`}>
+                Featured Design Concepts
+              </h2>
 
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className={`grid gap-4 sm:gap-8 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2'}`}>
                 <div
                   className="group cursor-pointer transform transition-all duration-300 hover:scale-102"
                   onClick={() => openModal(13)}
                 >
-                  <div className="bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg p-6 border border-gray-600 group-hover:border-white transition-colors">
-                    <div className="aspect-video bg-gray-600 rounded-lg mb-4 flex items-center justify-center group-hover:bg-gray-500 transition-colors">
+                  <div className={`bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg border border-gray-600 group-hover:border-white transition-colors ${
+                    isMobile ? 'p-4' : 'p-6'
+                  }`}>
+                    <div className={`bg-gray-600 rounded-lg mb-4 flex items-center justify-center group-hover:bg-gray-500 transition-colors ${
+                      isMobile ? 'aspect-square' : 'aspect-video'
+                    }`}>
                       <div className="text-center">
-                        <div className="w-16 h-16 bg-white rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <span className="text-black text-2xl">🖥️</span>
+                        <div className={`bg-white rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-110 transition-transform ${
+                          isMobile ? 'w-12 h-12' : 'w-16 h-16'
+                        }`}>
+                          <span className={`text-black ${isMobile ? 'text-xl' : 'text-2xl'}`}>🖥️</span>
                         </div>
                         <div className="text-gray-300 text-sm">Micro Display Interface</div>
                       </div>
                     </div>
-                    <h3 className="text-white font-semibold mb-2 group-hover:text-white transition-colors">Complete OS Interface</h3>
-                    <p className="text-gray-400 text-sm">Full desktop environment optimized for 64x96mm displays</p>
+                    <h3 className={`text-white font-semibold mb-2 group-hover:text-white transition-colors ${
+                      isMobile ? 'text-sm text-center' : ''
+                    }`}>
+                      Complete OS Interface
+                    </h3>
+                    <p className={`text-gray-400 text-sm ${isMobile ? 'text-xs text-center' : ''}`}>
+                      Full desktop environment optimized for 64x96mm displays
+                    </p>
                   </div>
                 </div>
 
@@ -120,17 +161,29 @@ function DesignsPage() {
                   className="group cursor-pointer transform transition-all duration-300 hover:scale-102"
                   onClick={() => openModal(14)}
                 >
-                  <div className="bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg p-6 border border-gray-600 group-hover:border-white transition-colors">
-                    <div className="aspect-video bg-gray-600 rounded-lg mb-4 flex items-center justify-center group-hover:bg-gray-500 transition-colors">
+                  <div className={`bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg border border-gray-600 group-hover:border-white transition-colors ${
+                    isMobile ? 'p-4' : 'p-6'
+                  }`}>
+                    <div className={`bg-gray-600 rounded-lg mb-4 flex items-center justify-center group-hover:bg-gray-500 transition-colors ${
+                      isMobile ? 'aspect-square' : 'aspect-video'
+                    }`}>
                       <div className="text-center">
-                        <div className="w-16 h-16 bg-white rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <span className="text-black text-2xl">📱</span>
+                        <div className={`bg-white rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-110 transition-transform ${
+                          isMobile ? 'w-12 h-12' : 'w-16 h-16'
+                        }`}>
+                          <span className={`text-black ${isMobile ? 'text-xl' : 'text-2xl'}`}>📱</span>
                         </div>
                         <div className="text-gray-300 text-sm">App Ecosystem</div>
                       </div>
                     </div>
-                    <h3 className="text-white font-semibold mb-2 group-hover:text-white transition-colors">Application Framework</h3>
-                    <p className="text-gray-400 text-sm">Native and web applications designed for micro-displays</p>
+                    <h3 className={`text-white font-semibold mb-2 group-hover:text-white transition-colors ${
+                      isMobile ? 'text-sm text-center' : ''
+                    }`}>
+                      Application Framework
+                    </h3>
+                    <p className={`text-gray-400 text-sm ${isMobile ? 'text-xs text-center' : ''}`}>
+                      Native and web applications designed for micro-displays
+                    </p>
                   </div>
                 </div>
               </div>

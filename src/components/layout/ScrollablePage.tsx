@@ -11,6 +11,22 @@ export default function ScrollablePage({ children }: ScrollablePageProps) {
   const [showScrollButtons, setShowScrollButtons] = useState(false);
   const [canScrollUp, setCanScrollUp] = useState(false);
   const [canScrollDown, setCanScrollDown] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      const isMobileUserAgent = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      setIsMobile(isMobileUserAgent || (isTouchDevice && isSmallScreen));
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const checkScrollability = () => {
     if (scrollRef.current) {
@@ -71,6 +87,75 @@ export default function ScrollablePage({ children }: ScrollablePageProps) {
     }
   };
 
+  // Mobile view - with constrained scrolling
+  if (isMobile) {
+    return (
+      <div className="relative bg-black" style={{ height: 'calc(100vh - 64px)' }}>
+        <div
+          ref={scrollRef}
+          className="h-full overflow-y-auto bg-black"
+          style={{
+            scrollBehavior: 'smooth',
+            maxWidth: '100vw',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
+          <style jsx>{`
+            div::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
+          {children}
+        </div>
+
+        {/* Mobile Scroll Controls */}
+        {showScrollButtons && (
+          <>
+            {/* Compact Mobile Scroll Buttons */}
+            <div className="fixed right-4 top-1/2 -translate-y-1/2 flex flex-col space-y-2 z-50">
+              <button
+                onClick={scrollUp}
+                disabled={!canScrollUp}
+                className={`w-10 h-10 rounded-full bg-white text-black font-bold text-lg shadow-lg transition-all ${
+                  !canScrollUp ? 'opacity-30 cursor-not-allowed' : 'opacity-80 hover:opacity-100'
+                }`}
+                title="Scroll Up"
+              >
+                ↑
+              </button>
+              <button
+                onClick={scrollDown}
+                disabled={!canScrollDown}
+                className={`w-10 h-10 rounded-full bg-white text-black font-bold text-lg shadow-lg transition-all ${
+                  !canScrollDown ? 'opacity-30 cursor-not-allowed' : 'opacity-80 hover:opacity-100'
+                }`}
+                title="Scroll Down"
+              >
+                ↓
+              </button>
+            </div>
+
+            {/* Mobile Scroll Progress Indicator */}
+            <div className="fixed left-4 top-1/2 -translate-y-1/2 w-1 h-20 bg-gray-800 rounded-full z-50 opacity-60">
+              <div
+                className="w-full bg-white rounded-full transition-all duration-300"
+                style={{
+                  height: `${
+                    scrollRef.current
+                      ? (scrollRef.current.scrollTop / (scrollRef.current.scrollHeight - scrollRef.current.clientHeight)) * 100
+                      : 0
+                  }%`
+                }}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // Desktop view - original scrollable layout
   return (
     <div className="relative bg-black" style={{ height: 'calc(100vh - 64px)' }}>
       <div
