@@ -14,8 +14,11 @@
   --accent-hover: #ff5252;
 }
 
-* {
+/* Browser normalization for consistent rendering */
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html, body {
@@ -29,6 +32,65 @@ html, body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Force consistent box model across browsers */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Device frame standardization */
+.device-frame {
+  position: relative;
+  display: block;
+  /* Ensure consistent aspect ratio calculation across browsers */
+  contain: layout style;
+  /* Force hardware acceleration for consistent positioning */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Edge/IE specific fixes */
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  /* Force consistent width/height calculation */
+  min-width: 0;
+  min-height: 0;
+}
+
+.device-container {
+  /* Normalize flexbox behavior across browsers */
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  -webkit-justify-content: center;
+  -webkit-align-items: center;
+  /* Edge specific flexbox fixes */
+  -ms-flex-pack: center;
+  -ms-flex-align: center;
+  /* Force consistent display */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+/* Edge/Chrome specific image rendering */
+img {
+  /* Prevent Edge from applying default image styles */
+  border: 0;
+  max-width: none;
+  /* Force consistent object-fit behavior */
+  -o-object-fit: contain;
+  object-fit: contain;
+}
+
+/* Force consistent positioning across browsers */
+.modern-screen {
+  /* Override any browser-specific positioning */
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  /* Ensure consistent block formatting */
+  display: block;
+  /* Edge specific fixes */
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 /* Clean modern screen */
@@ -504,4 +566,37 @@ body::after, body::before,
 html::after, html::before {
   display: none !important;
   content: none !important;
+}
+
+/* Edge-specific fixes using feature detection */
+@supports (-ms-ime-align: auto) {
+  .device-frame {
+    /* Force Edge to use Chrome-like rendering */
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/10 !important;
+  }
+
+  .device-container {
+    /* Fix Edge flexbox centering issues */
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .modern-screen {
+    /* Ensure Edge positions screen overlay correctly */
+    position: absolute !important;
+    transform: none !important;
+  }
+}
+
+/* Microsoft Edge specific CSS using -ms- vendor prefix */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .device-frame {
+    /* Force consistent aspect ratio in Edge */
+    aspect-ratio: 16/10;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
 }

@@ -23,7 +23,7 @@ export default function Header({ onNavigate }: HeaderProps) {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full backdrop-blur-sm border-b border-gray-800/20 px-4 py-2 z-50" style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
+    <header className="fixed top-0 left-0 w-full backdrop-blur-sm border-b border-gray-800/20 px-4 py-1 z-50" style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
       <div className="flex items-center justify-between max-w-6xl mx-auto">
         {/* Logo */}
         <div
@@ -36,8 +36,8 @@ export default function Header({ onNavigate }: HeaderProps) {
           <Image
             src="/App icons/RAVENloading.png"
             alt="RAVEN"
-            width={80}
-            height={30}
+            width={60}
+            height={24}
             className="object-contain"
           />
         </div>
@@ -48,7 +48,7 @@ export default function Header({ onNavigate }: HeaderProps) {
             <button
               key={item.id}
               onClick={() => handleMenuClick(item.id)}
-              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all hover:bg-white/10 ${
+              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-all hover:bg-white/10 ${
                 activeMenu === item.id
                   ? 'bg-white/20'
                   : ''

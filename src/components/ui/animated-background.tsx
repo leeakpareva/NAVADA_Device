@@ -88,26 +88,7 @@ export function AnimatedBackground({ className = '', children }: AnimatedBackgro
         />
       </div>
 
-      {/* Animated Welcome Text */}
-      {showText && (
-        <div
-          className="absolute inset-0 flex items-center justify-end pr-8 pointer-events-none z-30"
-          style={{
-            opacity: textOpacity,
-            transition: 'opacity 1s ease-in-out'
-          }}
-        >
-          <div className="text-right max-w-lg px-4">
-            <h1 className="text-white text-3xl font-bold mb-3 tracking-wide">
-              Empowering Learning
-            </h1>
-            <p className="text-gray-300 text-lg opacity-90">
-              In the Age of AI
-            </p>
-            <div className="mt-4 w-20 h-0.5 bg-gradient-to-r from-transparent via-white to-transparent ml-auto opacity-60"></div>
-          </div>
-        </div>
-      )}
+      {/* Animated Welcome Text - Removed to prevent interference with device image */}
 
       {children}
     </div>

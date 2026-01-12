@@ -13,6 +13,8 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isMobile, setIsMobile] = useState(false);
   const [iphoneImageSrc, setIphoneImageSrc] = useState('/App icons/Iphone.png');
+  const [deviceImageSrc, setDeviceImageSrc] = useState('/Front-Website1.png');
+  const [showInteractiveScreen, setShowInteractiveScreen] = useState(true);
 
   // iPhone screen position for mobile devices - more precise iOS alignment
   const iphoneScreenPosition = {
@@ -35,12 +37,28 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
   // Mobile detection and screen positioning adjustment
   useEffect(() => {
     const checkMobile = () => {
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isSmallScreen = window.innerWidth < 1024;
       const isMobileUserAgent = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isSmallScreen = window.innerWidth <= 768; // Mobile breakpoint
 
-      setIsMobile(isMobileUserAgent || (isTouchDevice && isSmallScreen));
+      // Detect mobile: actual mobile device OR small screen size (for browser resize)
+      setIsMobile(isMobileUserAgent || isSmallScreen);
+
+      // Browser detection for desktop device image selection and interactive screen
+      if (!isMobileUserAgent && !isSmallScreen) {
+        const userAgent = navigator.userAgent;
+        const isChrome = /Chrome/i.test(userAgent) && !/Edg/i.test(userAgent) && !/OPR/i.test(userAgent);
+
+        if (isChrome) {
+          // Chrome: Use Front-Website1.png with interactive screen
+          setDeviceImageSrc('/Front-Website1.png');
+          setShowInteractiveScreen(true);
+        } else {
+          // All other browsers: Use websiteothers.png without interactive screen
+          setDeviceImageSrc('/websiteothers.png');
+          setShowInteractiveScreen(false);
+        }
+      }
 
       // Adjust screen position based on device characteristics
       if (isIOS) {
@@ -155,44 +173,81 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
     );
   }
 
-  // Desktop view - original layout with animated background
-  return (
-    <AnimatedBackground className="w-full h-screen flex items-center justify-center device-container">
-      <div
-        ref={containerRef}
-        className="relative w-full h-full flex items-center justify-center max-w-3xl max-h-[90vh]"
-      >
-        <div className="relative w-full aspect-[16/10] device-frame max-h-full">
+  // Desktop view - conditional animated background (Chrome only)
+  const desktopContent = (
+    <div
+      ref={containerRef}
+      className="relative w-full h-full flex items-center justify-center max-w-3xl max-h-[90vh]"
+      style={{
+        margin: '0 auto',
+        boxSizing: 'border-box'
+      }}
+    >
+        <div
+          className="relative w-full device-frame max-h-full"
+          style={{
+            aspectRatio: '16/10',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            boxSizing: 'border-box'
+          }}
+        >
           {/* Device Image */}
           <Image
-            src="/Front-Website1.png"
+            src={deviceImageSrc}
             alt="NAVADA Device"
             fill
             priority
             className="object-contain pointer-events-none relative z-10"
             sizes="(max-width: 1200px) 80vw, 672px"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain'
+            }}
+            key={deviceImageSrc} // Force re-render when image source changes
           />
 
-          {/* Interactive Screen Overlay */}
-          <div
-            className="absolute modern-screen overflow-hidden z-20"
-            style={{
-              top: `${desktopScreenPosition.top}%`,
-              left: `${desktopScreenPosition.left}%`,
-              width: `${desktopScreenPosition.width}%`,
-              height: `${desktopScreenPosition.height}%`,
-            }}
-          >
-            {/* Screen content with inner border for text spacing */}
-            <div className="relative w-full h-full bg-black" style={{ padding: '0.3mm' }}>
-              <div className="w-full h-full bg-black">
-                {children}
+          {/* Interactive Screen Overlay - Only show for Chrome */}
+          {showInteractiveScreen && (
+            <div
+              className="absolute modern-screen overflow-hidden z-20"
+              style={{
+                position: 'absolute',
+                top: `${desktopScreenPosition.top}%`,
+                left: `${desktopScreenPosition.left}%`,
+                width: `${desktopScreenPosition.width}%`,
+                height: `${desktopScreenPosition.height}%`,
+                boxSizing: 'border-box'
+              }}
+            >
+              {/* Screen content with inner border for text spacing */}
+              <div className="relative w-full h-full bg-black" style={{ padding: '0.3mm' }}>
+                <div className="w-full h-full bg-black">
+                  {children}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
         </div>
-      </div>
-    </AnimatedBackground>
+    </div>
   );
+
+  // Return with or without animated background based on browser
+  if (showInteractiveScreen) {
+    // Chrome: Show with animated background
+    return (
+      <AnimatedBackground className="w-full h-screen flex items-center justify-center device-container">
+        {desktopContent}
+      </AnimatedBackground>
+    );
+  } else {
+    // Other browsers: Show without animated background, move image up by 2mm
+    return (
+      <div className="w-full h-screen bg-black flex items-center justify-center device-container" style={{ paddingBottom: '2mm' }}>
+        {desktopContent}
+      </div>
+    );
+  }
 }
