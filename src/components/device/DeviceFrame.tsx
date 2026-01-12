@@ -12,6 +12,7 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isMobile, setIsMobile] = useState(false);
+  const [iphoneImageSrc, setIphoneImageSrc] = useState('/App icons/Iphone.png');
 
   // Desktop screen position as percentage of device image
   const screenPosition = {
@@ -44,6 +45,37 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // iPhone image detection and cache-busting for updates
+  useEffect(() => {
+    const detectIphoneImage = async () => {
+      const possiblePaths = [
+        '/App icons/Iphone.png',
+        '/App icons/iphone.png',
+        '/App icons/iPhone.png',
+        '/App icons/IPHONE.png'
+      ];
+
+      for (const path of possiblePaths) {
+        try {
+          const response = await fetch(path, { method: 'HEAD' });
+          if (response.ok) {
+            // Add timestamp for cache-busting to ensure updates are loaded
+            const timestamp = new Date().getTime();
+            setIphoneImageSrc(`${path}?v=${timestamp}`);
+            break;
+          }
+        } catch (error) {
+          // Continue to next path if this one fails
+          continue;
+        }
+      }
+    };
+
+    if (isMobile) {
+      detectIphoneImage();
+    }
+  }, [isMobile]);
+
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -66,14 +98,15 @@ export default function DeviceFrame({ children }: DeviceFrameProps) {
           className="relative w-full h-full flex items-center justify-center"
         >
           <div className="relative w-full max-w-sm h-full">
-            {/* iPhone Image */}
+            {/* iPhone Image - Dynamically loaded with cache-busting */}
             <Image
-              src="/App icons/Iphone.png"
-              alt="iPhone"
+              src={iphoneImageSrc}
+              alt="iPhone Mobile Device"
               fill
               priority
               className="object-contain pointer-events-none relative z-10"
               sizes="(max-width: 768px) 100vw, 400px"
+              key={iphoneImageSrc} // Force re-render when image source changes
             />
 
             {/* No screen overlay for mobile - just the iPhone PNG */}
