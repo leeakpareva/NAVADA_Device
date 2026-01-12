@@ -105,7 +105,7 @@ function LearnPage() {
 
       {/* PDF Viewer Modal */}
       {selectedPDF && (
-        <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col">
+        <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-50 flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-900 border-b border-gray-700">
             <h2 className="text-white text-sm sm:text-lg font-semibold flex-1 mr-2 truncate">
