@@ -5,14 +5,13 @@ import ScrollablePage from '@/components/layout/ScrollablePage';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
-  const [userMessage, setUserMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [responseMessage, setResponseMessage] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setResponseMessage('');
+    setMessage('');
 
     try {
       const response = await fetch('/api/contact', {
@@ -22,21 +21,20 @@ export default function SignupPage() {
         },
         body: JSON.stringify({
           email: email,
-          message: userMessage || `Early access request from ${email}`
+          message: `New waitlist signup from: ${email}`
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setResponseMessage('🎉 Thank you! We\'ll be in touch soon at lee@navada.info');
+        setMessage('🎉 Thank you for signing up! You\'re on the waitlist.');
         setEmail('');
-        setUserMessage('');
       } else {
-        setResponseMessage(data.error || 'An error occurred. Please try again.');
+        setMessage(data.error || 'An error occurred. Please try again.');
       }
     } catch (error) {
-      setResponseMessage('Network error. Please check your connection and try again.');
+      setMessage('Network error. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -56,12 +54,12 @@ export default function SignupPage() {
 
           <div className="space-y-6">
             <div className="bg-gray-900 p-6 rounded-lg">
-              <h2 className="text-lg font-bold mb-4 text-white text-center">Contact Us</h2>
+              <h2 className="text-lg font-bold mb-4 text-white text-center">Early Access Waitlist</h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {responseMessage && (
-                  <div className={`p-3 rounded-lg text-sm ${responseMessage.includes('🎉') ? 'bg-green-900/50 text-green-100' : 'bg-red-900/50 text-red-100'}`}>
-                    {responseMessage}
+                {message && (
+                  <div className={`p-3 rounded-lg text-sm ${message.includes('🎉') ? 'bg-green-900/50 text-green-100' : 'bg-red-900/50 text-red-100'}`}>
+                    {message}
                   </div>
                 )}
 
@@ -72,21 +70,9 @@ export default function SignupPage() {
                     name="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email address"
+                    placeholder="Enter your email address"
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent"
                     required
-                  />
-                </div>
-
-                <div>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={userMessage}
-                    onChange={(e) => setUserMessage(e.target.value)}
-                    placeholder="Your message (optional)"
-                    rows={4}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent resize-none"
                   />
                 </div>
 
@@ -95,12 +81,12 @@ export default function SignupPage() {
                   disabled={isSubmitting}
                   className="w-full bg-white hover:bg-gray-200 disabled:bg-gray-500 disabled:cursor-not-allowed text-black font-bold py-3 px-4 rounded-lg transition-colors"
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? 'Joining...' : 'Join Waitlist'}
                 </button>
               </form>
 
               <p className="text-gray-400 text-xs text-center mt-4">
-                Messages will be sent to: lee@navada.info
+                For inquiries: lee@navada.info
               </p>
             </div>
 
