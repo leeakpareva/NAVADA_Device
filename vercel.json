@@ -1,10 +1,4 @@
 {
-  "env": {
-    "ANTHROPIC_API_KEY": "@anthropic-api-key",
-    "DEEPSEEK_API_KEY": "@deepseek-api-key",
-    "OPENAI_API_KEY": "@openai-api-key",
-    "TTS_PROMPT_ID": "@tts-prompt-id"
-  },
   "functions": {
     "src/app/api/ai/chat/route.ts": {
       "maxDuration": 30
