@@ -101,7 +101,7 @@ export default function AgentPage() {
   }, [currentLine, showRaven, showEnterButton]);
 
   const handleEnter = () => {
-    window.open('https://claude.ai/public/artifacts/a48806e0-7ba2-468c-9016-d9137145f407', '_blank');
+    window.open('https://claude.ai/public/artifacts/87664f14-b36e-4c20-b568-46249bed9bce', '_blank');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
