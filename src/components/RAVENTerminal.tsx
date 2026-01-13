@@ -7,7 +7,7 @@ interface RAVENTerminalProps {
   onClose?: () => void;
 }
 
-// Color Palette - Dracula-inspired
+// Enhanced Color Palette - Vibrant Terminal Colors
 const colors = {
   // Background colors
   bg: '#000000',
@@ -18,25 +18,31 @@ const colors = {
 
   // Text colors
   primary: '#ffffff',
-  secondary: '#666666',
-  muted: '#444444',
+  secondary: '#a0a0a0',
+  muted: '#606060',
   gray: '#888888',
 
-  // Syntax highlighting
-  keyword: '#ff79c6',
-  function: '#50fa7b',
-  string: '#f1fa8c',
-  number: '#bd93f9',
-  comment: '#6272a4',
-  operator: '#ff5555',
-  variable: '#8be9fd',
-  type: '#ffb86c',
+  // Enhanced Syntax highlighting - More Vibrant
+  keyword: '#ff006a',        // Bright magenta for keywords
+  function: '#00ff00',       // Bright green for functions
+  string: '#00ffaa',         // Bright cyan for strings
+  number: '#ffaa00',         // Bright orange for numbers
+  comment: '#ffff00',        // Bright yellow for comments
+  operator: '#ff4444',       // Bright red for operators
+  variable: '#00aaff',       // Bright blue for variables
+  type: '#ff00ff',           // Bright purple for types
+  boolean: '#ff00aa',        // Pink for booleans
+  decorator: '#ffaa00',      // Gold for decorators
+  builtin: '#00ffff',        // Cyan for built-in functions
+  className: '#88ff00',      // Lime green for classes
+  bracket: '#ffffff',        // White for brackets
+  punctuation: '#808080',    // Gray for punctuation
 
   // Status colors
-  success: '#50fa7b',
-  error: '#ff5555',
-  warning: '#f1fa8c',
-  info: '#8be9fd',
+  success: '#00ff00',
+  error: '#ff0000',
+  warning: '#ffaa00',
+  info: '#00aaff',
 };
 
 // SVG Icon Components
@@ -330,12 +336,26 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
     setOutput(`Processing ${aiMode} with RAVEN AI...`);
 
     const prompts: Record<string, string> = {
-      generate: `You are RAVEN. Generate ${lang} code for: "${inputText}"
+      generate: `You are RAVEN, an expert coding assistant. Generate ${lang} code for: "${inputText}"
 
-Format your response with these sections using emoji headers:
+IMPORTANT: Include comprehensive inline comments using the what/how/why format:
+- WHAT: Explain what the code does
+- HOW: Explain how it works
+- WHY: Explain why this approach is used
+
+Format your response with these sections:
 🎯 UNDERSTANDING - What you're building
 🌍 REAL-LIFE ANALOGY - Compare to something familiar
-💻 THE CODE - Working ${lang} code
+💻 THE CODE - Working ${lang} code with detailed comments
+
+For the code section, ensure EVERY significant line or block has comments explaining:
+${lang === 'python' ? `# WHAT: What this line/block accomplishes
+# HOW: The mechanism or technique used
+# WHY: The reason for this approach` :
+`// WHAT: What this line/block accomplishes
+// HOW: The mechanism or technique used
+// WHY: The reason for this approach`}
+
 🔍 LINE-BY-LINE BREAKDOWN - Explain each part
 💡 KEY CONCEPTS - Important takeaways
 
@@ -529,53 +549,152 @@ Format with:
     setMode('generate');
   };
 
-  // Enhanced syntax highlighting function
+  // Enhanced syntax highlighting function with vibrant colors and comment detection
   const applySyntaxHighlighting = (code: string, lang: string): JSX.Element => {
     const keywords: Record<string, string[]> = {
-      python: ['def', 'class', 'import', 'from', 'if', 'else', 'elif', 'for', 'while', 'try', 'except', 'with', 'as', 'return', 'yield', 'lambda', 'global', 'nonlocal', 'and', 'or', 'not', 'in', 'is'],
-      javascript: ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'class', 'extends', 'import', 'export', 'default', 'async', 'await', 'try', 'catch', 'finally'],
-      typescript: ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'class', 'extends', 'import', 'export', 'default', 'async', 'await', 'try', 'catch', 'finally', 'interface', 'type', 'enum'],
-      rust: ['fn', 'let', 'mut', 'if', 'else', 'for', 'while', 'loop', 'match', 'struct', 'enum', 'impl', 'trait', 'mod', 'use', 'pub', 'return'],
-      go: ['func', 'var', 'const', 'if', 'else', 'for', 'range', 'return', 'struct', 'interface', 'type', 'package', 'import'],
-      java: ['public', 'private', 'protected', 'static', 'final', 'class', 'interface', 'extends', 'implements', 'if', 'else', 'for', 'while', 'return', 'try', 'catch', 'finally'],
-      cpp: ['int', 'char', 'float', 'double', 'bool', 'void', 'if', 'else', 'for', 'while', 'return', 'class', 'public', 'private', 'protected', 'virtual', 'static'],
-      csharp: ['public', 'private', 'protected', 'static', 'readonly', 'class', 'interface', 'if', 'else', 'for', 'while', 'return', 'try', 'catch', 'finally', 'using', 'namespace']
+      python: ['def', 'class', 'import', 'from', 'if', 'else', 'elif', 'for', 'while', 'try', 'except', 'with', 'as', 'return', 'yield', 'lambda', 'global', 'nonlocal', 'and', 'or', 'not', 'in', 'is', 'None', 'True', 'False', 'pass', 'break', 'continue', 'raise', 'assert', 'del'],
+      javascript: ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'class', 'extends', 'import', 'export', 'default', 'async', 'await', 'try', 'catch', 'finally', 'new', 'this', 'super', 'typeof', 'instanceof', 'delete', 'void', 'throw', 'switch', 'case', 'break', 'continue', 'do', 'debugger'],
+      typescript: ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'class', 'extends', 'import', 'export', 'default', 'async', 'await', 'try', 'catch', 'finally', 'interface', 'type', 'enum', 'namespace', 'module', 'declare', 'abstract', 'implements', 'private', 'public', 'protected', 'readonly', 'keyof', 'typeof', 'as', 'is'],
+      rust: ['fn', 'let', 'mut', 'if', 'else', 'for', 'while', 'loop', 'match', 'struct', 'enum', 'impl', 'trait', 'mod', 'use', 'pub', 'return', 'self', 'Self', 'super', 'crate', 'move', 'ref', 'static', 'const', 'unsafe', 'async', 'await', 'dyn'],
+      go: ['func', 'var', 'const', 'if', 'else', 'for', 'range', 'return', 'struct', 'interface', 'type', 'package', 'import', 'go', 'defer', 'chan', 'select', 'case', 'default', 'break', 'continue', 'fallthrough', 'goto', 'map', 'make'],
+      java: ['public', 'private', 'protected', 'static', 'final', 'class', 'interface', 'extends', 'implements', 'if', 'else', 'for', 'while', 'return', 'try', 'catch', 'finally', 'throw', 'throws', 'new', 'this', 'super', 'import', 'package', 'void', 'int', 'String', 'boolean', 'double', 'float', 'char', 'byte', 'short', 'long', 'abstract', 'synchronized'],
+      cpp: ['int', 'char', 'float', 'double', 'bool', 'void', 'if', 'else', 'for', 'while', 'return', 'class', 'public', 'private', 'protected', 'virtual', 'static', 'const', 'new', 'delete', 'this', 'template', 'typename', 'namespace', 'using', 'try', 'catch', 'throw', 'friend', 'inline', 'extern', 'sizeof', 'typedef', 'auto'],
+      csharp: ['public', 'private', 'protected', 'static', 'readonly', 'class', 'interface', 'if', 'else', 'for', 'while', 'return', 'try', 'catch', 'finally', 'using', 'namespace', 'new', 'this', 'base', 'virtual', 'override', 'abstract', 'sealed', 'async', 'await', 'var', 'dynamic', 'object', 'string', 'int', 'bool', 'double', 'float', 'decimal', 'byte', 'char', 'void']
+    };
+
+    const builtins: Record<string, string[]> = {
+      python: ['print', 'len', 'range', 'str', 'int', 'float', 'list', 'dict', 'set', 'tuple', 'open', 'input', 'type', 'isinstance', 'hasattr', 'getattr', 'setattr', 'abs', 'all', 'any', 'min', 'max', 'sum', 'sorted', 'reversed', 'enumerate', 'zip', 'map', 'filter'],
+      javascript: ['console', 'Math', 'Date', 'Array', 'Object', 'String', 'Number', 'Boolean', 'Promise', 'JSON', 'parseInt', 'parseFloat', 'isNaN', 'isFinite', 'undefined', 'null', 'window', 'document', 'setTimeout', 'setInterval'],
+      typescript: ['console', 'Math', 'Date', 'Array', 'Object', 'String', 'Number', 'Boolean', 'Promise', 'JSON', 'parseInt', 'parseFloat', 'isNaN', 'isFinite', 'undefined', 'null', 'Record', 'Partial', 'Required', 'Readonly', 'Pick', 'Omit']
     };
 
     let highlightedCode = code;
     const currentKeywords = keywords[lang] || keywords.python;
+    const currentBuiltins = builtins[lang] || [];
 
-    // Highlight strings (both single and double quotes)
-    highlightedCode = highlightedCode.replace(/(['"])((?:\\.|(?!\1)[^\\])*?)\1/g,
-      `<span style="color: ${colors.string}">$1$2$1</span>`);
+    // Escape HTML entities first
+    highlightedCode = highlightedCode
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
 
-    // Highlight comments (# for Python, // for others)
+    // Special comment patterns (WHAT, HOW, WHY) - make them stand out
     if (lang === 'python') {
-      highlightedCode = highlightedCode.replace(/#(.*)$/gm,
-        `<span style="color: ${colors.comment}; font-style: italic;"># $1</span>`);
+      highlightedCode = highlightedCode.replace(/#\s*(WHAT|HOW|WHY):(.*?)$/gm,
+        `<span style="color: ${colors.warning}; font-weight: bold; background: rgba(255,170,0,0.15); padding: 2px 6px; border-radius: 3px; display: inline-block; margin: 2px 0;"># <span style="color: #ff00ff; text-shadow: 0 0 3px #ff00ff;">$1:</span><span style="color: #ffffff;">$2</span></span>`);
+      // Regular comments
+      highlightedCode = highlightedCode.replace(/#(?!\s*(WHAT|HOW|WHY):)(.*)$/gm,
+        `<span style="color: ${colors.comment}; font-style: italic;">#$2</span>`);
     } else {
-      highlightedCode = highlightedCode.replace(/\/\/(.*)$/gm,
-        `<span style="color: ${colors.comment}; font-style: italic;">// $1</span>`);
+      highlightedCode = highlightedCode.replace(/\/\/\s*(WHAT|HOW|WHY):(.*?)$/gm,
+        `<span style="color: ${colors.warning}; font-weight: bold; background: rgba(255,170,0,0.15); padding: 2px 6px; border-radius: 3px; display: inline-block; margin: 2px 0;">// <span style="color: #ff00ff; text-shadow: 0 0 3px #ff00ff;">$1:</span><span style="color: #ffffff;">$2</span></span>`);
+      // Regular comments
+      highlightedCode = highlightedCode.replace(/\/\/(?!\s*(WHAT|HOW|WHY):)(.*)$/gm,
+        `<span style="color: ${colors.comment}; font-style: italic;">//$2</span>`);
+      // Multi-line comments
+      highlightedCode = highlightedCode.replace(/\/\*(.*?)\*\//gs,
+        `<span style="color: ${colors.comment}; font-style: italic;">/*$1*/</span>`);
     }
 
-    // Highlight numbers
-    highlightedCode = highlightedCode.replace(/\b(\d+\.?\d*)\b/g,
-      `<span style="color: ${colors.number}">$1</span>`);
+    // Store strings to preserve them
+    const stringMap = new Map();
+    let stringIndex = 0;
 
-    // Highlight keywords
-    currentKeywords.forEach(keyword => {
-      const regex = new RegExp(`\\b${keyword}\\b`, 'g');
-      highlightedCode = highlightedCode.replace(regex,
-        `<span style="color: ${colors.keyword}; font-weight: 600;">${keyword}</span>`);
+    // Triple quotes for Python
+    if (lang === 'python') {
+      highlightedCode = highlightedCode.replace(/(\"\"\"|''')([\s\S]*?)\1/g, (match, quote, content) => {
+        const placeholder = `__STRING_${stringIndex++}__`;
+        stringMap.set(placeholder, `<span style="color: ${colors.string}; font-weight: 500;">${quote}${content}${quote}</span>`);
+        return placeholder;
+      });
+    }
+
+    // Template literals for JS/TS
+    if (lang === 'javascript' || lang === 'typescript') {
+      highlightedCode = highlightedCode.replace(/`([^`]*)`/g, (match, content) => {
+        const placeholder = `__STRING_${stringIndex++}__`;
+        stringMap.set(placeholder, `<span style="color: ${colors.string}; font-weight: 500;">\`${content}\`</span>`);
+        return placeholder;
+      });
+    }
+
+    // Regular strings
+    highlightedCode = highlightedCode.replace(/(['"])((?:\\.|(?!\1)[^\\])*?)\1/g, (match, quote, content) => {
+      const placeholder = `__STRING_${stringIndex++}__`;
+      stringMap.set(placeholder, `<span style="color: ${colors.string}; font-weight: 500;">${quote}${content}${quote}</span>`);
+      return placeholder;
     });
 
-    // Highlight function calls
-    highlightedCode = highlightedCode.replace(/(\w+)(\s*)(\()/g,
-      `<span style="color: ${colors.function}">${'$1'}</span>$2$3`);
+    // Booleans and special values
+    if (lang === 'python') {
+      highlightedCode = highlightedCode.replace(/\b(True|False|None)\b/g,
+        `<span style="color: ${colors.boolean}; font-weight: bold;">$1</span>`);
+    } else if (lang === 'javascript' || lang === 'typescript') {
+      highlightedCode = highlightedCode.replace(/\b(true|false|null|undefined)\b/g,
+        `<span style="color: ${colors.boolean}; font-weight: bold;">$1</span>`);
+    }
 
-    // Highlight operators
-    highlightedCode = highlightedCode.replace(/([+\-*/%=<>!&|]+)/g,
-      `<span style="color: ${colors.operator}">$1</span>`);
+    // Numbers (including decimals, hex, scientific notation)
+    highlightedCode = highlightedCode.replace(/\b(0x[0-9a-fA-F]+|0b[01]+|\d+\.?\d*([eE][+-]?\d+)?)\b/g,
+      `<span style="color: ${colors.number}; font-weight: 600;">$1</span>`);
+
+    // Decorators (Python)
+    if (lang === 'python') {
+      highlightedCode = highlightedCode.replace(/@(\w+)/g,
+        `<span style="color: ${colors.decorator}; font-weight: bold;">@$1</span>`);
+    }
+
+    // Types and classes
+    if (lang === 'typescript' || lang === 'java' || lang === 'csharp' || lang === 'cpp') {
+      highlightedCode = highlightedCode.replace(/\b(string|number|boolean|any|void|unknown|never)\b/g,
+        `<span style="color: ${colors.type}; font-weight: 600;">$1</span>`);
+    }
+
+    // Keywords
+    currentKeywords.forEach(keyword => {
+      const regex = new RegExp(`\\b(${keyword})\\b(?![^&lt;]*&gt;)`, 'g');
+      highlightedCode = highlightedCode.replace(regex,
+        `<span style="color: ${colors.keyword}; font-weight: bold;">$1</span>`);
+    });
+
+    // Built-in functions
+    currentBuiltins.forEach(builtin => {
+      const regex = new RegExp(`\\b(${builtin})\\b(?![^&lt;]*&gt;)`, 'g');
+      highlightedCode = highlightedCode.replace(regex,
+        `<span style="color: ${colors.builtin}; font-weight: 600;">$1</span>`);
+    });
+
+    // Function/method definitions
+    if (lang === 'python') {
+      highlightedCode = highlightedCode.replace(/\b(def|class)\s+(\w+)/g,
+        `<span style="color: ${colors.keyword}; font-weight: bold;">$1</span> <span style="color: ${colors.function}; font-weight: bold;">$2</span>`);
+    } else if (lang === 'javascript' || lang === 'typescript') {
+      highlightedCode = highlightedCode.replace(/\b(function|class)\s+(\w+)/g,
+        `<span style="color: ${colors.keyword}; font-weight: bold;">$1</span> <span style="color: ${colors.function}; font-weight: bold;">$2</span>`);
+    }
+
+    // Function calls
+    highlightedCode = highlightedCode.replace(/\b(\w+)(?=\s*\()/g, (match, name) => {
+      if (currentKeywords.includes(name) || currentBuiltins.includes(name)) {
+        return match;
+      }
+      return `<span style="color: ${colors.function}; font-weight: 600;">${ name}</span>`);
+    });
+
+    // Operators
+    highlightedCode = highlightedCode.replace(/([+\-*/%=&lt;&gt;!&|^~]+|\b(and|or|not|in|is)\b)/g,
+      `<span style="color: ${colors.operator}; font-weight: bold;">$1</span>`);
+
+    // Brackets and punctuation
+    highlightedCode = highlightedCode.replace(/([{}[\]()])/g,
+      `<span style="color: ${colors.bracket}; font-weight: bold;">$1</span>`);
+    highlightedCode = highlightedCode.replace(/([;,.])/g,
+      `<span style="color: ${colors.punctuation};">$1</span>`);
+
+    // Restore strings
+    stringMap.forEach((value, key) => {
+      highlightedCode = highlightedCode.replace(key, value);
+    });
 
     return <span dangerouslySetInnerHTML={{ __html: highlightedCode }} />;
   };
@@ -587,6 +706,7 @@ Format with:
     const lines = text.split('\n');
     let inCodeBlock = false;
     let codeBlockLang = 'python';
+    let lineCounter = 1;
 
     return lines.map((line, i) => {
       // Section headers with emojis - enhanced styling
@@ -639,20 +759,42 @@ Format with:
         }
       }
 
-      // Code inside code blocks - with syntax highlighting
+      // Code inside code blocks - with enhanced terminal-like formatting
       if (inCodeBlock && line.trim()) {
         return (
           <div key={i} style={{
-            fontFamily: 'Monaco, "Cascadia Code", "Fira Code", monospace',
-            fontSize: '13px',
-            lineHeight: '1.8',
-            padding: '4px 16px',
-            background: `${colors.bg}40`,
-            borderLeft: `2px solid ${colors.success}`,
-            marginLeft: '8px',
-            borderRadius: '0 4px 4px 0'
+            fontFamily: '"Fira Code", "Cascadia Code", Monaco, "Courier New", monospace',
+            fontSize: '14px',
+            lineHeight: '1.6',
+            padding: '6px 20px',
+            background: 'rgba(10, 10, 10, 0.9)',
+            borderLeft: `3px solid ${colors.success}`,
+            marginLeft: '12px',
+            borderRadius: '0 4px 4px 0',
+            position: 'relative',
+            overflow: 'auto',
+            boxShadow: 'inset 0 0 10px rgba(0, 255, 0, 0.1)'
           }}>
-            {applySyntaxHighlighting(line, codeBlockLang)}
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start'
+            }}>
+              <span style={{
+                color: '#404040',
+                fontSize: '11px',
+                marginRight: '12px',
+                userSelect: 'none',
+                fontFamily: 'monospace',
+                minWidth: '30px',
+                textAlign: 'right',
+                paddingTop: '2px'
+              }}>
+                {lineCounter++}
+              </span>
+              <div style={{ flex: 1, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                {applySyntaxHighlighting(line, codeBlockLang)}
+              </div>
+            </div>
           </div>
         );
       }
