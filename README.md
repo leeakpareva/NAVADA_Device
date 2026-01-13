@@ -287,7 +287,58 @@ return lines.map((line, i) => {
 
 This ensures the function returns `JSX.Element[]` instead of `(JSX.Element | null)[]`.
 
-**Issue 2: Hydration Mismatch with Browser Extensions**
+**Issue 2: Cross-Origin Request Blocking (CORS) for Local Network Access**
+
+**Error Message:**
+```
+⚠ Blocked cross-origin request from 192.168.0.18 to /_next/* resource
+```
+
+**Solution:**
+Configure proper CORS headers in `next.config.js`:
+```javascript
+const nextConfig = {
+  // ... other config
+
+  // Configure headers for CORS
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*', // In production, replace with specific origins
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, POST, PUT, DELETE, OPTIONS',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'X-Requested-With, Content-Type, Authorization',
+          },
+        ],
+      },
+    ];
+  },
+
+  // Allow connections from any host in development
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.devServer = {
+        ...config.devServer,
+        allowedHosts: 'all',
+      };
+    }
+    return config;
+  },
+};
+```
+
+After making these changes, restart the development server for the configuration to take effect.
+
+**Issue 3: Hydration Mismatch with Browser Extensions**
 
 Browser extensions (like Jetski, React DevTools, etc.) can inject attributes into the HTML element causing hydration mismatches.
 
@@ -307,7 +358,7 @@ Add `suppressHydrationWarning` to the `<html>` and `<body>` elements in `src/app
 </html>
 ```
 
-**Issue 2: "Environment Variable 'OPENAI_API_KEY' references Secret 'openai_api_key', which does not exist"**
+**Issue 4: "Environment Variable 'OPENAI_API_KEY' references Secret 'openai_api_key', which does not exist"**
 
 This error occurs when `vercel.json` contains secret references (`@secret_name`) instead of using environment variables directly.
 
