@@ -5,7 +5,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 // Types
 interface RAVENTerminalProps {
   onClose?: () => void;
-  apiKey?: string;
 }
 
 // Color Palette - Dracula-inspired
@@ -179,7 +178,7 @@ const highlightCode = (code: string, language: string): JSX.Element[] => {
   });
 };
 
-export default function RAVENTerminal({ onClose, apiKey: initialApiKey = '' }: RAVENTerminalProps) {
+export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
   // State
   const [mode, setMode] = useState('generate');
   const [language, setLanguage] = useState('python');
@@ -195,65 +194,14 @@ export default function RAVENTerminal({ onClose, apiKey: initialApiKey = '' }: R
   const [showHelp, setShowHelp] = useState(false);
   const [copied, setCopied] = useState(false);
   const [selectedConcept, setSelectedConcept] = useState('');
-  const [apiKey, setApiKey] = useState(initialApiKey);
-  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
-  const [apiTestResult, setApiTestResult] = useState('');
 
   // Refs
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Test API key
-  const testApiKey = useCallback(async () => {
-    if (!apiKey) {
-      setApiTestResult('❌ No API key provided');
-      return;
-    }
-
-    setApiTestResult('🔄 Testing API key...');
-
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-3-sonnet-20240229',
-          max_tokens: 10,
-          messages: [{
-            role: 'user',
-            content: 'Say "hi"'
-          }]
-        })
-      });
-
-      if (response.ok) {
-        setApiTestResult('✅ API key is valid!');
-      } else {
-        const error = await response.text();
-        try {
-          const errorData = JSON.parse(error);
-          setApiTestResult(`❌ Invalid: ${errorData.error?.message || 'Unknown error'}`);
-        } catch {
-          setApiTestResult(`❌ Invalid API key`);
-        }
-      }
-    } catch (error: any) {
-      setApiTestResult(`❌ Connection error: ${error.message}`);
-    }
-  }, [apiKey]);
 
   // Process with AI
   const processWithAI = useCallback(async (inputText: string, aiMode: string, lang: string, targetLang?: string) => {
     if (!inputText.trim()) {
       setOutput('');
-      return;
-    }
-
-    if (!apiKey) {
-      setOutput('⚠️ Please set an API key to use AI features\n\nClick the "API Key" button in the header to add your Anthropic API key.');
       return;
     }
 
@@ -324,53 +272,31 @@ Format with:
     };
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/api/ai/python', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-          model: 'claude-3-sonnet-20240229',
-          max_tokens: 4000,
-          messages: [{
-            role: 'user',
-            content: prompts[aiMode] || prompts.generate
-          }]
+          message: prompts[aiMode] || prompts.generate,
+          history: []
         })
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        try {
-          const errorData = JSON.parse(errorText);
-          if (errorData.error?.message?.includes('credit')) {
-            setOutput(`❌ API Error: Insufficient credits\n\nYour API key is valid but you don't have enough credits.\nPlease add credits at console.anthropic.com`);
-          } else if (errorData.error?.message?.includes('authentication')) {
-            setOutput(`❌ API Error: Invalid API key\n\nPlease check your API key in the header.\nGet a valid key at console.anthropic.com`);
-          } else {
-            setOutput(`❌ API Error: ${errorData.error?.message || 'Unknown error'}\n\n${errorData.error?.type || ''}`);
-          }
-        } catch {
-          setOutput(`❌ API Error: ${response.status} ${response.statusText}\n\nPlease check your API key and try again.`);
-        }
+        const errorData = await response.json();
+        setOutput(`❌ Error: ${errorData.message || 'Unknown error occurred'}`);
         return;
       }
 
       const data = await response.json();
-      const content = data.content?.[0]?.text || 'No response received';
-      setOutput(content);
+      setOutput(data.message || 'No response received');
     } catch (error: any) {
-      if (error.message.includes('fetch')) {
-        setOutput(`❌ Connection Error: Unable to reach Anthropic API\n\nPlease check your internet connection and try again.`);
-      } else {
-        setOutput(`❌ Error: ${error.message}\n\nIf this persists, please check your API key.`);
-      }
+      setOutput(`❌ Connection Error: ${error.message}\n\nPlease check your internet connection and try again.`);
     } finally {
       setIsProcessing(false);
     }
-  }, [apiKey]);
+  }, []);
 
   // Handle input changes with debounce
   const handleInputChange = (value: string, isCode: boolean) => {
@@ -583,23 +509,6 @@ Format with:
             </>
           )}
 
-          {/* API Key button */}
-          <button
-            onClick={() => setShowApiKeyInput(!showApiKeyInput)}
-            style={{
-              background: apiKey ? colors.success : colors.error,
-              opacity: apiKey ? 1 : 0.8,
-              border: `1px solid ${colors.border}`,
-              borderRadius: '6px',
-              padding: '6px 12px',
-              color: colors.bg,
-              fontSize: '12px',
-              cursor: 'pointer',
-              fontWeight: '600'
-            }}
-          >
-            {apiKey ? '🔑 API Set' : '⚠️ Add API Key'}
-          </button>
 
           {/* Dictionary button */}
           <button
@@ -671,100 +580,6 @@ Format with:
         </div>
       </div>
 
-      {/* API Key Input Modal */}
-      {showApiKeyInput && (
-        <div style={{
-          position: 'absolute',
-          top: '60px',
-          right: '20px',
-          background: colors.panelBg,
-          border: `1px solid ${colors.border}`,
-          borderRadius: '8px',
-          padding: '20px',
-          width: '400px',
-          zIndex: 101,
-          boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
-        }}>
-          <h3 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '12px', color: colors.primary }}>
-            Configure Anthropic API Key
-          </h3>
-          <input
-            type="password"
-            placeholder="sk-ant-api..."
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '10px',
-              background: colors.bg,
-              border: `1px solid ${colors.border}`,
-              borderRadius: '6px',
-              color: colors.primary,
-              fontSize: '12px',
-              marginBottom: '12px'
-            }}
-          />
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
-            <button
-              onClick={testApiKey}
-              style={{
-                flex: 1,
-                padding: '8px',
-                background: colors.border,
-                border: 'none',
-                borderRadius: '6px',
-                color: colors.primary,
-                fontSize: '12px',
-                cursor: 'pointer'
-              }}
-            >
-              Test API Key
-            </button>
-            <button
-              onClick={() => {
-                setShowApiKeyInput(false);
-                setApiTestResult('');
-              }}
-              style={{
-                flex: 1,
-                padding: '8px',
-                background: colors.success,
-                border: 'none',
-                borderRadius: '6px',
-                color: colors.bg,
-                fontSize: '12px',
-                cursor: 'pointer',
-                fontWeight: '600'
-              }}
-            >
-              Save & Close
-            </button>
-          </div>
-          {apiTestResult && (
-            <div style={{
-              padding: '8px',
-              background: colors.bg,
-              borderRadius: '6px',
-              fontSize: '11px',
-              color: apiTestResult.includes('✅') ? colors.success :
-                     apiTestResult.includes('❌') ? colors.error : colors.warning
-            }}>
-              {apiTestResult}
-            </div>
-          )}
-          <p style={{ fontSize: '10px', color: colors.muted, marginTop: '12px' }}>
-            Get your API key at{' '}
-            <a
-              href="https://console.anthropic.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: colors.info, textDecoration: 'underline' }}
-            >
-              console.anthropic.com
-            </a>
-          </p>
-        </div>
-      )}
 
       {/* Dictionary Dropdown */}
       {showDictionary && (

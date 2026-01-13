@@ -114,7 +114,6 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
   const [ravenHover, setRavenHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
-  const [apiKey, setApiKey] = useState('');
   const [isAnimating, setIsAnimating] = useState(!initialState.loaded);
 
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -214,7 +213,6 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
     return (
       <RAVENTerminal
         onClose={() => setShowTerminal(false)}
-        apiKey={apiKey}
       />
     );
   }
@@ -280,26 +278,6 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
                         A learning tool designed to bridge the gap between natural language and programming code
                       </p>
 
-                      <div className="mb-6 w-full max-w-md">
-                        <input
-                          type="password"
-                          placeholder="Enter Anthropic API Key (optional)"
-                          value={apiKey}
-                          onChange={(e) => setApiKey(e.target.value)}
-                          className="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-green-400 placeholder-gray-500 focus:outline-none focus:border-green-400"
-                        />
-                        <p className="text-xs text-gray-500 mt-2">
-                          Get your API key at{' '}
-                          <a
-                            href="https://console.anthropic.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-green-400 hover:underline"
-                          >
-                            console.anthropic.com
-                          </a>
-                        </p>
-                      </div>
 
                       <button
                         onClick={handleEnter}
