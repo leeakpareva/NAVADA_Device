@@ -24,33 +24,71 @@ export default function AgentPage() {
   }, []);
 
   const terminalLines = [
-    { text: '> Initializing RAVEN Terminal...', delay: 100 },
-    { text: '> Real-time AI Visual English Notation App', delay: 200 },
-    { text: '> Powered by Claude Sonnet 3.5', delay: 150 },
-    { text: '', delay: 50 },
-    { text: '> Loading system modules...', delay: 300 },
-    { text: '  [OK] Core system initialized', delay: 150 },
-    { text: '  [OK] Language processing engine loaded', delay: 200 },
-    { text: '  [OK] Neural network connected', delay: 150 },
-    { text: '', delay: 50 },
-    { text: '> Downloading RAVEN terminal code...', delay: 300 },
-    { text: '  Fetching natural_language_parser.js... [####------] 40%', delay: 200 },
-    { text: '  Fetching natural_language_parser.js... [########--] 80%', delay: 200 },
-    { text: '  Fetching natural_language_parser.js... [##########] 100% ✓', delay: 150 },
-    { text: '  Fetching code_generator.py... [####------] 40%', delay: 200 },
-    { text: '  Fetching code_generator.py... [########--] 80%', delay: 200 },
-    { text: '  Fetching code_generator.py... [##########] 100% ✓', delay: 150 },
-    { text: '  Fetching ai_bridge.wasm... [####------] 40%', delay: 200 },
-    { text: '  Fetching ai_bridge.wasm... [########--] 80%', delay: 200 },
-    { text: '  Fetching ai_bridge.wasm... [##########] 100% ✓', delay: 150 },
-    { text: '', delay: 50 },
-    { text: '> Compiling RAVEN modules...', delay: 300 },
-    { text: '  Building learning interface... Done', delay: 250 },
-    { text: '  Bridging natural language to code... Done', delay: 250 },
-    { text: '  Establishing Claude connection... Done', delay: 250 },
-    { text: '', delay: 100 },
-    { text: '> System ready.', delay: 200 },
-    { text: '> Launching RAVEN Terminal...', delay: 300 },
+    { text: '> Initializing RAVEN Terminal...', delay: 800 },
+    { text: '> Real-time AI Visual English Notation', delay: 600 },
+    { text: '> Powered by Claude Sonnet 4.5', delay: 500 },
+    { text: '', delay: 300 },
+    { text: '> Checking system requirements...', delay: 800 },
+    { text: '  [OK] Memory: 8GB available', delay: 400 },
+    { text: '  [OK] Storage: 128GB available', delay: 350 },
+    { text: '  [OK] Network: Connected', delay: 400 },
+    { text: '  [OK] Permissions: Granted', delay: 350 },
+    { text: '', delay: 300 },
+    { text: '> Loading system modules...', delay: 900 },
+    { text: '  [OK] Core system initialized', delay: 450 },
+    { text: '  [OK] Language processing engine loaded', delay: 500 },
+    { text: '  [OK] Neural network connected', delay: 450 },
+    { text: '  [OK] Security protocols enabled', delay: 400 },
+    { text: '', delay: 400 },
+    { text: '> Downloading RAVEN terminal components...', delay: 1000 },
+    { text: '  Fetching natural_language_parser.js... [##--------] 20%', delay: 600 },
+    { text: '  Fetching natural_language_parser.js... [####------] 40%', delay: 500 },
+    { text: '  Fetching natural_language_parser.js... [######----] 60%', delay: 450 },
+    { text: '  Fetching natural_language_parser.js... [########--] 80%', delay: 400 },
+    { text: '  Fetching natural_language_parser.js... [##########] 100% ✓', delay: 300 },
+    { text: '  Fetching code_generator.py... [##--------] 20%', delay: 550 },
+    { text: '  Fetching code_generator.py... [####------] 40%', delay: 450 },
+    { text: '  Fetching code_generator.py... [######----] 60%', delay: 400 },
+    { text: '  Fetching code_generator.py... [########--] 80%', delay: 350 },
+    { text: '  Fetching code_generator.py... [##########] 100% ✓', delay: 300 },
+    { text: '  Fetching ai_bridge.wasm... [##--------] 20%', delay: 600 },
+    { text: '  Fetching ai_bridge.wasm... [####------] 40%', delay: 500 },
+    { text: '  Fetching ai_bridge.wasm... [######----] 60%', delay: 450 },
+    { text: '  Fetching ai_bridge.wasm... [########--] 80%', delay: 400 },
+    { text: '  Fetching ai_bridge.wasm... [##########] 100% ✓', delay: 300 },
+    { text: '  Fetching sentiment_analyzer.dll... [##--------] 20%', delay: 550 },
+    { text: '  Fetching sentiment_analyzer.dll... [####------] 40%', delay: 450 },
+    { text: '  Fetching sentiment_analyzer.dll... [######----] 60%', delay: 400 },
+    { text: '  Fetching sentiment_analyzer.dll... [########--] 80%', delay: 350 },
+    { text: '  Fetching sentiment_analyzer.dll... [##########] 100% ✓', delay: 300 },
+    { text: '  Fetching visual_recognition.so... [##--------] 20%', delay: 600 },
+    { text: '  Fetching visual_recognition.so... [####------] 40%', delay: 500 },
+    { text: '  Fetching visual_recognition.so... [######----] 60%', delay: 450 },
+    { text: '  Fetching visual_recognition.so... [########--] 80%', delay: 400 },
+    { text: '  Fetching visual_recognition.so... [##########] 100% ✓', delay: 350 },
+    { text: '', delay: 500 },
+    { text: '> Verifying downloaded components...', delay: 800 },
+    { text: '  Checking integrity of natural_language_parser.js... ✓', delay: 400 },
+    { text: '  Checking integrity of code_generator.py... ✓', delay: 350 },
+    { text: '  Checking integrity of ai_bridge.wasm... ✓', delay: 400 },
+    { text: '  Checking integrity of sentiment_analyzer.dll... ✓', delay: 350 },
+    { text: '  Checking integrity of visual_recognition.so... ✓', delay: 400 },
+    { text: '', delay: 400 },
+    { text: '> Compiling RAVEN modules...', delay: 900 },
+    { text: '  Building learning interface... Done', delay: 600 },
+    { text: '  Bridging natural language to code... Done', delay: 550 },
+    { text: '  Establishing Claude connection... Done', delay: 600 },
+    { text: '  Initializing AI models... Done', delay: 550 },
+    { text: '  Loading user preferences... Done', delay: 500 },
+    { text: '', delay: 500 },
+    { text: '> Running final system checks...', delay: 800 },
+    { text: '  Testing natural language processing... ✓', delay: 450 },
+    { text: '  Testing code generation... ✓', delay: 400 },
+    { text: '  Testing AI bridge connectivity... ✓', delay: 450 },
+    { text: '  Testing visual recognition... ✓', delay: 400 },
+    { text: '', delay: 600 },
+    { text: '> System ready.', delay: 500 },
+    { text: '> Launching RAVEN Terminal...', delay: 800 },
   ];
 
   const ravenAscii = `
@@ -82,8 +120,8 @@ export default function AgentPage() {
           if (terminalRef.current) {
             terminalRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
           }
-        }, 100);
-      }, 500);
+        }, 200);
+      }, 1200);
     } else if (!showEnterButton) {
       timeoutId = setTimeout(() => {
         setShowEnterButton(true);
@@ -93,8 +131,8 @@ export default function AgentPage() {
           if (terminalRef.current) {
             terminalRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
           }
-        }, 100);
-      }, 800);
+        }, 200);
+      }, 1500);
     }
 
     return () => clearTimeout(timeoutId);
@@ -192,7 +230,7 @@ export default function AgentPage() {
                 {showEnterButton && (
                   <div className="mt-8 flex flex-col items-center animate-fadeIn">
                     <p className="text-gray-400 mb-4 animate-pulse-slow">
-                      Bridging natural language and programming code
+                      A learning tool designed to bridge the gap between natural language and programming code
                     </p>
                     <button
                       onClick={handleEnter}
