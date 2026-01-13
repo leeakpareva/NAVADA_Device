@@ -73,7 +73,7 @@ export default function Home() {
       case 'learn':
         return <LearnPage />;
       case 'agent':
-        return <AgentPage />;
+        return <AgentPage onNavigate={handleNavigate} />;
       case 'raven':
         return <RavenPage />;
       case 'signup':
@@ -96,8 +96,8 @@ export default function Home() {
       {showBoot && <BootLoader onComplete={handleBootComplete} />}
       {!showCover && !showBoot && (
         <div className={`transition-opacity duration-500 ${bootComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          <Header onNavigate={handleNavigate} />
-          <div className="pt-16 relative">
+          {currentPage !== 'agent' && <Header onNavigate={handleNavigate} />}
+          <div className={currentPage === 'agent' ? '' : 'pt-16 relative'}>
             {/* Page Loading Spinner */}
             {isPageLoading && (
               <div className="fixed inset-0 z-40 bg-black bg-opacity-50 flex items-center justify-center">

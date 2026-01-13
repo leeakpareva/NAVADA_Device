@@ -23,9 +23,47 @@ A modern, intelligent operating system interface optimized for 64x96mm micro-dis
 | **Terminal** | 💻 | Advanced terminal app with multiple commands and system info |
 | **YouTube** | 📺 | Full-featured YouTube video player with URL support |
 | **Leslie (AI)** | 🤖 | OpenAI-powered AI assistant with chat interface |
-| **RAVEN (Python AI)** | 🐍 | Anthropic Claude-powered Python development assistant |
+| **RAVEN Terminal** | 🐍 | Integrated AI-powered terminal with Anthropic Claude API |
 | **DeepSeek AI** | 🧠 | DeepSeek-powered AI agent for advanced reasoning |
 | **Screensaver** | 🖼️ | Dynamic image gallery and screensaver system |
+
+## 🤖 RAVEN Terminal Features
+
+The RAVEN Terminal is a fully integrated AI-powered command-line interface that combines traditional terminal commands with advanced AI capabilities:
+
+### Terminal Commands
+- `help` - Display available commands
+- `ls` - List directory contents
+- `cd` - Change directory
+- `pwd` - Print working directory
+- `cat` - Display file contents
+- `clear` - Clear terminal screen
+- `echo` - Print messages
+- `env` - Display environment variables
+- `export` - Set environment variables
+- `alias` - Create command shortcuts
+- `history` - View command history
+- `theme` - Change terminal theme
+
+### AI Commands (Powered by Anthropic Claude)
+- `raven generate "description"` - Convert natural language to code
+- `raven explain [file]` - Get code explanations
+- `raven debug [code]` - Find and fix errors
+- `raven optimize [code]` - Improve performance
+- `raven convert [code]` - Translate between languages
+- `raven test [code]` - Generate comprehensive tests
+
+### Configuration Commands
+- `lang [language]` - Set programming language (javascript, python, typescript, etc.)
+- `setkey [api_key]` - Configure Anthropic API key for AI features
+
+### Features
+- Real-time syntax highlighting
+- Command history with arrow key navigation
+- Tab autocomplete for commands
+- Virtual file system navigation
+- Customizable themes
+- Integrated with RAVEN loading sequence
 
 ## 🌐 Web Pages
 
@@ -33,6 +71,7 @@ A modern, intelligent operating system interface optimized for 64x96mm micro-dis
 - **Designs** - Auto-loading image gallery from `/public/Designs/` folder
 - **Learn** - PDF document center with auto-detection from `/public/Learn/` folder
 - **Signup** - Email capture system with SQLite database storage
+- **Agent** - RAVEN Terminal Agent with interactive loading sequence
 
 ## 🛠️ Getting Started
 
