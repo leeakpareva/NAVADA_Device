@@ -476,7 +476,7 @@ Format with:
 
       // Regular text
       return <div key={i} style={{ color: colors.gray, lineHeight: '1.6' }}>{line}</div>;
-    });
+    }).filter((element): element is JSX.Element => element !== null);
   };
 
   return (

@@ -268,7 +268,26 @@ raven-os/
 
 #### ⚠️ Common Deployment Issues & Fixes
 
-**Issue 1: Hydration Mismatch with Browser Extensions**
+**Issue 1: TypeScript Error in RAVENTerminal.tsx**
+
+**Error Message:**
+```
+Type error: Type '(Element | null)[]' is not assignable to type 'Element[]'.
+Type 'Element | null' is not assignable to type 'Element'.
+Type 'null' is not assignable to type 'ReactElement<any, any>'.
+```
+
+**Solution:**
+In `src/components/RAVENTerminal.tsx`, add a filter to remove null values from the map result:
+```tsx
+return lines.map((line, i) => {
+  // ... existing mapping logic that may return null
+}).filter((element): element is JSX.Element => element !== null);
+```
+
+This ensures the function returns `JSX.Element[]` instead of `(JSX.Element | null)[]`.
+
+**Issue 2: Hydration Mismatch with Browser Extensions**
 
 Browser extensions (like Jetski, React DevTools, etc.) can inject attributes into the HTML element causing hydration mismatches.
 
