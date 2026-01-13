@@ -13,16 +13,6 @@ const RAVENTerminal = dynamic(() => import('../RAVENTerminal'), {
   ),
 });
 
-// V2 Terminal with streaming and WebAssembly Python
-const RAVENTerminalV2 = dynamic(() => import('../RAVENTerminalV2'), {
-  ssr: false,
-  loading: () => (
-    <div className="h-screen bg-black flex items-center justify-center">
-      <div className="text-green-400 animate-pulse">Loading Terminal V2...</div>
-    </div>
-  ),
-});
-
 interface AgentPageProps {
   onNavigate?: (page: string) => void;
 }
@@ -210,10 +200,10 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
     );
   }
 
-  // Show terminal if launched (V2 with streaming by default)
+  // Show terminal if launched
   if (showTerminal) {
     return (
-      <RAVENTerminalV2
+      <RAVENTerminal
         onClose={() => setShowTerminal(false)}
       />
     );
