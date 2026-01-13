@@ -7,16 +7,22 @@ interface HeaderProps {
   onNavigate: (page: string) => void;
 }
 
+interface MenuItem {
+  id: string;
+  icon: string;
+  desktopOnly?: boolean;
+}
+
 export default function Header({ onNavigate }: HeaderProps) {
   const [activeMenu, setActiveMenu] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { id: 'about', icon: '?' },
     { id: 'designs', icon: '◈' },
     { id: 'learn', icon: '⊞' },
-    { id: 'agent', icon: '⬡' },
+    { id: 'agent', icon: '⬡', desktopOnly: true },
     { id: 'raven', icon: '◯' },
     { id: 'signup', icon: '+' }
   ];
@@ -107,6 +113,8 @@ export default function Header({ onNavigate }: HeaderProps) {
                 activeMenu === item.id
                   ? 'bg-white/20'
                   : ''
+              } ${
+                item.desktopOnly ? 'hidden md:flex' : 'flex'
               }`}
               title={item.id.charAt(0).toUpperCase() + item.id.slice(1)}
             >

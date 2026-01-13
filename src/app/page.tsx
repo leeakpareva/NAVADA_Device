@@ -42,6 +42,12 @@ export default function Home() {
   const handleNavigate = (page: string) => {
     if (page === currentPage) return; // Don't reload same page
 
+    // Check if trying to navigate to Agent on mobile
+    if (page === 'agent' && window.innerWidth < 768) {
+      alert('The RAVEN Terminal Agent is only available on desktop devices.');
+      return;
+    }
+
     // Start page transition
     setPageVisible(false);
     setIsPageLoading(true);

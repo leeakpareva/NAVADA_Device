@@ -8,7 +8,20 @@ export default function AgentPage() {
   const [showRaven, setShowRaven] = useState(false);
   const [showEnterButton, setShowEnterButton] = useState(false);
   const [ravenHover, setRavenHover] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
+
+  // Check if mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const terminalLines = [
     { text: '> Initializing RAVEN Terminal...', delay: 100 },
@@ -88,7 +101,7 @@ export default function AgentPage() {
   }, [currentLine, showRaven, showEnterButton]);
 
   const handleEnter = () => {
-    window.open('https://claude.ai/public/artifacts/89503d48-9fc4-479f-b650-88ff049e8186', '_blank');
+    window.open('https://claude.ai/public/artifacts/a48806e0-7ba2-468c-9016-d9137145f407', '_blank');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -96,6 +109,24 @@ export default function AgentPage() {
       handleEnter();
     }
   };
+
+  // Mobile fallback
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <div className="text-6xl mb-6">🖥️</div>
+          <h1 className="text-2xl font-bold mb-4">Desktop Only Feature</h1>
+          <p className="text-gray-400 mb-6">
+            The RAVEN Terminal Agent is only available on desktop devices for optimal experience.
+          </p>
+          <p className="text-gray-500 text-sm">
+            Please access this page from a desktop or laptop computer.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
