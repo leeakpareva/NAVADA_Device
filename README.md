@@ -229,7 +229,27 @@ raven-os/
 
 #### ⚠️ Common Deployment Issues & Fixes
 
-**Issue: "Environment Variable 'OPENAI_API_KEY' references Secret 'openai_api_key', which does not exist"**
+**Issue 1: Hydration Mismatch with Browser Extensions**
+
+Browser extensions (like Jetski, React DevTools, etc.) can inject attributes into the HTML element causing hydration mismatches.
+
+**Error Message:**
+```
+A tree hydrated but some attributes of the server rendered HTML didn't match the client properties
+- data-jetski-tab-id="..." attribute added by browser extension
+```
+
+**Solution:**
+Add `suppressHydrationWarning` to the `<html>` and `<body>` elements in `src/app/layout.tsx`:
+```tsx
+<html lang="en" suppressHydrationWarning>
+  <body className="..." suppressHydrationWarning>
+    {children}
+  </body>
+</html>
+```
+
+**Issue 2: "Environment Variable 'OPENAI_API_KEY' references Secret 'openai_api_key', which does not exist"**
 
 This error occurs when `vercel.json` contains secret references (`@secret_name`) instead of using environment variables directly.
 

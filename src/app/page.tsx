@@ -9,6 +9,7 @@ import Header from '@/components/layout/Header';
 import AboutPage from '@/components/pages/AboutPage';
 import DesignsPage from '@/components/pages/DesignsPage';
 import LearnPage from '@/components/pages/LearnPage';
+import AgentPage from '@/components/pages/AgentPage';
 import RavenPage from '@/components/pages/RavenPage';
 import SignupPage from '@/components/pages/SignupPage';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
@@ -65,6 +66,8 @@ export default function Home() {
         return <DesignsPage />;
       case 'learn':
         return <LearnPage />;
+      case 'agent':
+        return <AgentPage />;
       case 'raven':
         return <RavenPage />;
       case 'signup':

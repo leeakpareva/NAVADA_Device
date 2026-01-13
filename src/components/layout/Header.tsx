@@ -16,6 +16,7 @@ export default function Header({ onNavigate }: HeaderProps) {
     { id: 'about', icon: '?' },
     { id: 'designs', icon: '◈' },
     { id: 'learn', icon: '⊞' },
+    { id: 'agent', icon: '⬡' },
     { id: 'raven', icon: '◯' },
     { id: 'signup', icon: '+' }
   ];
