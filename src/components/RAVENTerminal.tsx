@@ -78,12 +78,6 @@ const Icons = {
       <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
     </svg>
   ),
-  test: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="20 6 9 17 4 12" />
-      <circle cx="12" cy="12" r="10" />
-    </svg>
-  ),
   // UI icons
   copy: (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -164,7 +158,6 @@ const aiModes = [
   { id: 'debug', name: 'Debug', icon: Icons.debug, description: 'Find and fix errors' },
   { id: 'optimize', name: 'Optimize', icon: Icons.optimize, description: 'Improve performance' },
   { id: 'convert', name: 'Convert', icon: Icons.convert, description: 'Translate languages' },
-  { id: 'test', name: 'Test', icon: Icons.test, description: 'Generate tests' },
 ];
 
 // Supported Languages
@@ -439,18 +432,7 @@ Format with:
 🔄 CONVERSION - From ${lang} to ${targetLang}
 ✨ CONVERTED CODE - The ${targetLang} version
 ⚡ KEY DIFFERENCES - Language-specific changes
-🌍 LANGUAGE ANALOGY - Comparison between languages`,
-
-      test: `Analyze edge cases and validation for this ${lang} code:
-${inputText}
-
-Format with:
-🔬 VALIDATION ANALYSIS - Input validation and error handling review
-✅ HAPPY PATH - Expected behavior with valid inputs
-⚠️ EDGE CASES - Boundary conditions and special scenarios
-❌ FAILURE MODES - How the code handles errors and invalid inputs
-🛡️ DEFENSIVE PROGRAMMING - Suggestions for more robust code
-💡 RECOMMENDED VALIDATIONS - Additional checks to implement`
+🌍 LANGUAGE ANALOGY - Comparison between languages`
     };
 
     try {
