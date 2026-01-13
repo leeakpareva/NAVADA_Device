@@ -719,7 +719,7 @@ Format with:
       if (currentKeywords.includes(name) || currentBuiltins.includes(name)) {
         return match;
       }
-      return `<span style="color: ${colors.function}; font-weight: 600;">${ name}</span>`);
+      return `<span style="color: ${colors.function}; font-weight: 600;">${name}</span>`;
     });
 
     // Operators
