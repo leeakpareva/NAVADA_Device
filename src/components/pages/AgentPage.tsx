@@ -97,17 +97,25 @@ const RAVEN_ASCII = `
  TERMINAL v1.0.0 - Real-time AI Visual English Notation`;
 
 export default function AgentPage({ onNavigate }: AgentPageProps) {
-  // Simple state initialization
-  const [currentLine, setCurrentLine] = useState(0);
-  const [showRaven, setShowRaven] = useState(false);
-  const [showEnterButton, setShowEnterButton] = useState(false);
+  // Check if already loaded from session storage
+  const [isLoaded] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('raven-terminal-loaded') === 'true';
+    }
+    return false;
+  });
+
+  // Initialize states based on loaded status
+  const [currentLine, setCurrentLine] = useState(isLoaded ? TERMINAL_LINES.length : 0);
+  const [showRaven, setShowRaven] = useState(isLoaded);
+  const [showEnterButton, setShowEnterButton] = useState(isLoaded);
   const [ravenHover, setRavenHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(true);
 
   const terminalRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const animationStarted = useRef(false);
 
   // Check if mobile device
   useEffect(() => {
@@ -120,49 +128,41 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Animation sequence
+  // Animation sequence - run only once if not loaded
   useEffect(() => {
-    // Simple check - only animate if needed
-    if (!isAnimating) return;
+    // Skip if already loaded or animation already started
+    if (isLoaded || animationStarted.current) return;
 
-    const runAnimation = () => {
-      if (currentLine < TERMINAL_LINES.length) {
+    animationStarted.current = true;
+
+    let lineIndex = 0;
+
+    const animateNextLine = () => {
+      if (lineIndex < TERMINAL_LINES.length) {
         animationTimeoutRef.current = setTimeout(() => {
-          setCurrentLine(prev => {
-            const next = prev + 1;
-            if (terminalRef.current) {
-              terminalRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }
-            return next;
-          });
-        }, TERMINAL_LINES[currentLine].delay);
+          setCurrentLine(lineIndex + 1);
+          if (terminalRef.current) {
+            terminalRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          }
+          lineIndex++;
+          animateNextLine();
+        }, TERMINAL_LINES[lineIndex].delay);
       } else if (!showRaven) {
         animationTimeoutRef.current = setTimeout(() => {
           setShowRaven(true);
           if (terminalRef.current) {
-            setTimeout(() => {
-              terminalRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }, 200);
+            terminalRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
           }
-        }, 1200);
-      } else if (!showEnterButton) {
-        animationTimeoutRef.current = setTimeout(() => {
-          setShowEnterButton(true);
-          setIsAnimating(false);
-          // Save state to session storage only if not already saved
-          if (sessionStorage.getItem('raven-terminal-loaded') !== 'true') {
+          // Continue to show button
+          animationTimeoutRef.current = setTimeout(() => {
+            setShowEnterButton(true);
             sessionStorage.setItem('raven-terminal-loaded', 'true');
-          }
-          if (terminalRef.current) {
-            setTimeout(() => {
-              terminalRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }, 200);
-          }
-        }, 1500);
+          }, 1500);
+        }, 1200);
       }
     };
 
-    runAnimation();
+    animateNextLine();
 
     // Cleanup
     return () => {
@@ -170,7 +170,7 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
         clearTimeout(animationTimeoutRef.current);
       }
     };
-  }, [currentLine, showRaven, showEnterButton, isAnimating]);
+  }, []); // Empty dependency array - run only once
 
   const handleEnter = useCallback(() => {
     setShowTerminal(true);
@@ -238,7 +238,7 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
                     {line.text}
                   </div>
                 ))}
-                {isAnimating && currentLine < TERMINAL_LINES.length && (
+                {!isLoaded && currentLine < TERMINAL_LINES.length && (
                   <span className="inline-block w-2 h-4 bg-green-400 animate-pulse"></span>
                 )}
               </div>
@@ -286,7 +286,7 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
             </div>
           </div>
 
-          {isAnimating && currentLine > 10 && (
+          {!isLoaded && currentLine > 10 && (
             <div className="fixed bottom-4 right-4 animate-bounce">
               <div className="bg-green-600 bg-opacity-20 border border-green-400 rounded-full p-2 backdrop-blur-sm">
                 <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
