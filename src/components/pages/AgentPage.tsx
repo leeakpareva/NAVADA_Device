@@ -97,27 +97,48 @@ const RAVEN_ASCII = `
  TERMINAL v1.0.0 - Real-time AI Visual English Notation`;
 
 export default function AgentPage({ onNavigate }: AgentPageProps) {
-  // Initialize state based on session storage
-  const getInitialState = useCallback(() => {
+  // Stable initial state function - prevents re-renders
+  const [hasInitialized, setHasInitialized] = useState(false);
+
+  // Initialize state based on session storage - run only once
+  const getInitialState = () => {
     if (typeof window === 'undefined') {
       return { loaded: false, line: 0 };
     }
     const loaded = sessionStorage.getItem('raven-terminal-loaded') === 'true';
     return { loaded, line: loaded ? TERMINAL_LINES.length : 0 };
-  }, []);
+  };
 
-  const initialState = useMemo(() => getInitialState(), [getInitialState]);
-
-  const [currentLine, setCurrentLine] = useState(initialState.line);
-  const [showRaven, setShowRaven] = useState(initialState.loaded);
-  const [showEnterButton, setShowEnterButton] = useState(initialState.loaded);
+  // Initialize states with lazy initialization to prevent re-renders
+  const [currentLine, setCurrentLine] = useState(() => getInitialState().line);
+  const [showRaven, setShowRaven] = useState(() => getInitialState().loaded);
+  const [showEnterButton, setShowEnterButton] = useState(() => getInitialState().loaded);
   const [ravenHover, setRavenHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(!initialState.loaded);
+  const [isAnimating, setIsAnimating] = useState(() => !getInitialState().loaded);
 
   const terminalRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isInitialMount = useRef(true);
+
+  // One-time initialization effect to prevent re-renders
+  useEffect(() => {
+    if (isInitialMount.current && !hasInitialized && typeof window !== 'undefined') {
+      const initialState = getInitialState();
+
+      // Only update state if it differs from current state
+      if (initialState.loaded && currentLine !== initialState.line) {
+        setCurrentLine(initialState.line);
+        setShowRaven(initialState.loaded);
+        setShowEnterButton(initialState.loaded);
+        setIsAnimating(false);
+      }
+
+      setHasInitialized(true);
+      isInitialMount.current = false;
+    }
+  }, [hasInitialized, currentLine]);
 
   // Check if mobile device
   useEffect(() => {
@@ -132,8 +153,13 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
 
   // Animation sequence
   useEffect(() => {
-    // Don't animate if already completed
-    if (!isAnimating) return;
+    // Don't animate if already completed or if component was pre-loaded
+    if (!isAnimating || !hasInitialized) return;
+
+    // Additional safeguard - if session storage shows loaded, don't animate
+    if (typeof window !== 'undefined' && sessionStorage.getItem('raven-terminal-loaded') === 'true') {
+      return;
+    }
 
     const runAnimation = () => {
       if (currentLine < TERMINAL_LINES.length) {
@@ -159,8 +185,10 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
         animationTimeoutRef.current = setTimeout(() => {
           setShowEnterButton(true);
           setIsAnimating(false);
-          // Save state to session storage
-          sessionStorage.setItem('raven-terminal-loaded', 'true');
+          // Save state to session storage only if not already saved
+          if (sessionStorage.getItem('raven-terminal-loaded') !== 'true') {
+            sessionStorage.setItem('raven-terminal-loaded', 'true');
+          }
           if (terminalRef.current) {
             setTimeout(() => {
               terminalRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -178,7 +206,7 @@ export default function AgentPage({ onNavigate }: AgentPageProps) {
         clearTimeout(animationTimeoutRef.current);
       }
     };
-  }, [currentLine, showRaven, showEnterButton, isAnimating]);
+  }, [currentLine, showRaven, showEnterButton, isAnimating, hasInitialized]);
 
   const handleEnter = useCallback(() => {
     setShowTerminal(true);
