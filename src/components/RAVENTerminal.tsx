@@ -198,6 +198,15 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
   // Refs
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Cleanup effect for debounce timeout
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
+
   // Process with AI
   const processWithAI = useCallback(async (inputText: string, aiMode: string, lang: string, targetLang?: string) => {
     if (!inputText.trim()) {
@@ -206,7 +215,7 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
     }
 
     setIsProcessing(true);
-    setOutput('🤖 Processing your request...');
+    setOutput(`🧠 ${aiMode.charAt(0).toUpperCase() + aiMode.slice(1)}ing with RAVEN AI...`);
 
     const prompts: Record<string, string> = {
       generate: `You are RAVEN. Generate ${lang} code for: "${inputText}"
@@ -298,23 +307,32 @@ Format with:
     }
   }, []);
 
-  // Handle input changes with debounce
-  const handleInputChange = (value: string, isCode: boolean) => {
+  // Enhanced input handling with better debouncing
+  const handleInputChange = useCallback((value: string, isCode: boolean) => {
     if (isCode) {
       setCodeInput(value);
     } else {
       setEnglishInput(value);
     }
 
-    // Debounce AI processing
+    // Clear previous timeout
     if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    // Show typing indicator immediately
+    if (value.trim() && !isProcessing) {
+      setOutput('✨ Analyzing your input...');
+    }
+
+    // Optimized debounce - shorter for better UX
     debounceRef.current = setTimeout(() => {
       const input = mode === 'generate' ? (isCode ? '' : value) : (isCode ? value : codeInput);
-      if (input.trim()) {
+      if (input.trim() && input.length > 3) { // Minimum length check
         processWithAI(input, mode, language, targetLanguage);
+      } else if (!input.trim()) {
+        setOutput(''); // Clear output if input is empty
       }
-    }, 1000);
-  };
+    }, 800); // Reduced from 1000ms
+  }, [mode, language, targetLanguage, codeInput, isProcessing]);
 
   // Handle mode change
   const handleModeChange = (newMode: string) => {
@@ -325,12 +343,55 @@ Format with:
     }
   };
 
-  // Copy output to clipboard
-  const copyOutput = () => {
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  // Enhanced copy output to clipboard
+  const copyOutput = useCallback(async () => {
+    try {
+      // Strip HTML tags and copy plain text
+      const plainText = output.replace(/<[^>]*>/g, '');
+      await navigator.clipboard.writeText(plainText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = output.replace(/<[^>]*>/g, '');
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  }, [output]);
+
+  // Keyboard shortcuts for enhanced UX
+  useEffect(() => {
+    const handleKeyboard = (e: KeyboardEvent) => {
+      // Ctrl/Cmd + Enter to trigger AI processing
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        const input = mode === 'generate' ? englishInput : codeInput;
+        if (input.trim() && !isProcessing) {
+          processWithAI(input, mode, language, targetLanguage);
+        }
+      }
+
+      // Ctrl/Cmd + K to clear output
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setOutput('');
+      }
+
+      // Ctrl/Cmd + C to copy output (when no text is selected)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'c' && !window.getSelection()?.toString() && output) {
+        copyOutput();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyboard);
+    return () => document.removeEventListener('keydown', handleKeyboard);
+  }, [mode, englishInput, codeInput, language, targetLanguage, isProcessing, output, processWithAI, copyOutput]);
 
   // Move output to practice editor
   const moveToEditor = () => {
@@ -356,58 +417,328 @@ Format with:
     setMode('generate');
   };
 
-  // Format output for display
+  // Enhanced syntax highlighting function
+  const applySyntaxHighlighting = (code: string, lang: string): JSX.Element => {
+    const keywords: Record<string, string[]> = {
+      python: ['def', 'class', 'import', 'from', 'if', 'else', 'elif', 'for', 'while', 'try', 'except', 'with', 'as', 'return', 'yield', 'lambda', 'global', 'nonlocal', 'and', 'or', 'not', 'in', 'is'],
+      javascript: ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'class', 'extends', 'import', 'export', 'default', 'async', 'await', 'try', 'catch', 'finally'],
+      typescript: ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'class', 'extends', 'import', 'export', 'default', 'async', 'await', 'try', 'catch', 'finally', 'interface', 'type', 'enum'],
+      rust: ['fn', 'let', 'mut', 'if', 'else', 'for', 'while', 'loop', 'match', 'struct', 'enum', 'impl', 'trait', 'mod', 'use', 'pub', 'return'],
+      go: ['func', 'var', 'const', 'if', 'else', 'for', 'range', 'return', 'struct', 'interface', 'type', 'package', 'import'],
+      java: ['public', 'private', 'protected', 'static', 'final', 'class', 'interface', 'extends', 'implements', 'if', 'else', 'for', 'while', 'return', 'try', 'catch', 'finally'],
+      cpp: ['int', 'char', 'float', 'double', 'bool', 'void', 'if', 'else', 'for', 'while', 'return', 'class', 'public', 'private', 'protected', 'virtual', 'static'],
+      csharp: ['public', 'private', 'protected', 'static', 'readonly', 'class', 'interface', 'if', 'else', 'for', 'while', 'return', 'try', 'catch', 'finally', 'using', 'namespace']
+    };
+
+    let highlightedCode = code;
+    const currentKeywords = keywords[lang] || keywords.python;
+
+    // Highlight strings (both single and double quotes)
+    highlightedCode = highlightedCode.replace(/(['"])((?:\\.|(?!\1)[^\\])*?)\1/g,
+      `<span style="color: ${colors.string}">$1$2$1</span>`);
+
+    // Highlight comments (# for Python, // for others)
+    if (lang === 'python') {
+      highlightedCode = highlightedCode.replace(/#(.*)$/gm,
+        `<span style="color: ${colors.comment}; font-style: italic;"># $1</span>`);
+    } else {
+      highlightedCode = highlightedCode.replace(/\/\/(.*)$/gm,
+        `<span style="color: ${colors.comment}; font-style: italic;">// $1</span>`);
+    }
+
+    // Highlight numbers
+    highlightedCode = highlightedCode.replace(/\b(\d+\.?\d*)\b/g,
+      `<span style="color: ${colors.number}">$1</span>`);
+
+    // Highlight keywords
+    currentKeywords.forEach(keyword => {
+      const regex = new RegExp(`\\b${keyword}\\b`, 'g');
+      highlightedCode = highlightedCode.replace(regex,
+        `<span style="color: ${colors.keyword}; font-weight: 600;">${keyword}</span>`);
+    });
+
+    // Highlight function calls
+    highlightedCode = highlightedCode.replace(/(\w+)(\s*)(\()/g,
+      `<span style="color: ${colors.function}">${'$1'}</span>$2$3`);
+
+    // Highlight operators
+    highlightedCode = highlightedCode.replace(/([+\-*/%=<>!&|]+)/g,
+      `<span style="color: ${colors.operator}">$1</span>`);
+
+    return <span dangerouslySetInnerHTML={{ __html: highlightedCode }} />;
+  };
+
+  // Enhanced format output with better spacing and colors
   const formatOutput = (text: string): JSX.Element[] => {
-    if (!text) return [<span key="0" style={{ color: colors.muted }}>// Output will appear here...</span>];
+    if (!text) return [<span key="0" style={{ color: colors.muted, fontStyle: 'italic' }}>// AI output will appear here...</span>];
 
     const lines = text.split('\n');
+    let inCodeBlock = false;
+    let codeBlockLang = 'python';
+
     return lines.map((line, i) => {
-      // Section headers with emojis
+      // Section headers with emojis - enhanced styling
       if (line.match(/^[🎯💻🔍🌍💡📋🔴✅🛡️📊🚀📈🔄✨⚡🧪⚠️❌🛠️📁🗄️🔌]/)) {
-        return <div key={i} style={{ color: colors.primary, fontWeight: 700, fontSize: '14px', marginTop: '16px', marginBottom: '8px' }}>{line}</div>;
-      }
-
-      // Code blocks (simple detection)
-      if (line.startsWith('```')) {
-        return null; // Skip code fence markers
-      }
-
-      // Directory tree
-      if (line.match(/^[│├└]/)) {
-        return <div key={i} style={{ color: colors.variable, fontFamily: 'monospace', fontSize: '12px' }}>{line}</div>;
-      }
-
-      // API endpoints
-      if (line.match(/^\[(GET|POST|PUT|DELETE)\]/)) {
-        const method = line.match(/\[(GET|POST|PUT|DELETE)\]/)?.[1];
-        const methodColors: Record<string, string> = {
-          GET: colors.success,
-          POST: colors.variable,
-          PUT: colors.type,
-          DELETE: colors.error
-        };
-        const color = methodColors[method || 'GET'];
         return (
-          <div key={i}>
-            <span style={{ color, fontWeight: 600 }}>[{method}]</span>
-            <span style={{ color: colors.primary }}>{line.replace(/\[.*?\]/, '')}</span>
+          <div key={i} style={{
+            color: colors.primary,
+            fontWeight: 700,
+            fontSize: '15px',
+            marginTop: '20px',
+            marginBottom: '12px',
+            borderLeft: `3px solid ${colors.variable}`,
+            paddingLeft: '12px',
+            background: `${colors.panelBg}80`,
+            padding: '8px 12px',
+            borderRadius: '4px'
+          }}>
+            {line}
           </div>
         );
       }
 
-      // Bullet points
-      if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
-        return <div key={i} style={{ color: colors.secondary, paddingLeft: '20px' }}>{line}</div>;
+      // Code block detection
+      if (line.startsWith('```')) {
+        if (!inCodeBlock) {
+          inCodeBlock = true;
+          const match = line.match(/```(\w+)?/);
+          codeBlockLang = match?.[1] || language;
+          return (
+            <div key={i} style={{
+              marginTop: '16px',
+              marginBottom: '8px',
+              color: colors.muted,
+              fontSize: '11px',
+              fontWeight: 600
+            }}>
+              📝 {codeBlockLang.toUpperCase()} CODE:
+            </div>
+          );
+        } else {
+          inCodeBlock = false;
+          return (
+            <div key={i} style={{
+              marginBottom: '16px',
+              height: '1px',
+              background: `linear-gradient(90deg, ${colors.border}, transparent)`,
+              margin: '12px 0'
+            }} />
+          );
+        }
       }
 
-      // Regular text
-      return <div key={i} style={{ color: colors.gray, lineHeight: '1.6' }}>{line}</div>;
+      // Code inside code blocks - with syntax highlighting
+      if (inCodeBlock && line.trim()) {
+        return (
+          <div key={i} style={{
+            fontFamily: 'Monaco, "Cascadia Code", "Fira Code", monospace',
+            fontSize: '13px',
+            lineHeight: '1.8',
+            padding: '4px 16px',
+            background: `${colors.bg}40`,
+            borderLeft: `2px solid ${colors.success}`,
+            marginLeft: '8px',
+            borderRadius: '0 4px 4px 0'
+          }}>
+            {applySyntaxHighlighting(line, codeBlockLang)}
+          </div>
+        );
+      }
+
+      // What/How/Why explanations with special highlighting
+      if (line.match(/^(WHAT|HOW|WHY|EXPLANATION|BREAKDOWN|CONCEPT):/i)) {
+        const [label, ...rest] = line.split(':');
+        return (
+          <div key={i} style={{
+            marginTop: '14px',
+            marginBottom: '8px',
+            padding: '8px 12px',
+            background: `${colors.variable}20`,
+            borderLeft: `4px solid ${colors.variable}`,
+            borderRadius: '0 6px 6px 0'
+          }}>
+            <span style={{ color: colors.variable, fontWeight: 700, fontSize: '12px' }}>
+              {label.trim()}:
+            </span>
+            <span style={{ color: colors.primary, marginLeft: '8px', lineHeight: '1.6' }}>
+              {rest.join(':').trim()}
+            </span>
+          </div>
+        );
+      }
+
+      // Comments and explanations (lines starting with #, //, or "Note:")
+      if (line.match(/^(\s*)(#|\/\/|Note:|Tip:|Important:)/i)) {
+        return (
+          <div key={i} style={{
+            color: colors.comment,
+            fontStyle: 'italic',
+            fontSize: '12px',
+            lineHeight: '1.7',
+            padding: '4px 8px',
+            background: `${colors.comment}10`,
+            borderRadius: '4px',
+            margin: '4px 0'
+          }}>
+            {line}
+          </div>
+        );
+      }
+
+      // Directory tree with better styling
+      if (line.match(/^[│├└]/)) {
+        return (
+          <div key={i} style={{
+            color: colors.variable,
+            fontFamily: 'Monaco, monospace',
+            fontSize: '12px',
+            lineHeight: '1.4',
+            padding: '2px 0'
+          }}>
+            {line}
+          </div>
+        );
+      }
+
+      // API endpoints with enhanced styling
+      if (line.match(/^\[(GET|POST|PUT|DELETE|PATCH)\]/)) {
+        const method = line.match(/\[(GET|POST|PUT|DELETE|PATCH)\]/)?.[1];
+        const methodColors: Record<string, string> = {
+          GET: colors.success,
+          POST: colors.variable,
+          PUT: colors.type,
+          DELETE: colors.error,
+          PATCH: colors.warning
+        };
+        const color = methodColors[method || 'GET'];
+        return (
+          <div key={i} style={{
+            padding: '6px 12px',
+            margin: '4px 0',
+            background: `${color}15`,
+            borderLeft: `3px solid ${color}`,
+            borderRadius: '0 4px 4px 0'
+          }}>
+            <span style={{ color, fontWeight: 700, fontSize: '11px' }}>[{method}]</span>
+            <span style={{ color: colors.primary, marginLeft: '8px', fontFamily: 'monospace' }}>
+              {line.replace(/\[.*?\]/, '')}
+            </span>
+          </div>
+        );
+      }
+
+      // Bullet points with better indentation
+      if (line.trim().match(/^[•\-\*]/)) {
+        const indent = line.search(/[•\-\*]/);
+        return (
+          <div key={i} style={{
+            color: colors.secondary,
+            paddingLeft: `${20 + indent * 8}px`,
+            lineHeight: '1.7',
+            margin: '3px 0'
+          }}>
+            <span style={{ color: colors.variable, fontWeight: 600, marginRight: '6px' }}>
+              {line.trim()[0]}
+            </span>
+            {line.trim().substring(1).trim()}
+          </div>
+        );
+      }
+
+      // Error messages
+      if (line.match(/^(Error|ERROR|❌)/i)) {
+        return (
+          <div key={i} style={{
+            color: colors.error,
+            background: `${colors.error}20`,
+            padding: '8px 12px',
+            borderLeft: `4px solid ${colors.error}`,
+            borderRadius: '0 6px 6px 0',
+            margin: '8px 0',
+            fontWeight: 500
+          }}>
+            {line}
+          </div>
+        );
+      }
+
+      // Success messages
+      if (line.match(/^(Success|SUCCESS|✅)/i)) {
+        return (
+          <div key={i} style={{
+            color: colors.success,
+            background: `${colors.success}20`,
+            padding: '8px 12px',
+            borderLeft: `4px solid ${colors.success}`,
+            borderRadius: '0 6px 6px 0',
+            margin: '8px 0',
+            fontWeight: 500
+          }}>
+            {line}
+          </div>
+        );
+      }
+
+      // Warning messages
+      if (line.match(/^(Warning|WARNING|⚠️)/i)) {
+        return (
+          <div key={i} style={{
+            color: colors.warning,
+            background: `${colors.warning}20`,
+            padding: '8px 12px',
+            borderLeft: `4px solid ${colors.warning}`,
+            borderRadius: '0 6px 6px 0',
+            margin: '8px 0',
+            fontWeight: 500
+          }}>
+            {line}
+          </div>
+        );
+      }
+
+      // Empty lines for spacing
+      if (line.trim() === '') {
+        return <div key={i} style={{ height: '8px' }} />;
+      }
+
+      // Regular text with better spacing
+      return (
+        <div key={i} style={{
+          color: colors.gray,
+          lineHeight: '1.7',
+          margin: '2px 0',
+          fontSize: '13px'
+        }}>
+          {line}
+        </div>
+      );
     }).filter((element): element is JSX.Element => element !== null);
   };
 
   return (
-    <div style={{
-      position: 'fixed',
+    <>
+      {/* CSS Animations */}
+      <style>
+        {`
+          @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+          }
+          @keyframes fadeInOut {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+          }
+          @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .code-highlight {
+            animation: slideIn 0.3s ease-out;
+          }
+        `}
+      </style>
+      <div style={{
+        position: 'fixed',
       top: 0,
       left: 0,
       right: 0,
@@ -709,7 +1040,23 @@ Format with:
                 {aiModes.find(m => m.id === mode)?.name.toUpperCase()} OUTPUT
               </span>
               {isProcessing && (
-                <span style={{ fontSize: '9px', color: colors.warning }}>Processing...</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: colors.warning,
+                    animation: 'pulse 1.5s ease-in-out infinite'
+                  }} />
+                  <span style={{
+                    fontSize: '9px',
+                    color: colors.warning,
+                    fontWeight: 500,
+                    animation: 'fadeInOut 2s ease-in-out infinite'
+                  }}>
+                    AI Processing...
+                  </span>
+                </div>
               )}
             </div>
             <div style={{ display: 'flex', gap: '6px' }}>
@@ -787,13 +1134,23 @@ Format with:
 
           <div style={{
             flex: 1,
-            padding: '14px',
+            padding: '16px 20px',
             overflowY: 'auto',
-            fontSize: '12px',
-            lineHeight: '1.5',
-            fontFamily: 'monospace'
+            fontSize: '13px',
+            lineHeight: '1.6',
+            fontFamily: 'Monaco, "Cascadia Code", "SF Mono", Consolas, monospace',
+            background: `linear-gradient(135deg, ${colors.outputBg} 0%, ${colors.bg}40 100%)`,
+            scrollbarWidth: 'thin',
+            scrollbarColor: `${colors.border} transparent`
           }}>
-            {formatOutput(output)}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px',
+              minHeight: '100%'
+            }}>
+              {formatOutput(output)}
+            </div>
           </div>
         </div>
 
@@ -1076,5 +1433,6 @@ Format with:
         </div>
       )}
     </div>
+    </>
   );
 }
