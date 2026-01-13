@@ -365,14 +365,54 @@ For complex projects, also include:
 🗄️ DATABASE SCHEMA - If applicable
 🔌 API ENDPOINTS - If applicable`,
 
-      explain: `Explain this ${lang} code for beginners:
+      explain: `Provide an in-depth explanation of this ${lang} code:
 ${inputText}
 
-Format with:
-📋 OVERVIEW - What this code does
-🔍 LINE-BY-LINE - Detailed breakdown
-🌍 REAL-LIFE ANALOGY - Relatable comparison
-🎯 TAKEAWAYS - Key learning points`,
+Format your response with these comprehensive sections:
+
+📋 PURPOSE & OVERVIEW
+- Primary functionality and use case
+- Problem this code solves
+- Where this would be used in production
+
+🏗️ ARCHITECTURE & DESIGN
+- Overall structure and design patterns
+- Data flow through the code
+- Key algorithms or techniques used
+
+🔍 DETAILED CODE ANALYSIS
+For each significant section/function:
+- Purpose of the section
+- Input parameters and their types
+- Processing logic step-by-step
+- Return values and side effects
+- Error handling mechanisms
+
+⚙️ TECHNICAL DEEP DIVE
+- Time complexity: O(?)
+- Space complexity: O(?)
+- Performance characteristics
+- Memory management considerations
+- Potential bottlenecks
+
+🌍 REAL-WORLD ANALOGY
+- Compare to a familiar real-life process
+- Step-by-step parallel with the code logic
+
+⚡ OPTIMIZATION OPPORTUNITIES
+- Current inefficiencies
+- Suggested improvements
+- Alternative approaches
+
+🔒 SECURITY & BEST PRACTICES
+- Security considerations
+- Code quality assessment
+- Adherence to language conventions
+
+🎯 KEY TAKEAWAYS
+- Core concepts demonstrated
+- Reusable patterns
+- Important lessons for developers`,
 
       debug: `Debug this ${lang} code:
 ${inputText}
@@ -401,15 +441,16 @@ Format with:
 ⚡ KEY DIFFERENCES - Language-specific changes
 🌍 LANGUAGE ANALOGY - Comparison between languages`,
 
-      test: `Generate comprehensive tests for this ${lang} code:
+      test: `Analyze edge cases and validation for this ${lang} code:
 ${inputText}
 
 Format with:
-🧪 TEST SUITE - Complete test implementation
-✅ NORMAL CASES - Standard scenarios
-⚠️ EDGE CASES - Boundary conditions
-❌ ERROR CASES - Failure scenarios
-🌍 TESTING ANALOGY - Testing strategy comparison`
+🔬 VALIDATION ANALYSIS - Input validation and error handling review
+✅ HAPPY PATH - Expected behavior with valid inputs
+⚠️ EDGE CASES - Boundary conditions and special scenarios
+❌ FAILURE MODES - How the code handles errors and invalid inputs
+🛡️ DEFENSIVE PROGRAMMING - Suggestions for more robust code
+💡 RECOMMENDED VALIDATIONS - Additional checks to implement`
     };
 
     try {
