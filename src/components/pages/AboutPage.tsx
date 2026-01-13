@@ -30,8 +30,8 @@ export default function AboutPage() {
               <h1 className={`font-bold mb-4 ${isMobile ? 'text-xl text-center' : 'text-3xl'}`}>
                 ABOUT RAVEN
               </h1>
-              <div className={`mb-4 p-4 bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-700/50 rounded-lg ${isMobile ? 'text-center' : ''}`}>
-                <h2 className={`font-semibold mb-2 text-blue-300 ${isMobile ? 'text-sm' : 'text-lg'}`}>
+              <div className={`mb-4 p-4 bg-gray-900/50 border border-gray-700 rounded-lg ${isMobile ? 'text-center' : ''}`}>
+                <h2 className={`font-semibold mb-2 text-white ${isMobile ? 'text-sm' : 'text-lg'}`}>
                   Real-time AI Visual English Notation
                 </h2>
                 <p className={`text-gray-300 ${isMobile ? 'text-xs' : 'text-sm'}`}>
