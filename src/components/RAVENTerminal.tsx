@@ -1,6 +1,59 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+// Custom syntax highlighter theme
+const customSyntaxTheme = {
+  ...atomDark,
+  'pre[class*="language-"]': {
+    ...atomDark['pre[class*="language-"]'],
+    background: 'rgba(10, 10, 10, 0.95)',
+    padding: '16px',
+    fontSize: '14px',
+    lineHeight: '1.6',
+    borderRadius: '4px',
+    border: '1px solid #333',
+    boxShadow: 'inset 0 0 20px rgba(0, 255, 0, 0.05)',
+    margin: '0',
+  },
+  'code[class*="language-"]': {
+    ...atomDark['code[class*="language-"]'],
+    fontFamily: '"Fira Code", "Cascadia Code", Monaco, monospace',
+    textShadow: 'none',
+  },
+  // Enhance specific token colors
+  'token.keyword': {
+    color: '#ff006a',
+    fontWeight: 'bold',
+  },
+  'token.string': {
+    color: '#00ffaa',
+  },
+  'token.number': {
+    color: '#ffaa00',
+  },
+  'token.comment': {
+    color: '#ffff00',
+    fontStyle: 'italic',
+  },
+  'token.function': {
+    color: '#00ff00',
+  },
+  'token.class-name': {
+    color: '#88ff00',
+  },
+  'token.boolean': {
+    color: '#ff00aa',
+  },
+  'token.operator': {
+    color: '#ff4444',
+  },
+  'token.punctuation': {
+    color: '#808080',
+  },
+};
 
 // Types
 interface RAVENTerminalProps {
@@ -729,12 +782,14 @@ Format with:
     const lines = text.split('\n');
     let inCodeBlock = false;
     let codeBlockLang = 'python';
+    let codeBuffer: string[] = [];
     let lineCounter = 1;
+    const elements: JSX.Element[] = [];
 
-    return lines.map((line, i) => {
+    lines.forEach((line, i) => {
       // Section headers with emojis - enhanced styling
       if (line.match(/^[🎯💻🔍🌍💡📋🔴✅🛡️📊🚀📈🔄✨⚡🧪⚠️❌🛠️📁🗄️🔌]/)) {
-        return (
+        elements.push(
           <div key={i} style={{
             color: colors.primary,
             fontWeight: 700,
@@ -750,6 +805,7 @@ Format with:
             {line}
           </div>
         );
+        return;
       }
 
       // Code block detection
@@ -758,8 +814,8 @@ Format with:
           inCodeBlock = true;
           const match = line.match(/```(\w+)?/);
           codeBlockLang = match?.[1] || language;
-          return (
-            <div key={i} style={{
+          elements.push(
+            <div key={`header-${i}`} style={{
               marginTop: '16px',
               marginBottom: '8px',
               color: colors.muted,
@@ -770,9 +826,45 @@ Format with:
             </div>
           );
         } else {
+          // End of code block - render with react-syntax-highlighter
           inCodeBlock = false;
-          return (
-            <div key={i} style={{
+          if (codeBuffer.length > 0) {
+            elements.push(
+              <div key={`code-${i}`} style={{
+                marginLeft: '12px',
+                borderLeft: `3px solid ${colors.success}`,
+                borderRadius: '0 4px 4px 0',
+                overflow: 'hidden',
+                background: 'rgba(10, 10, 10, 0.9)',
+                boxShadow: 'inset 0 0 10px rgba(0, 255, 0, 0.1)'
+              }}>
+                <SyntaxHighlighter
+                  language={codeBlockLang}
+                  style={customSyntaxTheme}
+                  showLineNumbers={true}
+                  lineNumberStyle={{
+                    color: '#404040',
+                    fontSize: '11px',
+                    minWidth: '30px',
+                    paddingRight: '12px'
+                  }}
+                  customStyle={{
+                    margin: 0,
+                    background: 'transparent',
+                    border: 'none',
+                    boxShadow: 'none',
+                    fontSize: '14px',
+                    padding: '16px 20px'
+                  }}
+                >
+                  {codeBuffer.join('\n')}
+                </SyntaxHighlighter>
+              </div>
+            );
+            codeBuffer = [];
+          }
+          elements.push(
+            <div key={`divider-${i}`} style={{
               marginBottom: '16px',
               height: '1px',
               background: `linear-gradient(90deg, ${colors.border}, transparent)`,
@@ -780,52 +872,19 @@ Format with:
             }} />
           );
         }
+        return;
       }
 
-      // Code inside code blocks - with enhanced terminal-like formatting
-      if (inCodeBlock && line.trim()) {
-        return (
-          <div key={i} style={{
-            fontFamily: '"Fira Code", "Cascadia Code", Monaco, "Courier New", monospace',
-            fontSize: '14px',
-            lineHeight: '1.6',
-            padding: '6px 20px',
-            background: 'rgba(10, 10, 10, 0.9)',
-            borderLeft: `3px solid ${colors.success}`,
-            marginLeft: '12px',
-            borderRadius: '0 4px 4px 0',
-            position: 'relative',
-            overflow: 'auto',
-            boxShadow: 'inset 0 0 10px rgba(0, 255, 0, 0.1)'
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'flex-start'
-            }}>
-              <span style={{
-                color: '#404040',
-                fontSize: '11px',
-                marginRight: '12px',
-                userSelect: 'none',
-                fontFamily: 'monospace',
-                minWidth: '30px',
-                textAlign: 'right',
-                paddingTop: '2px'
-              }}>
-                {lineCounter++}
-              </span>
-              <div style={{ flex: 1, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                {applySyntaxHighlighting(line, codeBlockLang)}
-              </div>
-            </div>
-          </div>
-        );
+      // Collect code lines
+      if (inCodeBlock) {
+        codeBuffer.push(line);
+        return;
       }
 
       // What/How/Why explanations with special highlighting
       if (line.match(/^(WHAT|HOW|WHY|EXPLANATION|BREAKDOWN|CONCEPT):/i)) {
         const [label, ...rest] = line.split(':');
-        return (
+        elements.push(
           <div key={i} style={{
             marginTop: '14px',
             marginBottom: '8px',
@@ -842,11 +901,12 @@ Format with:
             </span>
           </div>
         );
+        return;
       }
 
       // Comments and explanations (lines starting with #, //, or "Note:")
       if (line.match(/^(\s*)(#|\/\/|Note:|Tip:|Important:)/i)) {
-        return (
+        elements.push(
           <div key={i} style={{
             color: colors.comment,
             fontStyle: 'italic',
@@ -860,11 +920,12 @@ Format with:
             {line}
           </div>
         );
+        return;
       }
 
       // Directory tree with better styling
       if (line.match(/^[│├└]/)) {
-        return (
+        elements.push(
           <div key={i} style={{
             color: colors.variable,
             fontFamily: 'Monaco, monospace',
@@ -875,6 +936,7 @@ Format with:
             {line}
           </div>
         );
+        return;
       }
 
       // API endpoints with enhanced styling
@@ -888,7 +950,7 @@ Format with:
           PATCH: colors.warning
         };
         const color = methodColors[method || 'GET'];
-        return (
+        elements.push(
           <div key={i} style={{
             padding: '6px 12px',
             margin: '4px 0',
@@ -902,12 +964,13 @@ Format with:
             </span>
           </div>
         );
+        return;
       }
 
       // Bullet points with better indentation
       if (line.trim().match(/^[•\-\*]/)) {
         const indent = line.search(/[•\-\*]/);
-        return (
+        elements.push(
           <div key={i} style={{
             color: colors.secondary,
             paddingLeft: `${20 + indent * 8}px`,
@@ -920,11 +983,12 @@ Format with:
             {line.trim().substring(1).trim()}
           </div>
         );
+        return;
       }
 
       // Error messages
       if (line.match(/^(Error|ERROR|❌)/i)) {
-        return (
+        elements.push(
           <div key={i} style={{
             color: colors.error,
             background: `${colors.error}20`,
@@ -937,11 +1001,12 @@ Format with:
             {line}
           </div>
         );
+        return;
       }
 
       // Success messages
       if (line.match(/^(Success|SUCCESS|✅)/i)) {
-        return (
+        elements.push(
           <div key={i} style={{
             color: colors.success,
             background: `${colors.success}20`,
@@ -954,11 +1019,12 @@ Format with:
             {line}
           </div>
         );
+        return;
       }
 
       // Warning messages
       if (line.match(/^(Warning|WARNING|⚠️)/i)) {
-        return (
+        elements.push(
           <div key={i} style={{
             color: colors.warning,
             background: `${colors.warning}20`,
@@ -971,15 +1037,17 @@ Format with:
             {line}
           </div>
         );
+        return;
       }
 
       // Empty lines for spacing
       if (line.trim() === '') {
-        return <div key={i} style={{ height: '8px' }} />;
+        elements.push(<div key={i} style={{ height: '8px' }} />);
+        return;
       }
 
       // Regular text with better spacing
-      return (
+      elements.push(
         <div key={i} style={{
           color: colors.gray,
           lineHeight: '1.7',
@@ -989,7 +1057,45 @@ Format with:
           {line}
         </div>
       );
-    }).filter((element): element is JSX.Element => element !== null);
+    });
+
+    // Handle any remaining code buffer if still in code block (incomplete code block)
+    if (inCodeBlock && codeBuffer.length > 0) {
+      elements.push(
+        <div key="code-final" style={{
+          marginLeft: '12px',
+          borderLeft: `3px solid ${colors.success}`,
+          borderRadius: '0 4px 4px 0',
+          overflow: 'hidden',
+          background: 'rgba(10, 10, 10, 0.9)',
+          boxShadow: 'inset 0 0 10px rgba(0, 255, 0, 0.1)'
+        }}>
+          <SyntaxHighlighter
+            language={codeBlockLang}
+            style={customSyntaxTheme}
+            showLineNumbers={true}
+            lineNumberStyle={{
+              color: '#404040',
+              fontSize: '11px',
+              minWidth: '30px',
+              paddingRight: '12px'
+            }}
+            customStyle={{
+              margin: 0,
+              background: 'transparent',
+              border: 'none',
+              boxShadow: 'none',
+              fontSize: '14px',
+              padding: '16px 20px'
+            }}
+          >
+            {codeBuffer.join('\n')}
+          </SyntaxHighlighter>
+        </div>
+      );
+    }
+
+    return elements;
   };
 
   return (
