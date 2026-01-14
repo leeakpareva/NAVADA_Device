@@ -2,6 +2,11 @@
 const path = require('path');
 
 const nextConfig = {
+  // Static export configuration for testing deployments
+  ...(process.env.NODE_ENV === 'production' && process.env.DEPLOY_TARGET === 'static' ? {
+    output: 'export',
+    trailingSlash: true,
+  } : {}),
   images: {
     unoptimized: true,
   },
