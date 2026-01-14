@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import { checkBackendRateLimit } from '@/lib/rate-limit-server';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -8,17 +7,6 @@ const anthropic = new Anthropic({
 
 export async function POST(request: NextRequest) {
   try {
-    // request.ip is available in NextRequest but TS might complain depending on version/config
-    const ip = (request as any).ip || request.headers.get('x-forwarded-for') || 'anonymous';
-    const sessionToken = request.headers.get('x-session-token') || ip;
-    const rateLimit = checkBackendRateLimit(sessionToken as string);
-
-    if (!rateLimit.allowed) {
-      return NextResponse.json({
-        message: `⚠️ ${rateLimit.message}`
-      }, { status: 429 });
-    }
-
     const { message, history } = await request.json();
 
     if (!message) {

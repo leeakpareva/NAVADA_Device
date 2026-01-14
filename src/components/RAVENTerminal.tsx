@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { checkFrontendRateLimit, recordRequest } from '@/lib/rate-limit-client';
 
 // Custom syntax highlighter theme
 const customSyntaxTheme = {
@@ -420,11 +419,6 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
       return;
     }
 
-    const rateLimitCheck = checkFrontendRateLimit();
-    if (!rateLimitCheck.allowed) {
-      setOutput(`⚠️ ${rateLimitCheck.message}`);
-      return;
-    }
 
     setIsProcessing(true);
     setOutput(`Processing ${aiMode} with RAVEN AI...`);
@@ -549,9 +543,6 @@ Format with:
         })
       });
 
-      if (response.ok) {
-        recordRequest();
-      }
 
       if (!response.ok) {
         const errorData = await response.json();

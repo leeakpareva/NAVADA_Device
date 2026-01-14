@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx vercel env rm:*)"
+      "Bash(npx vercel env rm:*)",
+      "Bash(gh secret set:*)",
+      "Bash(gh secret:*)",
+      "Read(//c/Users/leeak/Navada-device/NAVADA_Device_Testing/**)",
+      "Bash(gh run list:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "WebFetch(domain:navada-testing.vercel.app)",
+      "Bash(npm run lint)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
