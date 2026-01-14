@@ -1,60 +1,30 @@
-'use client';
-
 interface LoadingSpinnerProps {
   size?: 'small' | 'medium' | 'large';
-  className?: string;
   showText?: boolean;
   text?: string;
+  className?: string;
 }
 
 export default function LoadingSpinner({
   size = 'medium',
-  className = '',
   showText = false,
-  text = 'Loading...'
+  text = 'Loading...',
+  className = ''
 }: LoadingSpinnerProps) {
-  const getSizeClasses = () => {
-    switch (size) {
-      case 'small':
-        return 'w-4 h-4';
-      case 'large':
-        return 'w-12 h-12';
-      case 'medium':
-      default:
-        return 'w-8 h-8';
-    }
-  };
-
-  const getInnerSize = () => {
-    switch (size) {
-      case 'small':
-        return 'inset-0.5';
-      case 'large':
-        return 'inset-2';
-      case 'medium':
-      default:
-        return 'inset-1';
-    }
+  const sizeClasses = {
+    small: 'w-8 h-8 border-2',
+    medium: 'w-12 h-12 border-3',
+    large: 'w-16 h-16 border-4'
   };
 
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
-      {/* Round spinner with dual rings - same as BootLoader */}
-      <div className={`relative ${getSizeClasses()}`}>
-        <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-white animate-spin"></div>
-        <div
-          className={`absolute ${getInnerSize()} rounded-full border-2 border-transparent border-t-gray-400 animate-spin`}
-          style={{
-            animationDirection: 'reverse',
-            animationDuration: '1.5s'
-          }}
-        ></div>
+      <div className="relative">
+        <div className={`${sizeClasses[size]} border-gray-700 rounded-full`}></div>
+        <div className={`absolute top-0 left-0 ${sizeClasses[size]} border-green-500 rounded-full border-t-transparent animate-spin`}></div>
       </div>
-
       {showText && (
-        <p className="mt-3 text-white text-sm animate-pulse">
-          {text}
-        </p>
+        <p className="mt-3 text-sm text-gray-400 animate-pulse">{text}</p>
       )}
     </div>
   );

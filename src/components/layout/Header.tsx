@@ -80,7 +80,6 @@ export default function Header({ onNavigate }: HeaderProps) {
           className="flex items-center space-x-2 cursor-pointer"
           onClick={() => {
             onNavigate('home');
-            window.location.reload();
           }}
         >
           <Image
@@ -94,16 +93,6 @@ export default function Header({ onNavigate }: HeaderProps) {
 
         {/* Navigation Menu */}
         <nav className="flex items-center space-x-4">
-          {/* Music Player */}
-          <button
-            onClick={toggleMusic}
-            className="w-8 h-8 flex items-center justify-center rounded-lg transition-all hover:bg-white/10"
-            title={isPlaying ? 'Pause Music' : 'Play Music'}
-          >
-            <span className="text-lg text-white font-bold">
-              {isPlaying ? '⏸' : '▶'}
-            </span>
-          </button>
 
           {menuItems.map((item) => (
             <button

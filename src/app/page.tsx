@@ -22,11 +22,26 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isPageLoading, setIsPageLoading] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
+  const [terminalKey, setTerminalKey] = useState(0);
 
   useEffect(() => {
     // Session Token Generation
     if (typeof window !== 'undefined' && !sessionStorage.getItem('raven-session')) {
-      const sessionToken = crypto.randomUUID() + '-' + Date.now();
+      // Fallback UUID generation if crypto.randomUUID is not available
+      const generateUUID = () => {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+          return crypto.randomUUID();
+        } else {
+          // Fallback UUID v4 generation
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        }
+      };
+
+      const sessionToken = generateUUID() + '-' + Date.now();
       sessionStorage.setItem('raven-session', sessionToken);
     }
 
@@ -46,7 +61,24 @@ export default function Home() {
   };
 
   const handleNavigate = (page: string) => {
-    if (page === currentPage) return; // Don't reload same page
+    // Special handling for home navigation - always refresh
+    if (page === 'home') {
+      // Force refresh by incrementing terminal key
+      setTerminalKey(prev => prev + 1);
+
+      // If already on home, just return
+      if (currentPage === 'home') {
+        return;
+      }
+    }
+
+    if (page === currentPage) {
+      // If already on the same page, just refresh the terminal for agent page
+      if (page === 'agent') {
+        setTerminalKey(prev => prev + 1);
+      }
+      return;
+    }
 
     // Check if trying to navigate to Agent on mobile
     if (page === 'agent' && window.innerWidth < 768) {
@@ -79,7 +111,7 @@ export default function Home() {
       case 'learn':
         return <LearnPage />;
       case 'agent':
-        return <AgentPage onNavigate={handleNavigate} />;
+        return <AgentPage key={terminalKey} onNavigate={handleNavigate} />;
       case 'raven':
         return <RavenPage />;
       case 'signup':
