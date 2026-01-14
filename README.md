@@ -8,6 +8,8 @@ A modern, intelligent operating system interface optimized for 64x96mm micro-dis
 
 - 📱 **Micro Display Optimized** - Designed specifically for 64x96mm touchscreen displays
 - 🤖 **AI Assistant (Leslie)** - Integrated OpenAI GPT-3.5-turbo powered chat assistant
+- 🐍 **THE RAVEN'S SOUL** - Conversational AI Agent with session memory and personality
+- 🛡️ **Session Rate Limiting** - Smart protection (20 requests/hour, 3/minute) without login required
 - 🎨 **Modern Dark Theme** - Sleek interface with transparent glass effects
 - 🪟 **Multi-Window System** - Full window management with drag, resize, minimize, maximize
 - 📺 **YouTube Integration** - Built-in YouTube video player with full-screen viewing
@@ -15,6 +17,7 @@ A modern, intelligent operating system interface optimized for 64x96mm micro-dis
 - 📚 **Learn Center** - PDF document management and viewing system
 - 💬 **Real-time Chat** - AI conversations with message history and timestamps
 - ⌨️ **Touch-Optimized** - All elements sized for micro screen interactions
+- 🚀 **Auto-Deploy Pipeline** - Staging environment with production protection
 
 ## 🎯 Applications Included
 
@@ -255,20 +258,83 @@ raven-os/
 └── package.json
 ```
 
-## 🚀 Deployment
+## 🚀 Deployment & Pipeline
 
-### Vercel (Recommended)
+### Automated Staging Pipeline ✅
+The project includes a comprehensive deployment pipeline with automated staging and manual production promotion:
+
+#### 🔄 **Pipeline Flow:**
+```
+Development → staging branch → GitHub Action → Testing Repo → Vercel Staging
+                                                                    ↓
+Production Vercel ← Manual Promotion (Protected) ← Review & Test
+```
+
+#### 📋 **Workflow:**
+1. **Develop**: Work on `master` branch normally
+2. **Stage**: `git checkout staging && git merge master && git push origin staging`
+3. **Auto-Deploy**: GitHub Action automatically builds and deploys to testing repository
+4. **Vercel Staging**: Testing environment auto-deploys to staging URL
+5. **Review**: Test thoroughly on staging environment
+6. **Manual Promotion**: Promote to production in Vercel when ready
+
+#### 🔗 **URLs:**
+- **Staging**: https://navada-testing.vercel.app (auto-updates from staging branch)
+- **Production**: https://navada.vercel.app (manual promotion only)
+- **Testing Repository**: https://github.com/leeakpareva/NAVADA_Device_Testing
+
+#### ⚙️ **Pipeline Configuration:**
+- **GitHub Secrets**: `ANTHROPIC_API_KEY`, `TESTING_REPO_TOKEN`
+- **Node.js Version**: 20+ (required for Next.js 16.1.1)
+- **Build Target**: Static export for testing environment
+- **Rate Limiting**: Session-based (20 requests/hour, 3/minute)
+
+#### 🛡️ **Safety Features:**
+- ✅ **Production Protected**: No automatic production deployments
+- ✅ **Staging Testing**: Every change automatically tested
+- ✅ **Easy Rollback**: Quick revert capabilities
+- ✅ **Session Rate Limiting**: Protects from abuse
+- ✅ **AI Agent Integration**: "THE RAVEN'S SOUL" with conversational interface
+
+### Vercel Production Setup
 1. Connect your GitHub repository to Vercel
 2. Add environment variables in Vercel dashboard:
-   - `OPENAI_API_KEY`: Your OpenAI API key
    - `ANTHROPIC_API_KEY`: Your Anthropic API key
-   - `DEEPSEEK_API_KEY`: Your DeepSeek API key
-   - `TTS_PROMPT_ID`: Your TTS prompt ID
-3. Deploy automatically on push to main branch
+   - `OPENAI_API_KEY`: Your OpenAI API key (optional)
+   - `DEEPSEEK_API_KEY`: Your DeepSeek API key (optional)
+3. Manual promotion from staging to production
 
 #### ⚠️ Common Deployment Issues & Fixes
 
-**Issue 1: TypeScript Error in RAVENTerminal.tsx**
+**Issue 1: GitHub Action Build Failures (Static Export Issues)**
+
+**Failed Commit**: `2acf8e1` - "Setup complete deployment pipeline with staging environment"
+
+**Root Cause**: The GitHub Action failed because:
+1. **Node.js Version**: Initially used Node.js 18, but Next.js 16.1.1 requires >=20.9.0
+2. **API Routes**: Missing `export const dynamic = 'force-static'` in API routes for static export
+3. **Static Export**: Routes like `/api/designs`, `/api/pdfs`, `/api/screensaver` weren't configured for static builds
+
+**Error Messages:**
+```bash
+# Node.js version error
+You are using Node.js 18.20.8. For Next.js, Node.js version ">=20.9.0" is required.
+
+# Static export error
+Error: export const dynamic = "force-static"/export const revalidate not configured on route "/api/designs"
+```
+
+**Solutions Applied:**
+1. **Updated Node.js version** in GitHub Action from 18 to 20
+2. **Added force-static exports** to all file-serving API routes:
+   ```typescript
+   export const dynamic = 'force-static';
+   ```
+3. **Fixed build configuration** for static export compatibility
+
+**Final Result**: Commit `e164174` successfully deployed with all fixes ✅
+
+**Issue 2: TypeScript Error in RAVENTerminal.tsx**
 
 **Error Message:**
 ```
