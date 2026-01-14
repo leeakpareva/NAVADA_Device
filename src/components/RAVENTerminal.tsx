@@ -202,6 +202,36 @@ const Icons = {
       <line x1="12" y1="17" x2="12.01" y2="17" />
     </svg>
   ),
+  // Agent Chat Icons
+  user: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  ),
+  agent: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-6.5L17 8l-1.5-1.5M8 16l-1.5 1.5L5 16l1.5-1.5L8 16Z" />
+    </svg>
+  ),
+  send: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="22" y1="2" x2="11" y2="13" />
+      <polygon points="22,2 15,22 11,13 2,9 22,2" />
+    </svg>
+  ),
+  clock: (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12,6 12,12 16,14" />
+    </svg>
+  ),
+  chat: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" />
+    </svg>
+  ),
 };
 
 // AI Modes
@@ -351,6 +381,17 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
   const [codeInput, setCodeInput] = useState('');
   const [output, setOutput] = useState('');
   const [practiceCode, setPracticeCode] = useState('');
+
+  // AI Agent Chat State
+  const [agentMessages, setAgentMessages] = useState<Array<{
+    id: string;
+    type: 'user' | 'agent';
+    content: string;
+    timestamp: Date;
+    isProcessing?: boolean;
+  }>>([]);
+  const [agentInput, setAgentInput] = useState('');
+  const [isAgentProcessing, setIsAgentProcessing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showColorLegend, setShowColorLegend] = useState(false);
   const [showDictionary, setShowDictionary] = useState(false);
@@ -614,6 +655,90 @@ Format with:
       setMode(analysisMode);
       processWithAI(practiceCode, analysisMode, language, targetLanguage);
     }
+  };
+
+  // Send message to AI Agent
+  const sendAgentMessage = async () => {
+    if (!agentInput.trim() || isAgentProcessing) return;
+
+    const userMessage = {
+      id: Date.now().toString(),
+      type: 'user' as const,
+      content: agentInput.trim(),
+      timestamp: new Date()
+    };
+
+    setAgentMessages(prev => [...prev, userMessage]);
+    setAgentInput('');
+    setIsAgentProcessing(true);
+
+    // Add processing indicator
+    const processingMessage = {
+      id: (Date.now() + 1).toString(),
+      type: 'agent' as const,
+      content: '',
+      timestamp: new Date(),
+      isProcessing: true
+    };
+    setAgentMessages(prev => [...prev, processingMessage]);
+
+    try {
+      // Create conversation context from recent messages
+      const recentMessages = agentMessages.slice(-8).map(msg => ({
+        role: msg.type === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      }));
+
+      const response = await fetch('/api/ai/python', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `You are RAVEN, a friendly and enthusiastic coding companion. You have personality, use emojis, and love helping people learn to code.
+
+Current context:
+- User is working with ${language} programming
+- They are learning in an interactive coding environment
+- Keep responses conversational, helpful, and encouraging
+- Use code examples when helpful
+- Ask follow-up questions to keep the conversation engaging
+
+User message: ${userMessage.content}`,
+          history: recentMessages
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from AI');
+      }
+
+      const data = await response.json();
+
+      // Replace processing message with actual response
+      setAgentMessages(prev => prev.filter(msg => msg.id !== processingMessage.id).concat({
+        id: processingMessage.id,
+        type: 'agent',
+        content: data.message,
+        timestamp: new Date(),
+        isProcessing: false
+      }));
+
+    } catch (error: any) {
+      // Replace processing message with error
+      setAgentMessages(prev => prev.filter(msg => msg.id !== processingMessage.id).concat({
+        id: processingMessage.id,
+        type: 'agent',
+        content: `😅 Oops! I'm having trouble connecting right now. ${error.message}`,
+        timestamp: new Date(),
+        isProcessing: false
+      }));
+    } finally {
+      setIsAgentProcessing(false);
+    }
+  };
+
+  // Format timestamp for display
+  const formatTimestamp = (date: Date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
   // Reset everything
@@ -1404,7 +1529,7 @@ Format with:
           </div>
         </div>
 
-        {/* Right Panel - Practice Editor */}
+        {/* Right Panel - AI Agent Chat */}
         <div style={{
           background: colors.panelBg,
           borderRadius: '8px',
@@ -1413,6 +1538,7 @@ Format with:
           flexDirection: 'column',
           overflow: 'hidden'
         }}>
+          {/* Agent Header */}
           <div style={{
             padding: '10px 14px',
             borderBottom: `1px solid ${colors.border}`,
@@ -1420,60 +1546,140 @@ Format with:
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <span style={{ fontSize: '10px', fontWeight: 600, color: colors.secondary, letterSpacing: '1px' }}>
-              PRACTICE EDITOR
-            </span>
-            <button
-              onClick={analyzePracticeCode}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ color: colors.success }}>{Icons.agent}</span>
+              <span style={{ fontSize: '10px', fontWeight: 600, color: colors.secondary, letterSpacing: '1px' }}>
+                THE RAVEN'S SOUL
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ color: colors.muted }}>{Icons.chat}</span>
+              <span style={{ fontSize: '9px', color: colors.muted }}>
+                {agentMessages.length} messages
+              </span>
+            </div>
+          </div>
+
+          {/* Chat Messages */}
+          <div style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '8px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px'
+          }}>
+            {agentMessages.map((message) => (
+              <div key={message.id} style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: message.type === 'user' ? 'flex-end' : 'flex-start'
+              }}>
+                <div style={{
+                  maxWidth: '85%',
+                  padding: '8px 12px',
+                  borderRadius: '12px',
+                  background: message.type === 'user'
+                    ? `linear-gradient(135deg, ${colors.success}20, ${colors.success}30)`
+                    : `linear-gradient(135deg, ${colors.variable}20, ${colors.variable}30)`,
+                  border: `1px solid ${message.type === 'user' ? colors.success : colors.variable}40`,
+                  fontSize: '11px',
+                  lineHeight: '1.4',
+                  wordBreak: 'break-word'
+                }}>
+                  {message.isProcessing ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: colors.muted }}>
+                      <div style={{
+                        width: '4px',
+                        height: '4px',
+                        background: colors.variable,
+                        borderRadius: '50%',
+                        animation: 'pulse 1s infinite'
+                      }} />
+                      <span style={{ fontStyle: 'italic' }}>RAVEN is thinking...</span>
+                    </div>
+                  ) : (
+                    <span style={{
+                      color: message.type === 'user' ? colors.primary : colors.primary,
+                      whiteSpace: 'pre-wrap'
+                    }}>
+                      {message.content}
+                    </span>
+                  )}
+                </div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  marginTop: '2px',
+                  fontSize: '9px',
+                  color: colors.muted
+                }}>
+                  <span style={{ color: message.type === 'user' ? colors.success : colors.variable }}>
+                    {message.type === 'user' ? Icons.user : Icons.agent}
+                  </span>
+                  <span>{Icons.clock}</span>
+                  <span>{formatTimestamp(message.timestamp)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Chat Input */}
+          <div style={{
+            borderTop: `1px solid ${colors.border}`,
+            padding: '8px',
+            display: 'flex',
+            gap: '6px',
+            alignItems: 'flex-end'
+          }}>
+            <textarea
+              value={agentInput}
+              onChange={(e) => setAgentInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  sendAgentMessage();
+                }
+              }}
+              placeholder="Ask RAVEN anything about coding..."
               style={{
+                flex: 1,
                 background: colors.bg,
                 border: `1px solid ${colors.border}`,
-                borderRadius: '4px',
-                padding: '4px 8px',
+                borderRadius: '6px',
+                padding: '6px 8px',
                 color: colors.primary,
-                fontSize: '10px',
-                cursor: 'pointer'
-              }}
-            >
-              Analyze
-            </button>
-          </div>
-          <div style={{ flex: 1, position: 'relative' }}>
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              padding: '14px',
-              overflowY: 'auto',
-              fontSize: '12px',
-              lineHeight: '1.5',
-              fontFamily: 'monospace',
-              pointerEvents: 'none'
-            }}>
-              {practiceCode ? highlightCode(practiceCode, language) : (
-                <span style={{ color: colors.muted }}>// Practice {languages.find(l => l.id === language)?.name} here...</span>
-              )}
-            </div>
-            <textarea
-              value={practiceCode}
-              onChange={(e) => setPracticeCode(e.target.value)}
-              spellCheck={false}
-              style={{
-                width: '100%',
-                height: '100%',
-                background: 'transparent',
-                border: 'none',
-                padding: '14px',
-                color: 'transparent',
-                caretColor: colors.primary,
-                fontSize: '12px',
-                lineHeight: '1.5',
+                fontSize: '11px',
+                lineHeight: '1.3',
                 resize: 'none',
                 outline: 'none',
-                fontFamily: 'monospace',
-                position: 'relative',
-                zIndex: 1
+                minHeight: '20px',
+                maxHeight: '60px',
+                fontFamily: 'inherit'
               }}
+              rows={1}
             />
+            <button
+              onClick={sendAgentMessage}
+              disabled={!agentInput.trim() || isAgentProcessing}
+              style={{
+                background: agentInput.trim() && !isAgentProcessing
+                  ? `linear-gradient(135deg, ${colors.success}, ${colors.success}DD)`
+                  : colors.bg,
+                border: `1px solid ${colors.border}`,
+                borderRadius: '6px',
+                padding: '6px 8px',
+                color: agentInput.trim() && !isAgentProcessing ? '#000' : colors.muted,
+                cursor: agentInput.trim() && !isAgentProcessing ? 'pointer' : 'not-allowed',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {Icons.send}
+            </button>
           </div>
         </div>
       </div>
