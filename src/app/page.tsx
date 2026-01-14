@@ -24,6 +24,12 @@ export default function Home() {
   const [pageVisible, setPageVisible] = useState(true);
 
   useEffect(() => {
+    // Session Token Generation
+    if (typeof window !== 'undefined' && !sessionStorage.getItem('raven-session')) {
+      const sessionToken = crypto.randomUUID() + '-' + Date.now();
+      sessionStorage.setItem('raven-session', sessionToken);
+    }
+
     // Always show cover page first, regardless of previous boot status
     // Users must click cover page to enter the app
   }, []);
