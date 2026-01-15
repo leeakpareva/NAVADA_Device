@@ -392,66 +392,124 @@ const languages = [
 ];
 
 // Language Dictionary
-const languageDictionary: Record<string, Record<string, string>> = {
+const languageDictionary: Record<string, Record<string, { code: string; explanation: string }>> = {
   python: {
-    'Variables': 'x = 10  # No type declaration needed',
-    'Functions': 'def greet(name):\n    return f"Hello {name}"',
-    'Lists': 'items = [1, 2, 3]\nitems.append(4)',
-    'Dictionaries': 'person = {"name": "Lee", "age": 30}',
-    'Loops': 'for item in items:\n    print(item)',
-    'Conditionals': 'if x > 5:\n    print("big")\nelif x > 0:\n    print("small")',
-    'Classes': 'class Dog:\n    def __init__(self, name):\n        self.name = name',
-    'List Comprehension': 'squares = [x**2 for x in range(10)]',
-    'Try/Except': 'try:\n    risky()\nexcept Exception as e:\n    print(e)',
-    'Lambda': 'double = lambda x: x * 2',
+    'Variables (Storage Box)': {
+      code: 'age = 10\nname = "Alice"\nis_happy = True',
+      explanation: '📦 Variables are like labeled boxes that store things. You put a value in the box and give it a name so you can find it later!'
+    },
+    'Functions (Recipe)': {
+      code: 'def make_greeting(name):\n    return f"Hello {name}!"',
+      explanation: '📖 Functions are like recipes! You give them ingredients (inputs), they follow steps, and give you back something yummy (output)!'
+    },
+    'Lists (Backpack)': {
+      code: 'toys = ["car", "doll", "lego"]\ntoys.append("puzzle")  # Add one more',
+      explanation: '🎒 Lists are like backpacks - you can put many things in them, add more things, or take things out in order!'
+    },
+    'Loops (Repeat Machine)': {
+      code: 'for i in range(5):\n    print(f"Jump {i+1}!")',
+      explanation: '🔄 Loops repeat things! Like jumping 5 times - the computer does the same thing over and over without you typing it many times!'
+    },
+    'If/Else (Decision Maker)': {
+      code: 'age = 10\nif age >= 13:\n    print("You can watch PG-13")\nelse:\n    print("Ask a parent")',
+      explanation: '🤔 If/Else helps the computer make choices - like "IF it\'s raining, bring umbrella, ELSE wear sunglasses"!'
+    },
+    'Dictionaries (Phone Book)': {
+      code: 'friends = {\n    "Sam": "555-1234",\n    "Alex": "555-5678"\n}',
+      explanation: '📞 Dictionaries are like phone books - you look up a name (key) to find their number (value)!'
+    },
   },
   javascript: {
-    'Variables': 'const x = 10;  // immutable\nlet y = 20;    // mutable',
-    'Functions': 'function greet(name) {\n  return `Hello ${name}`;\n}',
-    'Arrow Functions': 'const greet = (name) => `Hello ${name}`;',
-    'Arrays': 'const items = [1, 2, 3];\nitems.push(4);',
-    'Objects': 'const person = { name: "Lee", age: 30 };',
-    'Loops': 'for (const item of items) {\n  console.log(item);\n}',
-    'Conditionals': 'if (x > 5) {\n  console.log("big");\n} else {\n  console.log("small");\n}',
-    'Classes': 'class Dog {\n  constructor(name) {\n    this.name = name;\n  }\n}',
-    'Promises': 'fetch(url)\n  .then(res => res.json())\n  .catch(err => console.log(err));',
-    'Async/Await': 'async function getData() {\n  const res = await fetch(url);\n  return res.json();\n}',
+    'Variables (Storage Box)': {
+      code: 'let age = 10;  // Can change\nconst name = "Alice";  // Cannot change',
+      explanation: '📦 Variables store things! "let" is like a pencil (can erase), "const" is like a pen (permanent)!'
+    },
+    'Functions (Recipe)': {
+      code: 'function makeGreeting(name) {\n  return `Hello ${name}!`;\n}',
+      explanation: '📖 Functions are like recipes! Give them ingredients, they follow the steps, and return something yummy!'
+    },
+    'Arrays (Backpack)': {
+      code: 'const toys = ["car", "doll", "lego"];\ntoys.push("puzzle");  // Add one more',
+      explanation: '🎒 Arrays are like backpacks - you can put many things in them and take them out when needed!'
+    },
+    'Loops (Repeat Machine)': {
+      code: 'for (let i = 1; i <= 5; i++) {\n  console.log(`Jump ${i}!`);\n}',
+      explanation: '🔄 Loops make the computer repeat things - like doing 5 jumping jacks without writing the code 5 times!'
+    },
+    'If/Else (Decision Maker)': {
+      code: 'const age = 10;\nif (age >= 13) {\n  console.log("You can watch PG-13");\n} else {\n  console.log("Ask a parent");\n}',
+      explanation: '🤔 If/Else is how computers make choices - like choosing what to wear based on the weather!'
+    },
+    'Objects (Treasure Chest)': {
+      code: 'const pet = {\n  name: "Fluffy",\n  type: "cat",\n  age: 3\n};',
+      explanation: '💎 Objects are like treasure chests with labeled compartments - each label (key) has its own treasure (value)!'
+    },
   },
   typescript: {
-    'Type Annotations': 'let name: string = "Lee";\nlet age: number = 30;',
-    'Interfaces': 'interface Person {\n  name: string;\n  age: number;\n}',
-    'Type Aliases': 'type ID = string | number;',
-    'Functions': 'function greet(name: string): string {\n  return `Hello ${name}`;\n}',
-    'Generics': 'function identity<T>(arg: T): T {\n  return arg;\n}',
-    'Arrays': 'const items: number[] = [1, 2, 3];',
-    'Optional Props': 'interface Config {\n  name: string;\n  debug?: boolean;\n}',
-    'Union Types': 'let value: string | number;',
-    'Enums': 'enum Status {\n  Active,\n  Inactive\n}',
-    'Classes': 'class Dog {\n  constructor(public name: string) {}\n}',
+    'Types (Label Maker)': {
+      code: 'let age: number = 10;\nlet name: string = "Alice";\nlet isHappy: boolean = true;',
+      explanation: '🏷️ Types are like labels that say what kind of thing goes in each box - numbers, words, or yes/no values!'
+    },
+    'Interfaces (Blueprint)': {
+      code: 'interface Pet {\n  name: string;\n  age: number;\n  type: "cat" | "dog";\n}',
+      explanation: '📐 Interfaces are blueprints that say exactly what pieces something needs - like LEGO instructions!'
+    },
+    'Functions with Types': {
+      code: 'function add(a: number, b: number): number {\n  return a + b;\n}',
+      explanation: '🧮 Typed functions promise what kind of ingredients they need and what they\'ll give back - no surprises!'
+    },
+    'Arrays with Types': {
+      code: 'const scores: number[] = [95, 87, 92];\nconst names: string[] = ["Alice", "Bob"];',
+      explanation: '📚 Typed arrays are like labeled shelves - number shelf only holds numbers, book shelf only holds books!'
+    },
+    'Optional Properties': {
+      code: 'interface Player {\n  name: string;\n  score: number;\n  nickname?: string;  // Optional\n}',
+      explanation: '✨ The ? means optional - like having a middle name, some people have one, some don\'t!'
+    },
   },
   java: {
-    'Variables': 'int x = 10;\nString name = "Lee";',
-    'Methods': 'public String greet(String name) {\n  return "Hello " + name;\n}',
-    'Arrays': 'int[] nums = {1, 2, 3};\nArrayList<Integer> list = new ArrayList<>();',
-    'Loops': 'for (int i = 0; i < 10; i++) {\n  System.out.println(i);\n}',
-    'For-Each': 'for (String item : items) {\n  System.out.println(item);\n}',
-    'Classes': 'public class Dog {\n  private String name;\n  public Dog(String name) {\n    this.name = name;\n  }\n}',
-    'Interfaces': 'public interface Animal {\n  void speak();\n}',
-    'Try/Catch': 'try {\n  risky();\n} catch (Exception e) {\n  e.printStackTrace();\n}',
-    'Inheritance': 'public class Puppy extends Dog {\n  // inherits from Dog\n}',
-    'Static': 'public static void main(String[] args) {\n  // entry point\n}',
+    'Variables (Labeled Boxes)': {
+      code: 'int age = 10;  // Whole numbers only\nString name = "Alice";  // Text only\nboolean isHappy = true;  // Yes/No only',
+      explanation: '📦 Java is very organized! Each box (variable) has a strict label saying exactly what type of thing can go inside!'
+    },
+    'Methods (Recipe Cards)': {
+      code: 'public String makeGreeting(String name) {\n  return "Hello " + name + "!";\n}',
+      explanation: '📖 Methods are like recipe cards that say what ingredients they need and what dish they make!'
+    },
+    'Loops (Repeat Machine)': {
+      code: 'for (int i = 1; i <= 5; i++) {\n  System.out.println("Jump " + i);\n}',
+      explanation: '🔄 Loops are like telling someone "do 5 jumping jacks" - the computer counts and repeats!'
+    },
+    'Classes (Cookie Cutters)': {
+      code: 'public class Dog {\n  String name;\n  int age;\n  \n  public void bark() {\n    System.out.println("Woof!");\n  }\n}',
+      explanation: '🍪 Classes are like cookie cutters - you make the shape once, then use it to make many cookies (objects)!'
+    },
+    'Arrays (Egg Cartons)': {
+      code: 'int[] scores = {95, 87, 92};\nString[] friends = {"Sam", "Alex", "Pat"};',
+      explanation: '🥚 Arrays are like egg cartons - they have a fixed number of spots, and each spot holds the same type of thing!'
+    },
   },
   sql: {
-    'SELECT': 'SELECT name, age FROM users\nWHERE age > 18;',
-    'INSERT': 'INSERT INTO users (name, age)\nVALUES ("Lee", 30);',
-    'UPDATE': 'UPDATE users\nSET age = 31\nWHERE name = "Lee";',
-    'DELETE': 'DELETE FROM users\nWHERE age < 18;',
-    'JOIN': 'SELECT * FROM orders\nJOIN users ON orders.user_id = users.id;',
-    'GROUP BY': 'SELECT country, COUNT(*)\nFROM users\nGROUP BY country;',
-    'ORDER BY': 'SELECT * FROM users\nORDER BY age DESC;',
-    'WHERE Clauses': 'WHERE age > 18 AND country = "UK"\nWHERE name LIKE "L%"',
-    'Aggregates': 'SELECT COUNT(*), AVG(age), MAX(salary)\nFROM employees;',
-    'CREATE TABLE': 'CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(100)\n);',
+    'SELECT (Finder)': {
+      code: 'SELECT name, age \nFROM students \nWHERE age >= 10;',
+      explanation: '🔍 SELECT is like asking "Show me all students who are 10 or older" - it finds and shows information!'
+    },
+    'INSERT (Adder)': {
+      code: 'INSERT INTO students (name, age) \nVALUES ("Alice", 10);',
+      explanation: '➕ INSERT adds new information - like adding a new friend to your contact list!'
+    },
+    'UPDATE (Changer)': {
+      code: 'UPDATE students \nSET age = 11 \nWHERE name = "Alice";',
+      explanation: '✏️ UPDATE changes existing information - like updating your age on your birthday!'
+    },
+    'DELETE (Eraser)': {
+      code: 'DELETE FROM students \nWHERE graduated = true;',
+      explanation: '🗑️ DELETE removes information - like erasing names from a list when they\'re no longer needed!'
+    },
+    'Tables (Spreadsheets)': {
+      code: 'CREATE TABLE students (\n  id INT,\n  name VARCHAR(50),\n  age INT\n);',
+      explanation: '📊 Tables are like spreadsheets with rows and columns - each row is a person, each column is info about them!'
+    },
   },
 };
 
@@ -587,6 +645,7 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
   const [isAgentProcessing, setIsAgentProcessing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showColorLegend, setShowColorLegend] = useState(false);
+  const [showThemeDropdown, setShowThemeDropdown] = useState(false);
   const [showDictionary, setShowDictionary] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
@@ -611,6 +670,22 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
         clearTimeout(streamIntervalRef.current);
       }
     };
+  }, []);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-dropdown-theme]')) {
+        setShowThemeDropdown(false);
+      }
+      if (!target.closest('[data-dropdown-dictionary]')) {
+        setShowDictionary(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
   // Save chat history to localStorage when it changes
@@ -723,17 +798,17 @@ ${contextAwareInput}
 
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
-🌍 **REAL-WORLD ANALOGY**
+🌍 REAL-WORLD ANALOGY
 - Compare the programming concept to something familiar from everyday life
 - Explain why this comparison helps understand the code logic
 - Connect abstract programming ideas to tangible examples
 
-🧠 **LEARNING OBJECTIVES**
+🧠 LEARNING OBJECTIVES
 - What programming concepts will this teach?
 - Which skills will the reader develop?
 - What knowledge can be applied to other projects?
 
-💻 **THE CODE SOLUTION**
+💻 THE CODE SOLUTION
 Generate complete, working ${lang} code with EXTENSIVE EDUCATIONAL COMMENTS:
 
 EVERY SINGLE FUNCTION, LOOP, CONDITIONAL, AND MAJOR CODE BLOCK must include these four comment lines:
@@ -755,61 +830,61 @@ IMPORTANT: Apply these comments to EVERY:
 - Algorithm implementation
 - Data structure operation
 
-🔍 **STEP-BY-STEP BREAKDOWN**
+🔍 STEP-BY-STEP BREAKDOWN
 For each major section of code:
-1. **Purpose**: What does this part do?
-2. **Input**: What data goes in?
-3. **Process**: How is the data transformed?
-4. **Output**: What comes out?
-5. **Concept**: What programming principle is demonstrated?
+1. Purpose: What does this part do?
+2. Input: What data goes in?
+3. Process: How is the data transformed?
+4. Output: What comes out?
+5. Concept: What programming principle is demonstrated?
 
-🏗️ **ARCHITECTURE EXPLANATION**
+🏗️ ARCHITECTURE EXPLANATION
 - Overall code structure and organization
 - How different parts work together
 - Design patterns or principles used
 - Scalability and maintainability considerations
 
-📖 **BEGINNER TO ADVANCED BREAKDOWN**
-- **Beginner Level**: Basic concepts a new programmer should understand
-- **Intermediate Level**: More complex ideas and their applications
-- **Advanced Level**: Sophisticated techniques and optimizations
+📖 BEGINNER TO ADVANCED BREAKDOWN
+- Beginner Level: Basic concepts a new programmer should understand
+- Intermediate Level: More complex ideas and their applications
+- Advanced Level: Sophisticated techniques and optimizations
 
-💡 **ALTERNATIVE APPROACHES**
+💡 ALTERNATIVE APPROACHES
 - Show 2-3 different ways to solve the same problem
 - Compare pros/cons of each approach
 - Explain when to use each method
 
-🧪 **PRACTICAL EXAMPLES**
+🧪 PRACTICAL EXAMPLES
 - Provide 2-3 specific use cases where this code would be valuable
 - Show how to modify the code for different scenarios
 - Demonstrate edge cases and how to handle them
 
-🔧 **DEBUGGING & TROUBLESHOOTING**
+🔧 DEBUGGING & TROUBLESHOOTING
 - Common errors beginners might encounter
 - How to test and verify the code works
 - Tips for debugging and problem-solving
 
-🌟 **BEST PRACTICES DEMONSTRATED**
+🌟 BEST PRACTICES DEMONSTRATED
 - Code organization and readability
 - Error handling and validation
 - Performance considerations
 - Security implications (if applicable)
 
-🚀 **NEXT STEPS & EXTENSIONS**
+🚀 NEXT STEPS & EXTENSIONS
 - How to expand this code further
 - Related concepts to explore
 - Suggested practice exercises
 - Advanced features to add
 
-📚 **COMPREHENSIVE SUMMARY**
-- **Key Programming Concepts Learned**: List all major concepts covered
-- **Skills Developed**: What abilities were gained from this exercise
-- **Real-World Applications**: Where this knowledge applies in professional development
-- **Foundation for Future Learning**: What advanced topics this prepares you for
-- **Practice Recommendations**: Suggested exercises to reinforce learning
-- **Related Technologies**: Connected tools, frameworks, or languages to explore
+📚 COMPREHENSIVE SUMMARY
+- Key Programming Concepts Learned: List all major concepts covered
+- Skills Developed: What abilities were gained from this exercise
+- Real-World Applications: Where this knowledge applies in professional development
+- Foundation for Future Learning: What advanced topics this prepares you for
+- Practice Recommendations: Suggested exercises to reinforce learning
+- Related Technologies: Connected tools, frameworks, or languages to explore
 
-🎯 **LEARNING CHECKPOINT**
+🎯 LEARNING CHECKPOINT
 End with 3-5 questions the reader should be able to answer after studying this code to test their understanding.`,
 
       explain: `You are RAVEN, an expert code analysis instructor. Provide comprehensive educational explanation of this ${lang} code:
@@ -819,63 +894,63 @@ ${contextAwareInput}
 
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
-📋 **CODE OVERVIEW & PURPOSE**
-- **Primary Functionality**: What this code accomplishes
-- **Problem Domain**: What real-world problem this solves
-- **Use Cases**: Where and when you'd use this in production
-- **Code Quality**: Initial assessment of structure and style
+📋 CODE OVERVIEW & PURPOSE
+-Primary Functionality: What this code accomplishes
+-Problem Domain: What real-world problem this solves
+-Use Cases: Where and when you'd use this in production
+-Code Quality: Initial assessment of structure and style
 
-🧠 **LEARNING OBJECTIVES**
-- **Programming Concepts**: What you'll learn by studying this code
-- **Skills Development**: Abilities gained from understanding this implementation
-- **Knowledge Transfer**: How this applies to other programming challenges
+🧠 LEARNING OBJECTIVES
+-Programming Concepts: What you'll learn by studying this code
+-Skills Development: Abilities gained from understanding this implementation
+-Knowledge Transfer: How this applies to other programming challenges
 
-🏗️ **ARCHITECTURE & DESIGN ANALYSIS**
-- **Overall Structure**: How the code is organized and why
-- **Design Patterns**: Recognized software engineering patterns used
-- **Data Flow**: How information moves through the system
-- **Dependencies**: External libraries or modules used and their purposes
+🏗️ ARCHITECTURE & DESIGN ANALYSIS
+-Overall Structure: How the code is organized and why
+-Design Patterns: Recognized software engineering patterns used
+-Data Flow: How information moves through the system
+-Dependencies: External libraries or modules used and their purposes
 
-🔍 **LINE-BY-LINE EDUCATIONAL BREAKDOWN**
+🔍 LINE-BY-LINE EDUCATIONAL BREAKDOWN
 For each significant section, provide:
-- **What It Does**: Plain English explanation
-- **How It Works**: Technical implementation details
-- **Why It's Written This Way**: Design decisions and alternatives
-- **Concepts Demonstrated**: Programming principles shown
+-What It Does: Plain English explanation
+-How It Works: Technical implementation details
+-Why It's Written This Way: Design decisions and alternatives
+-Concepts Demonstrated: Programming principles shown
 
-💡 **KEY INSIGHTS & BEST PRACTICES**
-- **Smart Design Choices**: What the code does well
-- **Potential Improvements**: Areas that could be enhanced
-- **Learning Points**: Important takeaways for a programmer
-- **Common Pitfalls**: What to avoid when writing similar code
+💡 KEY INSIGHTS & BEST PRACTICES
+-Smart Design Choices: What the code does well
+-Potential Improvements: Areas that could be enhanced
+-Learning Points: Important takeaways for a programmer
+-Common Pitfalls: What to avoid when writing similar code
 
-🌍 **REAL-WORLD CONNECTIONS**
-- **Industry Applications**: Where you'd see this in professional development
-- **Similar Patterns**: Other places these techniques appear
-- **Scalability Considerations**: How this approach handles growth
+🌍 REAL-WORLD CONNECTIONS
+-Industry Applications: Where you'd see this in professional development
+-Similar Patterns: Other places these techniques appear
+-Scalability Considerations: How this approach handles growth
 
-📖 **EDUCATIONAL LAYERS**
-- **For Beginners**: Fundamental concepts to grasp first
-- **For Intermediate Developers**: Deeper technical understanding
-- **For Advanced Programmers**: Optimization and architectural insights
+📖 EDUCATIONAL LAYERS
+-For Beginners: Fundamental concepts to grasp first
+-For Intermediate Developers: Deeper technical understanding
+-For Advanced Programmers: Optimization and architectural insights
 
-🧪 **EXPERIMENTATION SUGGESTIONS**
-- **Modifications to Try**: Changes to better understand the code
-- **Test Cases to Write**: How to verify the code works
-- **Extensions to Build**: Features you could add for practice
+🧪 EXPERIMENTATION SUGGESTIONS
+-Modifications to Try: Changes to better understand the code
+-Test Cases to Write: How to verify the code works
+-Extensions to Build: Features you could add for practice
 
-🚀 **LEARNING EXTENSIONS**
-- **Related Topics**: What to study next
-- **Similar Problems**: Other challenges using these concepts
-- **Advanced Techniques**: Higher-level approaches to explore
+🚀 LEARNING EXTENSIONS
+-Related Topics: What to study next
+-Similar Problems: Other challenges using these concepts
+-Advanced Techniques: Higher-level approaches to explore
 
-📚 **COMPREHENSIVE SUMMARY**
-- **Core Concepts Mastered**: Essential programming principles learned
-- **Technical Skills Gained**: Specific abilities developed
-- **Problem-Solving Patterns**: Reusable approaches for other projects
-- **Professional Relevance**: How this knowledge applies in the workplace
+📚 COMPREHENSIVE SUMMARY
+-Core Concepts Mastered: Essential programming principles learned
+-Technical Skills Gained: Specific abilities developed
+-Problem-Solving Patterns: Reusable approaches for other projects
+-Professional Relevance: How this knowledge applies in the workplace
 
-🎯 **UNDERSTANDING CHECK**
+🎯 UNDERSTANDING CHECK
 End with 3-5 questions to verify comprehension of the code's functionality and design principles.`,
 
       debug: `You are RAVEN, an expert debugging instructor. Analyze and fix this ${lang} code with comprehensive educational guidance:
@@ -885,69 +960,69 @@ ${contextAwareInput}
 
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
-🔍 **INITIAL DIAGNOSTIC ANALYSIS**
-- **Symptoms**: What problems are visible in the code
-- **Error Types**: Classification of issues (syntax, logic, runtime, design)
-- **Impact Assessment**: What breaks when this code runs
-- **Root Cause Hypothesis**: Initial theories about the problems
+🔍 INITIAL DIAGNOSTIC ANALYSIS
+-Symptoms: What problems are visible in the code
+-Error Types: Classification of issues (syntax, logic, runtime, design)
+-Impact Assessment: What breaks when this code runs
+-Root Cause Hypothesis: Initial theories about the problems
 
-🧠 **DEBUGGING METHODOLOGY**
-- **Systematic Approach**: Step-by-step debugging process
-- **Tools & Techniques**: Professional debugging methods to apply
-- **Mental Model**: How to think about finding and fixing bugs
-- **Common Patterns**: Recognizing typical error patterns
+🧠 DEBUGGING METHODOLOGY
+-Systematic Approach: Step-by-step debugging process
+-Tools & Techniques: Professional debugging methods to apply
+-Mental Model: How to think about finding and fixing bugs
+-Common Patterns: Recognizing typical error patterns
 
-🛠️ **DETAILED FIX IMPLEMENTATION**
+🛠️ DETAILED FIX IMPLEMENTATION
 For each bug found:
-1. **Bug Description**: What's wrong and why it's a problem
-2. **Root Cause**: The underlying reason for the error
-3. **The Fix**: Corrected code with explanations
-4. **Prevention Strategy**: How to avoid this bug in future
+1.Bug Description: What's wrong and why it's a problem
+2.Root Cause: The underlying reason for the error
+3.The Fix: Corrected code with explanations
+4.Prevention Strategy: How to avoid this bug in future
 
-💻 **CORRECTED CODE SOLUTION**
+💻 CORRECTED CODE SOLUTION
 Provide the fully debugged, working code with:
 - Comments explaining each fix
 - Improved error handling
 - Better code structure
 - Enhanced readability
 
-🧪 **TESTING & VERIFICATION**
-- **Test Cases**: Specific inputs to verify fixes work
-- **Edge Cases**: Boundary conditions to check
-- **Regression Testing**: Ensuring fixes don't break other parts
-- **Performance Impact**: How fixes affect code efficiency
+🧪 TESTING & VERIFICATION
+-Test Cases: Specific inputs to verify fixes work
+-Edge Cases: Boundary conditions to check
+-Regression Testing: Ensuring fixes don't break other parts
+-Performance Impact: How fixes affect code efficiency
 
-💡 **DEBUGGING LESSONS**
-- **Key Takeaways**: Important debugging principles learned
-- **Pattern Recognition**: How to spot similar bugs quickly
-- **Tool Usage**: When and how to use debugging tools
-- **Problem-Solving Skills**: Systematic thinking development
+💡 DEBUGGING LESSONS
+-Key Takeaways: Important debugging principles learned
+-Pattern Recognition: How to spot similar bugs quickly
+-Tool Usage: When and how to use debugging tools
+-Problem-Solving Skills: Systematic thinking development
 
-🛡️ **PREVENTIVE MEASURES**
-- **Coding Standards**: Best practices to prevent these bugs
-- **Code Review Points**: What to check before committing
-- **Testing Strategies**: How to catch bugs early
-- **Documentation**: Comments and docs to prevent confusion
+🛡️ PREVENTIVE MEASURES
+-Coding Standards: Best practices to prevent these bugs
+-Code Review Points: What to check before committing
+-Testing Strategies: How to catch bugs early
+-Documentation: Comments and docs to prevent confusion
 
-📈 **SKILL DEVELOPMENT**
-- **Debugging Techniques Learned**: New troubleshooting methods
-- **Code Quality Improvements**: How to write more robust code
-- **Error Pattern Recognition**: Identifying common bug types
-- **Professional Practices**: Industry-standard debugging approaches
+📈 SKILL DEVELOPMENT
+-Debugging Techniques Learned: New troubleshooting methods
+-Code Quality Improvements: How to write more robust code
+-Error Pattern Recognition: Identifying common bug types
+-Professional Practices: Industry-standard debugging approaches
 
-🚀 **ADVANCED DEBUGGING**
-- **Complex Scenarios**: Harder debugging challenges to tackle
-- **Tool Mastery**: Advanced debugger features to learn
-- **Performance Debugging**: Finding and fixing bottlenecks
-- **Production Debugging**: Techniques for live systems
+🚀 ADVANCED DEBUGGING
+-Complex Scenarios: Harder debugging challenges to tackle
+-Tool Mastery: Advanced debugger features to learn
+-Performance Debugging: Finding and fixing bottlenecks
+-Production Debugging: Techniques for live systems
 
-📚 **COMPREHENSIVE SUMMARY**
-- **Bugs Fixed**: Complete list of issues resolved
-- **Techniques Applied**: Debugging methods used
-- **Skills Developed**: Abilities gained from this exercise
-- **Knowledge Gained**: Concepts learned about code quality
+📚 COMPREHENSIVE SUMMARY
+-Bugs Fixed: Complete list of issues resolved
+-Techniques Applied: Debugging methods used
+- Skills Developed: Abilities gained from this exercise
+-Knowledge Gained: Concepts learned about code quality
 
-🎯 **DEBUGGING MASTERY CHECK**
+🎯 DEBUGGING MASTERY CHECK
 End with scenarios to test debugging skills and understanding of the fixes applied.`,
 
       optimize: `You are RAVEN, an expert performance optimization instructor. Optimize this ${lang} code with comprehensive educational guidance:
@@ -957,74 +1032,74 @@ ${contextAwareInput}
 
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
-📊 **PERFORMANCE ANALYSIS**
-- **Current Performance**: Baseline metrics and bottlenecks
-- **Big O Complexity**: Time and space complexity analysis
-- **Resource Usage**: Memory, CPU, and I/O patterns
-- **Scalability Issues**: Problems as data/load increases
+📊 PERFORMANCE ANALYSIS
+-Current Performance: Baseline metrics and bottlenecks
+-Big O Complexity: Time and space complexity analysis
+-Resource Usage: Memory, CPU, and I/O patterns
+-Scalability Issues: Problems as data/load increases
 
-🧠 **OPTIMIZATION STRATEGY**
-- **Prioritization**: Which optimizations matter most
-- **Trade-offs**: Balancing performance vs readability/maintainability
-- **Methodology**: Systematic approach to optimization
-- **Measurement**: How to benchmark improvements
+🧠 OPTIMIZATION STRATEGY
+-Prioritization: Which optimizations matter most
+-Trade-offs: Balancing performance vs readability/maintainability
+-Methodology: Systematic approach to optimization
+-Measurement: How to benchmark improvements
 
-💻 **OPTIMIZED CODE SOLUTION**
+💻 OPTIMIZED CODE SOLUTION
 Provide the performance-enhanced code with:
 - Detailed comments explaining each optimization
 - Before/after comparisons
 - Performance impact measurements
 - Trade-off explanations
 
-🔬 **OPTIMIZATION TECHNIQUES APPLIED**
+🔬 OPTIMIZATION TECHNIQUES APPLIED
 For each optimization:
-1. **Technique Name**: What optimization method is used
-2. **How It Works**: The mechanism behind the improvement
-3. **Performance Gain**: Expected speedup or resource savings
-4. **When to Use**: Appropriate scenarios for this technique
+1.Technique Name: What optimization method is used
+2.How It Works: The mechanism behind the improvement
+3.Performance Gain: Expected speedup or resource savings
+4.When to Use: Appropriate scenarios for this technique
 
-📈 **PERFORMANCE METRICS**
-- **Time Complexity**: From O(?) to O(?)
-- **Space Complexity**: Memory usage improvements
-- **Actual Benchmarks**: Real-world performance gains
-- **Scalability**: How it handles larger datasets
+📈 PERFORMANCE METRICS
+-Time Complexity: From O(?) to O(?)
+-Space Complexity: Memory usage improvements
+-Actual Benchmarks: Real-world performance gains
+-Scalability: How it handles larger datasets
 
-🧮 **ALGORITHMIC IMPROVEMENTS**
-- **Better Algorithms**: More efficient approaches
-- **Data Structure Changes**: Optimal structure selection
-- **Computational Shortcuts**: Mathematical optimizations
-- **Caching Strategies**: Memoization and result reuse
+🧮 ALGORITHMIC IMPROVEMENTS
+-Better Algorithms: More efficient approaches
+-Data Structure Changes: Optimal structure selection
+-Computational Shortcuts: Mathematical optimizations
+-Caching Strategies: Memoization and result reuse
 
-💡 **OPTIMIZATION INSIGHTS**
-- **Key Principles**: Fundamental optimization concepts
-- **Common Pitfalls**: Over-optimization and premature optimization
-- **Real-World Impact**: When these optimizations matter
-- **Best Practices**: Industry-standard approaches
+💡 OPTIMIZATION INSIGHTS
+-Key Principles: Fundamental optimization concepts
+-Common Pitfalls: Over-optimization and premature optimization
+-Real-World Impact: When these optimizations matter
+-Best Practices: Industry-standard approaches
 
-🚀 **ADVANCED OPTIMIZATIONS**
-- **Parallel Processing**: Concurrent execution opportunities
-- **Async Operations**: Non-blocking improvements
-- **Memory Management**: Efficient resource handling
-- **System-Level**: OS and hardware optimizations
+🚀 ADVANCED OPTIMIZATIONS
+-Parallel Processing: Concurrent execution opportunities
+-Async Operations: Non-blocking improvements
+-Memory Management: Efficient resource handling
+-System-Level: OS and hardware optimizations
 
-📖 **EDUCATIONAL BREAKDOWN**
-- **Beginner Level**: Basic optimization concepts
-- **Intermediate Level**: Standard optimization techniques
-- **Advanced Level**: Sophisticated performance engineering
+📖 EDUCATIONAL BREAKDOWN
+- Beginner Level: Basic optimization concepts
+- Intermediate Level: Standard optimization techniques
+- Advanced Level: Sophisticated performance engineering
 
-🧪 **TESTING & BENCHMARKING**
-- **Performance Tests**: How to measure improvements
-- **Profiling Tools**: Professional performance analysis
-- **Benchmark Scenarios**: Representative test cases
-- **Regression Prevention**: Ensuring optimizations don't break functionality
+🧪 TESTING & BENCHMARKING
+-Performance Tests: How to measure improvements
+-Profiling Tools: Professional performance analysis
+-Benchmark Scenarios: Representative test cases
+-Regression Prevention: Ensuring optimizations don't break functionality
 
-📚 **COMPREHENSIVE SUMMARY**
-- **Optimizations Applied**: Complete list of improvements
-- **Performance Gains**: Quantified speed/resource improvements
-- **Concepts Learned**: Optimization principles mastered
-- **Skills Developed**: Performance engineering abilities gained
+📚 COMPREHENSIVE SUMMARY
+-Optimizations Applied: Complete list of improvements
+-Performance Gains: Quantified speed/resource improvements
+-Concepts Learned: Optimization principles mastered
+- Skills Developed: Performance engineering abilities gained
 
-🎯 **OPTIMIZATION MASTERY CHECK**
+🎯 OPTIMIZATION MASTERY CHECK
 End with challenges to test understanding of performance optimization principles and techniques.`,
 
       convert: `You are RAVEN, an expert programming language translation instructor. Convert this ${lang} code to ${targetLang} with comprehensive educational guidance:
@@ -1034,75 +1109,75 @@ ${contextAwareInput}
 
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
-🧠 **LANGUAGE COMPARISON OVERVIEW**
-- **Source Language (${lang})**: Key characteristics and paradigms
-- **Target Language (${targetLang})**: Key characteristics and paradigms
-- **Fundamental Differences**: Syntax, typing, execution model
-- **Conversion Challenges**: What makes this translation interesting
+🧠 LANGUAGE COMPARISON OVERVIEW
+-Source Language (${lang}): Key characteristics and paradigms
+-Target Language (${targetLang}): Key characteristics and paradigms
+-Fundamental Differences: Syntax, typing, execution model
+-Conversion Challenges: What makes this translation interesting
 
-📋 **CONVERSION STRATEGY**
-- **Mapping Approach**: How concepts translate between languages
-- **Idioms & Patterns**: Language-specific best practices
-- **Feature Availability**: What's available/missing in each language
-- **Design Adaptations**: Structural changes needed
+📋 CONVERSION STRATEGY
+-Mapping Approach: How concepts translate between languages
+-Idioms & Patterns: Language-specific best practices
+-Feature Availability: What's available/missing in each language
+-Design Adaptations: Structural changes needed
 
-💻 **CONVERTED CODE SOLUTION**
+💻 CONVERTED CODE SOLUTION
 Provide the complete ${targetLang} translation with:
 - Line-by-line mapping comments
 - Idiomatic ${targetLang} patterns
 - Language-specific optimizations
 - Equivalent functionality verification
 
-🔄 **TRANSLATION ANALYSIS**
+🔄 TRANSLATION ANALYSIS
 For each significant code section:
-1. **Original ${lang} Code**: What we're converting from
-2. **${targetLang} Translation**: The converted version
-3. **Translation Decisions**: Why specific choices were made
-4. **Language Differences**: How approaches differ
+1.Original ${lang} Code: What we're converting from
+2.${targetLang} Translation: The converted version
+3.Translation Decisions: Why specific choices were made
+4.Language Differences: How approaches differ
 
-🎯 **LANGUAGE-SPECIFIC FEATURES**
-- **${lang} Unique Features**: What doesn't translate directly
-- **${targetLang} Advantages**: Better ways to implement in target
-- **Workarounds**: Handling missing features
-- **Enhancements**: Improvements possible in ${targetLang}
+🎯 LANGUAGE-SPECIFIC FEATURES
+-${lang} Unique Features: What doesn't translate directly
+-${targetLang} Advantages: Better ways to implement in target
+-Workarounds: Handling missing features
+-Enhancements: Improvements possible in ${targetLang}
 
-💡 **CROSS-LANGUAGE INSIGHTS**
-- **Paradigm Shifts**: Different thinking required
-- **Performance Implications**: Speed/memory differences
-- **Ecosystem Differences**: Libraries and tools comparison
-- **Best Practice Variations**: Style guide differences
+💡 CROSS-LANGUAGE INSIGHTS
+-Paradigm Shifts: Different thinking required
+-Performance Implications: Speed/memory differences
+-Ecosystem Differences: Libraries and tools comparison
+-Best Practice Variations: Style guide differences
 
-📖 **EDUCATIONAL LAYERS**
-- **Syntax Translation**: Basic conversion rules
-- **Semantic Translation**: Preserving meaning and intent
-- **Idiomatic Translation**: Writing natural ${targetLang} code
-- **Optimized Translation**: Leveraging ${targetLang} strengths
+📖 EDUCATIONAL LAYERS
+-Syntax Translation: Basic conversion rules
+-Semantic Translation: Preserving meaning and intent
+-Idiomatic Translation: Writing natural ${targetLang} code
+-Optimized Translation: Leveraging ${targetLang} strengths
 
-🧪 **TESTING & VALIDATION**
-- **Functional Equivalence**: Verifying same behavior
-- **Performance Comparison**: Speed and resource usage
-- **Edge Case Handling**: Ensuring robust translation
-- **Testing Strategies**: Language-specific testing approaches
+🧪 TESTING & VALIDATION
+-Functional Equivalence: Verifying same behavior
+-Performance Comparison: Speed and resource usage
+-Edge Case Handling: Ensuring robust translation
+-Testing Strategies: Language-specific testing approaches
 
-🚀 **ADVANCED CONCEPTS**
-- **Design Pattern Translation**: Converting architectural patterns
-- **Concurrency Models**: Different threading/async approaches
-- **Memory Management**: GC vs manual vs RAII
-- **Type System Differences**: Static vs dynamic considerations
+🚀 ADVANCED CONCEPTS
+-Design Pattern Translation: Converting architectural patterns
+-Concurrency Models: Different threading/async approaches
+-Memory Management: GC vs manual vs RAII
+-Type System Differences: Static vs dynamic considerations
 
-🌟 **BEST PRACTICES**
-- **${targetLang} Conventions**: Following community standards
-- **Code Organization**: Language-appropriate structure
-- **Documentation Style**: Language-specific commenting
-- **Tool Integration**: Build systems and package managers
+🌟 BEST PRACTICES
+-${targetLang} Conventions: Following community standards
+-Code Organization: Language-appropriate structure
+-Documentation Style: Language-specific commenting
+-Tool Integration: Build systems and package managers
 
-📚 **COMPREHENSIVE SUMMARY**
-- **Translation Techniques**: Methods used for conversion
-- **Concepts Mastered**: Cross-language programming skills
-- **Language Proficiency**: Understanding gained of both languages
-- **Professional Applications**: When to use each language
+📚 COMPREHENSIVE SUMMARY
+-Translation Techniques: Methods used for conversion
+-Concepts Mastered: Cross-language programming skills
+-Language Proficiency: Understanding gained of both languages
+-Professional Applications: When to use each language
 
-🎯 **MULTI-LANGUAGE MASTERY CHECK**
+🎯 MULTI-LANGUAGE MASTERY CHECK
 End with exercises to test understanding of both languages and translation principles.`
     };
 
@@ -1195,22 +1270,22 @@ End with exercises to test understanding of both languages and translation princ
 
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
-🎯 **UNDERSTANDING THE REQUEST**
+🎯 UNDERSTANDING THE REQUEST
 - Break down what exactly needs to be built
 - Identify the core programming concepts involved
 - Explain the problem-solving approach
 
-🌍 **REAL-WORLD ANALOGY**
+🌍 REAL-WORLD ANALOGY
 - Compare the programming concept to something familiar from everyday life
 - Explain why this comparison helps understand the code logic
 - Connect abstract programming ideas to tangible examples
 
-🧠 **LEARNING OBJECTIVES**
+🧠 LEARNING OBJECTIVES
 - What programming concepts will this teach?
 - Which skills will the reader develop?
 - What knowledge can be applied to other projects?
 
-💻 **THE CODE SOLUTION**
+💻 THE CODE SOLUTION
 Generate complete, working ${lang} code with EXTENSIVE EDUCATIONAL COMMENTS:
 
 EVERY SINGLE FUNCTION, LOOP, CONDITIONAL, AND MAJOR CODE BLOCK must include these four comment lines:
@@ -1232,61 +1307,61 @@ IMPORTANT: Apply these comments to EVERY:
 - Algorithm implementation
 - Data structure operation
 
-🔍 **STEP-BY-STEP BREAKDOWN**
+🔍 STEP-BY-STEP BREAKDOWN
 For each major section of code:
-1. **Purpose**: What does this part do?
-2. **Input**: What data goes in?
-3. **Process**: How is the data transformed?
-4. **Output**: What comes out?
-5. **Concept**: What programming principle is demonstrated?
+1. Purpose: What does this part do?
+2. Input: What data goes in?
+3. Process: How is the data transformed?
+4. Output: What comes out?
+5. Concept: What programming principle is demonstrated?
 
-🏗️ **ARCHITECTURE EXPLANATION**
+🏗️ ARCHITECTURE EXPLANATION
 - Overall code structure and organization
 - How different parts work together
 - Design patterns or principles used
 - Scalability and maintainability considerations
 
-📖 **BEGINNER TO ADVANCED BREAKDOWN**
-- **Beginner Level**: Basic concepts a new programmer should understand
-- **Intermediate Level**: More complex ideas and their applications
-- **Advanced Level**: Sophisticated techniques and optimizations
+📖 BEGINNER TO ADVANCED BREAKDOWN
+- Beginner Level: Basic concepts a new programmer should understand
+- Intermediate Level: More complex ideas and their applications
+- Advanced Level: Sophisticated techniques and optimizations
 
-💡 **ALTERNATIVE APPROACHES**
+💡 ALTERNATIVE APPROACHES
 - Show 2-3 different ways to solve the same problem
 - Compare pros/cons of each approach
 - Explain when to use each method
 
-🧪 **PRACTICAL EXAMPLES**
+🧪 PRACTICAL EXAMPLES
 - Provide 2-3 specific use cases where this code would be valuable
 - Show how to modify the code for different scenarios
 - Demonstrate edge cases and how to handle them
 
-🔧 **DEBUGGING & TROUBLESHOOTING**
+🔧 DEBUGGING & TROUBLESHOOTING
 - Common errors beginners might encounter
 - How to test and verify the code works
 - Tips for debugging and problem-solving
 
-🌟 **BEST PRACTICES DEMONSTRATED**
+🌟 BEST PRACTICES DEMONSTRATED
 - Code organization and readability
 - Error handling and validation
 - Performance considerations
 - Security implications (if applicable)
 
-🚀 **NEXT STEPS & EXTENSIONS**
+🚀 NEXT STEPS & EXTENSIONS
 - How to expand this code further
 - Related concepts to explore
 - Suggested practice exercises
 - Advanced features to add
 
-📚 **COMPREHENSIVE SUMMARY**
-- **Key Programming Concepts Learned**: List all major concepts covered
-- **Skills Developed**: What abilities were gained from this exercise
-- **Real-World Applications**: Where this knowledge applies in professional development
-- **Foundation for Future Learning**: What advanced topics this prepares you for
-- **Practice Recommendations**: Suggested exercises to reinforce learning
-- **Related Technologies**: Connected tools, frameworks, or languages to explore
+📚 COMPREHENSIVE SUMMARY
+- Key Programming Concepts Learned: List all major concepts covered
+- Skills Developed: What abilities were gained from this exercise
+- Real-World Applications: Where this knowledge applies in professional development
+- Foundation for Future Learning: What advanced topics this prepares you for
+- Practice Recommendations: Suggested exercises to reinforce learning
+- Related Technologies: Connected tools, frameworks, or languages to explore
 
-🎯 **LEARNING CHECKPOINT**
+🎯 LEARNING CHECKPOINT
 End with 3-5 questions the reader should be able to answer after studying this code to test their understanding.`,
 
       explain: `You are RAVEN, an expert code analysis instructor. Provide comprehensive educational explanation of this ${lang} code:
@@ -1296,88 +1371,88 @@ ${contextAwareInput}
 
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
-📋 **CODE OVERVIEW & PURPOSE**
-- **Primary Functionality**: What this code accomplishes
-- **Problem Domain**: What real-world problem this solves
-- **Use Cases**: Where and when you'd use this in production
-- **Code Quality**: Initial assessment of structure and style
+📋 CODE OVERVIEW & PURPOSE
+-Primary Functionality: What this code accomplishes
+-Problem Domain: What real-world problem this solves
+-Use Cases: Where and when you'd use this in production
+-Code Quality: Initial assessment of structure and style
 
-🧠 **LEARNING OBJECTIVES**
-- **Programming Concepts**: What you'll learn by studying this code
-- **Skills Development**: Abilities gained from understanding this implementation
-- **Knowledge Transfer**: How this applies to other programming challenges
+🧠 LEARNING OBJECTIVES
+-Programming Concepts: What you'll learn by studying this code
+-Skills Development: Abilities gained from understanding this implementation
+-Knowledge Transfer: How this applies to other programming challenges
 
-🏗️ **ARCHITECTURE & DESIGN ANALYSIS**
-- **Overall Structure**: How the code is organized and why
-- **Design Patterns**: Recognized software engineering patterns used
-- **Data Flow**: How information moves through the system
-- **Architectural Decisions**: Why the code is structured this way
+🏗️ ARCHITECTURE & DESIGN ANALYSIS
+-Overall Structure: How the code is organized and why
+-Design Patterns: Recognized software engineering patterns used
+-Data Flow: How information moves through the system
+-Architectural Decisions: Why the code is structured this way
 
-🔍 **LINE-BY-LINE EDUCATIONAL BREAKDOWN**
+🔍 LINE-BY-LINE EDUCATIONAL BREAKDOWN
 For each significant section/function:
-- **📝 Purpose**: What this section accomplishes
-- **📥 Inputs**: Parameters, their types, and expected values
-- **⚙️ Process**: Step-by-step logic explanation
-- **📤 Outputs**: Return values and side effects
-- **🛡️ Error Handling**: How problems are managed
-- **💡 Programming Concept**: The principle being demonstrated
+-📝 Purpose: What this section accomplishes
+-📥 Inputs: Parameters, their types, and expected values
+-⚙️ Process: Step-by-step logic explanation
+-📤 Outputs: Return values and side effects
+-🛡️ Error Handling: How problems are managed
+-💡 Programming Concept: The principle being demonstrated
 
-⚙️ **TECHNICAL DEEP DIVE**
-- **Time Complexity**: Big O analysis with explanation
-- **Space Complexity**: Memory usage patterns
-- **Performance Characteristics**: Speed and efficiency analysis
-- **Memory Management**: How resources are handled
-- **Scalability**: How it performs with larger inputs
+⚙️ TECHNICAL DEEP DIVE
+-Time Complexity: Big O analysis with explanation
+-Space Complexity: Memory usage patterns
+-Performance Characteristics: Speed and efficiency analysis
+-Memory Management: How resources are handled
+-Scalability: How it performs with larger inputs
 
-🌍 **REAL-WORLD ANALOGY**
+🌍 REAL-WORLD ANALOGY
 - Compare the code logic to familiar everyday processes
 - Step-by-step parallel between code execution and real-world workflow
 - Why this analogy helps understand the programming concepts
 
-💻 **TECHNOLOGY & TOOLS ANALYSIS**
-- **Language Features**: Specific ${lang} capabilities utilized
-- **Libraries/Frameworks**: External tools and why they're chosen
-- **Platform Considerations**: Environment-specific aspects
-- **Dependencies**: What this code relies on
+💻 TECHNOLOGY & TOOLS ANALYSIS
+-Language Features: Specific ${lang} capabilities utilized
+-Libraries/Frameworks: External tools and why they're chosen
+-Platform Considerations: Environment-specific aspects
+-Dependencies: What this code relies on
 
-🔄 **EXECUTION FLOW VISUALIZATION**
-- **Step 1-N**: Trace through the code execution path
-- **Decision Points**: Where the code makes choices
-- **Loop Analysis**: How iterations work
-- **Function Calls**: How different parts interact
+🔄 EXECUTION FLOW VISUALIZATION
+-Step 1-N: Trace through the code execution path
+-Decision Points: Where the code makes choices
+-Loop Analysis: How iterations work
+-Function Calls: How different parts interact
 
-⚡ **OPTIMIZATION OPPORTUNITIES**
-- **Current Inefficiencies**: Areas that could be improved
-- **Performance Enhancements**: Specific optimization suggestions
-- **Alternative Approaches**: Different ways to solve the same problem
-- **Trade-offs**: Pros and cons of different implementation choices
+⚡ OPTIMIZATION OPPORTUNITIES
+-Current Inefficiencies: Areas that could be improved
+-Performance Enhancements: Specific optimization suggestions
+-Alternative Approaches: Different ways to solve the same problem
+-Trade-offs: Pros and cons of different implementation choices
 
-🔒 **SECURITY & BEST PRACTICES**
-- **Security Considerations**: Potential vulnerabilities or protections
-- **Code Quality Assessment**: Readability, maintainability, reliability
-- **${lang} Best Practices**: Language-specific conventions followed
-- **Professional Standards**: Industry-standard approaches demonstrated
+🔒 SECURITY & BEST PRACTICES
+-Security Considerations: Potential vulnerabilities or protections
+-Code Quality Assessment: Readability, maintainability, reliability
+-${lang} Best Practices: Language-specific conventions followed
+-Professional Standards: Industry-standard approaches demonstrated
 
 🎯 **EDUCATIONAL INSIGHTS**
-- **Design Principles**: Software engineering concepts demonstrated
-- **Problem-Solving Approach**: How the developer thought through the challenge
-- **Reusable Patterns**: Code structures you can apply elsewhere
-- **Common Pitfalls**: What this code avoids and how
+-Design Principles: Software engineering concepts demonstrated
+-Problem-Solving Approach: How the developer thought through the challenge
+-Reusable Patterns: Code structures you can apply elsewhere
+-Common Pitfalls: What this code avoids and how
 
-🚀 **LEARNING EXTENSIONS**
-- **Related Concepts**: Additional topics to explore
-- **Practice Exercises**: Suggested modifications to try
-- **Advanced Variations**: More complex implementations
-- **Real-World Applications**: Where you'd encounter similar code
+🚀 LEARNING EXTENSIONS
+-Related Concepts: Additional topics to explore
+-Practice Exercises: Suggested modifications to try
+-Advanced Variations: More complex implementations
+- Real-World Applications: Where you'd encounter similar code
 
 📚 **COMPREHENSIVE ANALYSIS SUMMARY**
-- **Key Programming Concepts Learned**: Complete list of principles covered
-- **Technical Skills Developed**: Specific abilities gained from this analysis
-- **Code Reading Skills**: How to approach understanding complex code
-- **Pattern Recognition**: Design patterns and structures identified
-- **Professional Applications**: How this knowledge applies in software development
-- **Foundation for Future Learning**: What advanced topics this prepares you for
-- **Code Quality Lessons**: Standards and practices demonstrated
+- Key Programming Concepts Learned: Complete list of principles covered
+-Technical Skills Developed: Specific abilities gained from this analysis
+-Code Reading Skills: How to approach understanding complex code
+-Pattern Recognition: Design patterns and structures identified
+-Professional Applications: How this knowledge applies in software development
+- Foundation for Future Learning: What advanced topics this prepares you for
+-Code Quality Lessons: Standards and practices demonstrated
 
 🎯 **CODE COMPREHENSION CHECK**
 End with 3-5 questions to test understanding of the code structure, logic, and underlying concepts.`,
@@ -1396,18 +1471,18 @@ FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
 🔴 **ISSUES FOUND**
 For each issue discovered:
-- **Issue #**: Brief description
-- **Location**: Where exactly in the code
-- **Type**: Syntax error, logic error, runtime error, etc.
-- **Severity**: Critical, Major, Minor
-- **Impact**: What happens when this error occurs
-- **Root Cause**: Why this error exists
+-Issue #: Brief description
+-Location: Where exactly in the code
+-Type: Syntax error, logic error, runtime error, etc.
+-Severity: Critical, Major, Minor
+-Impact: What happens when this error occurs
+-Root Cause: Why this error exists
 
-🧠 **DEBUGGING METHODOLOGY**
-- **Step 1**: How to identify this type of error
-- **Step 2**: Debugging tools and techniques to use
-- **Step 3**: Testing strategies to confirm the fix
-- **Professional Tip**: Industry best practices for this error type
+🧠 DEBUGGING METHODOLOGY
+-Step 1: How to identify this type of error
+-Step 2: Debugging tools and techniques to use
+-Step 3: Testing strategies to confirm the fix
+-Professional Tip: Industry best practices for this error type
 
 ✅ **FIXED CODE**
 Complete corrected ${lang} code with educational comments:
@@ -1419,36 +1494,36 @@ ${lang === 'python' ? `# 🔧 FIX: Explain what was changed and why
 // 📚 CONCEPT: Programming principle demonstrated`}
 
 🛡️ **PREVENTION STRATEGIES**
-- **Code Review Checklist**: What to look for to prevent these errors
-- **Testing Approaches**: How to catch these issues early
-- **Development Practices**: Coding habits that prevent these problems
-- **Tools & Linters**: Automated ways to detect similar issues
+-Code Review Checklist: What to look for to prevent these errors
+-Testing Approaches: How to catch these issues early
+-Development Practices: Coding habits that prevent these problems
+-Tools & Linters: Automated ways to detect similar issues
 
 🌍 **REAL-WORLD DEBUGGING ANALOGY**
 - Compare debugging process to detective work or medical diagnosis
 - Step-by-step parallel between code debugging and real-world problem-solving
 - Why systematic debugging approaches work better than random fixes
 
-🧪 **TESTING & VERIFICATION**
+🧪 TESTING & VERIFICATION
 - How to test that the fixes actually work
 - Edge cases to consider
 - Regression testing recommendations
 
 📈 **DEBUGGING SKILLS DEVELOPED**
-- **Pattern Recognition**: Types of errors to watch for
-- **Systematic Thinking**: Methodical debugging approach
-- **Tool Usage**: Debugging tools and techniques learned
-- **Prevention Mindset**: How to write more robust code
+-Pattern Recognition: Types of errors to watch for
+-Systematic Thinking: Methodical debugging approach
+-Tool Usage: Debugging tools and techniques learned
+-Prevention Mindset: How to write more robust code
 
 📚 **COMPREHENSIVE DEBUGGING SUMMARY**
-- **Errors Fixed**: Complete list of all issues resolved
-- **Debugging Techniques Used**: Methods and tools applied
-- **Key Learning Points**: Most important takeaways
-- **Prevention Strategies**: How to avoid similar issues
-- **Professional Growth**: Skills developed through this debugging session
-- **Advanced Debugging**: Next-level techniques to explore
+-Errors Fixed: Complete list of all issues resolved
+-Debugging Techniques Used: Methods and tools applied
+-Key Learning Points: Most important takeaways
+-Prevention Strategies: How to avoid similar issues
+-Professional Growth: Skills developed through this debugging session
+-Advanced Debugging: Next-level techniques to explore
 
-🎯 **DEBUGGING MASTERY CHECK**
+🎯 DEBUGGING MASTERY CHECK
 End with 3-5 questions to test understanding of the debugging process and prevention strategies.`,
 
       optimize: `You are RAVEN, an expert performance optimization instructor. Provide comprehensive optimization education for this ${lang} code:
@@ -1458,18 +1533,18 @@ ${contextAwareInput}
 
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
-📊 **PERFORMANCE ANALYSIS**
-- **Current Bottlenecks**: Identify slow or inefficient parts
-- **Time Complexity**: Current Big O notation analysis
-- **Space Complexity**: Memory usage assessment
-- **Resource Utilization**: CPU, memory, I/O analysis
-- **Scalability Issues**: How performance degrades with larger inputs
+📊 PERFORMANCE ANALYSIS
+-Current Bottlenecks: Identify slow or inefficient parts
+-Time Complexity: Current Big O notation analysis
+-Space Complexity: Memory usage assessment
+-Resource Utilization: CPU, memory, I/O analysis
+-Scalability Issues: How performance degrades with larger inputs
 
 🔬 **OPTIMIZATION METHODOLOGY**
-- **Profiling Approach**: How to measure performance scientifically
-- **Benchmarking Strategy**: Setting up proper performance tests
-- **Optimization Priorities**: Which improvements provide most benefit
-- **Trade-offs**: Performance vs readability vs maintainability
+-Profiling Approach: How to measure performance scientifically
+-Benchmarking Strategy: Setting up proper performance tests
+-Optimization Priorities: Which improvements provide most benefit
+-Trade-offs: Performance vs readability vs maintainability
 
 🚀 **OPTIMIZED CODE**
 Complete optimized ${lang} code with detailed educational comments:
@@ -1484,51 +1559,51 @@ ${lang === 'python' ? `# ⚡ OPTIMIZATION: Specific technique used and why
 
 📈 **PERFORMANCE IMPROVEMENTS**
 For each optimization made:
-- **Technique Used**: Specific optimization method
-- **Before vs After**: Concrete performance comparison
-- **Why It Works**: Computer science principles behind the improvement
-- **When to Use**: Scenarios where this optimization is beneficial
-- **When NOT to Use**: Cases where this optimization might backfire
+-Technique Used: Specific optimization method
+-Before vs After: Concrete performance comparison
+-Why It Works: Computer science principles behind the improvement
+-When to Use: Scenarios where this optimization is beneficial
+-When NOT to Use: Cases where this optimization might backfire
 
 🌍 **REAL-WORLD OPTIMIZATION ANALOGY**
 - Compare code optimization to optimizing traffic flow, factory assembly lines, or restaurant operations
 - Explain how efficiency principles apply across domains
 - Show how small improvements can compound into major gains
 
-🧮 **ALGORITHMIC IMPROVEMENTS**
-- **Algorithm Selection**: Why certain algorithms are faster
-- **Data Structure Choices**: How the right data structure improves performance
-- **Caching Strategies**: When and how to store computed results
-- **Lazy Loading**: Deferring expensive operations until needed
+🧮 ALGORITHMIC IMPROVEMENTS
+-Algorithm Selection: Why certain algorithms are faster
+-Data Structure Choices: How the right data structure improves performance
+-Caching Strategies: When and how to store computed results
+-Lazy Loading: Deferring expensive operations until needed
 
 🔧 **OPTIMIZATION TECHNIQUES DEMONSTRATED**
-- **Micro-optimizations**: Small code-level improvements
-- **Macro-optimizations**: Architecture and algorithm changes
-- **Memory Optimization**: Reducing memory footprint
-- **I/O Optimization**: Efficient data access patterns
+-Micro-optimizations: Small code-level improvements
+-Macro-optimizations: Architecture and algorithm changes
+-Memory Optimization: Reducing memory footprint
+-I/O Optimization: Efficient data access patterns
 
 ⚡ **ADVANCED OPTIMIZATION CONCEPTS**
-- **Parallel Processing**: Opportunities for concurrency
-- **Asynchronous Operations**: Non-blocking execution patterns
-- **Batch Processing**: Grouping operations for efficiency
-- **Resource Pooling**: Reusing expensive objects
+-Parallel Processing: Opportunities for concurrency
+-Asynchronous Operations: Non-blocking execution patterns
+-Batch Processing: Grouping operations for efficiency
+-Resource Pooling: Reusing expensive objects
 
 🎯 **OPTIMIZATION BEST PRACTICES**
-- **Measure First**: Always profile before optimizing
-- **Premature Optimization**: When NOT to optimize
-- **Maintainable Performance**: Keeping code readable while fast
-- **Documentation**: Recording optimization decisions and rationale
+-Measure First: Always profile before optimizing
+-Premature Optimization: When NOT to optimize
+-Maintainable Performance: Keeping code readable while fast
+-Documentation: Recording optimization decisions and rationale
 
 📚 **COMPREHENSIVE OPTIMIZATION SUMMARY**
-- **Performance Gains Achieved**: Quantified improvements
-- **Optimization Techniques Used**: Complete list of methods applied
-- **Computer Science Concepts**: Algorithms and data structures knowledge gained
-- **Professional Skills**: Performance analysis and optimization skills developed
-- **Scalability Improvements**: How the code now handles growth
-- **Future Optimization Opportunities**: Areas for continued improvement
-- **Industry Applications**: Where these optimization techniques are crucial
+-Performance Gains Achieved: Quantified improvements
+-Optimization Techniques Used: Complete list of methods applied
+-Computer Science Concepts: Algorithms and data structures knowledge gained
+-Professional Skills: Performance analysis and optimization skills developed
+-Scalability Improvements: How the code now handles growth
+-Future Optimization Opportunities: Areas for continued improvement
+-Industry Applications: Where these optimization techniques are crucial
 
-🎯 **OPTIMIZATION MASTERY CHECK**
+🎯 OPTIMIZATION MASTERY CHECK
 End with 3-5 questions to test understanding of performance analysis and optimization techniques.`,
 
       convert: `You are RAVEN, an expert programming language instructor. Provide comprehensive code conversion education from ${lang} to ${targetLang || 'javascript'}:
@@ -1539,16 +1614,16 @@ ${contextAwareInput}
 FORMAT YOUR RESPONSE WITH THESE COMPREHENSIVE SECTIONS:
 
 🔄 **CONVERSION OVERVIEW**
-- **Source Language**: ${lang} characteristics and strengths
-- **Target Language**: ${targetLang || 'javascript'} characteristics and strengths
-- **Conversion Complexity**: Easy/Medium/Complex and why
-- **Key Challenges**: Main differences to address
+-Source Language: ${lang} characteristics and strengths
+-Target Language: ${targetLang || 'javascript'} characteristics and strengths
+-Conversion Complexity: Easy/Medium/Complex and why
+-Key Challenges: Main differences to address
 
 🧠 **LANGUAGE PARADIGM COMPARISON**
-- **Syntax Differences**: How the languages express the same concepts
-- **Type Systems**: Static vs dynamic typing implications
-- **Memory Management**: Garbage collection vs manual management
-- **Execution Models**: Interpreted vs compiled vs JIT
+-Syntax Differences: How the languages express the same concepts
+-Type Systems: Static vs dynamic typing implications
+-Memory Management: Garbage collection vs manual management
+-Execution Models: Interpreted vs compiled vs JIT
 
 ✨ **CONVERTED CODE**
 Complete ${targetLang || 'javascript'} code with educational migration comments:
@@ -1563,49 +1638,49 @@ ${(targetLang || 'javascript') === 'python' ? `# 🔄 CONVERSION: How this ${lan
 
 ⚡ **LINE-BY-LINE CONVERSION ANALYSIS**
 For each significant change:
-- **Original ${lang} Code**: The source code section
-- **${targetLang || 'javascript'} Equivalent**: The converted version
-- **Why Different**: Language-specific reasons for the change
-- **Alternative Approaches**: Other ways to achieve the same result
-- **Best Practice**: Which approach is preferred and why
+-Original ${lang} Code: The source code section
+-${targetLang || 'javascript'} Equivalent: The converted version
+-Why Different: Language-specific reasons for the change
+-Alternative Approaches: Other ways to achieve the same result
+-Best Practice: Which approach is preferred and why
 
 🌍 **LANGUAGE PHILOSOPHY COMPARISON**
 - Compare ${lang} and ${targetLang || 'javascript'} to different spoken languages or tools
 - Explain how language design influences problem-solving approaches
 - Show how the same logic can be expressed differently
 
-🔧 **LANGUAGE-SPECIFIC FEATURES**
-- **${lang} Features**: Unique capabilities of the source language
-- **${targetLang || 'javascript'} Features**: Unique capabilities of the target language
-- **Feature Mapping**: How to achieve source language features in target language
-- **Idiomatic Patterns**: Writing code that feels natural in each language
+🔧 LANGUAGE-SPECIFIC FEATURES
+-${lang} Features: Unique capabilities of the source language
+-${targetLang || 'javascript'} Features: Unique capabilities of the target language
+-Feature Mapping: How to achieve source language features in target language
+-Idiomatic Patterns: Writing code that feels natural in each language
 
 📚 **CONCEPTS THAT TRANSFER**
-- **Universal Programming Concepts**: Logic, algorithms, patterns that work in both languages
-- **Cross-Language Skills**: Knowledge that applies regardless of syntax
-- **Problem-Solving Approaches**: How the core thinking remains the same
+-Universal Programming Concepts: Logic, algorithms, patterns that work in both languages
+-Cross-Language Skills: Knowledge that applies regardless of syntax
+-Problem-Solving Approaches: How the core thinking remains the same
 
 🚀 **MIGRATION STRATEGIES**
-- **Gradual Conversion**: How to migrate large codebases
-- **Testing Approach**: Ensuring functionality is preserved
-- **Performance Considerations**: Speed differences between languages
-- **Library Ecosystem**: Finding equivalent tools and frameworks
+-Gradual Conversion: How to migrate large codebases
+-Testing Approach: Ensuring functionality is preserved
+-Performance Considerations: Speed differences between languages
+-Library Ecosystem: Finding equivalent tools and frameworks
 
 💡 **LEARNING OPPORTUNITIES**
-- **New Concepts**: What ${targetLang || 'javascript'} teaches that ${lang} doesn't emphasize
-- **Different Perspectives**: How each language approaches problems
-- **Career Benefits**: Why knowing multiple languages is valuable
+-New Concepts: What ${targetLang || 'javascript'} teaches that ${lang} doesn't emphasize
+-Different Perspectives: How each language approaches problems
+-Career Benefits: Why knowing multiple languages is valuable
 
 📚 **COMPREHENSIVE CONVERSION SUMMARY**
-- **Conversion Techniques Used**: Methods for translating between languages
-- **Key Differences Addressed**: Major language disparities handled
-- **Programming Concepts Reinforced**: Universal principles demonstrated
-- **Language-Specific Knowledge**: New syntax and features learned
-- **Cross-Platform Skills**: Abilities gained for working with multiple languages
-- **Professional Applications**: When and why to choose each language
-- **Further Learning**: Advanced features in ${targetLang || 'javascript'} to explore
+-Conversion Techniques Used: Methods for translating between languages
+-Key Differences Addressed: Major language disparities handled
+-Programming Concepts Reinforced: Universal principles demonstrated
+-Language-Specific Knowledge: New syntax and features learned
+-Cross-Platform Skills: Abilities gained for working with multiple languages
+-Professional Applications: When and why to choose each language
+-Further Learning: Advanced features in ${targetLang || 'javascript'} to explore
 
-🎯 **MULTI-LANGUAGE MASTERY CHECK**
+🎯 MULTI-LANGUAGE MASTERY CHECK
 End with 3-5 questions to test understanding of language differences and conversion principles.`
     };
 
@@ -1649,7 +1724,7 @@ End with 3-5 questions to test understanding of language differences and convers
     }
   }, []);
 
-  // Enhanced input handling with better debouncing and syntax checking
+  // Simple input handling - no automatic processing
   const handleInputChange = useCallback((value: string, isCode: boolean) => {
     if (isCode) {
       setCodeInput(value);
@@ -1657,39 +1732,19 @@ End with 3-5 questions to test understanding of language differences and convers
       if (language === 'javascript' || language === 'typescript') {
         const errors = checkSyntax(value);
         setSyntaxErrors(errors);
+      } else {
+        setSyntaxErrors([]);
       }
     } else {
       setEnglishInput(value);
       setSyntaxErrors([]); // Clear syntax errors for English input
     }
+  }, [language]);
 
-    // Clear previous timeout
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-
-    // Show typing indicator immediately
-    if (value.trim() && !isProcessing) {
-      setOutput('Analyzing your input...');
-    }
-
-    // Optimized debounce - shorter for better UX
-    debounceRef.current = setTimeout(() => {
-      const input = mode === 'generate' ? (isCode ? '' : value) : (isCode ? value : codeInput);
-      if (input.trim() && input.length > 3) { // Minimum length check
-        processWithAI(input, mode, language, targetLanguage);
-      } else if (!input.trim()) {
-        setOutput(''); // Clear output if input is empty
-        setExecutionResult(''); // Clear execution result
-      }
-    }, 800); // Reduced from 1000ms
-  }, [mode, language, targetLanguage, codeInput, isProcessing, processWithAI]);
-
-  // Handle mode change
+  // Handle mode change - no automatic processing
   const handleModeChange = (newMode: string) => {
     setMode(newMode);
-    const input = newMode === 'generate' ? englishInput : codeInput;
-    if (input.trim()) {
-      processWithAI(input, newMode, language, targetLanguage);
-    }
+    // Don't automatically process - user must click Send button
   };
 
   // Enhanced copy output to clipboard
@@ -1717,14 +1772,7 @@ End with 3-5 questions to test understanding of language differences and convers
   // Keyboard shortcuts for enhanced UX
   useEffect(() => {
     const handleKeyboard = (e: KeyboardEvent) => {
-      // Ctrl/Cmd + Enter to trigger AI processing
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        const input = mode === 'generate' ? englishInput : codeInput;
-        if (input.trim() && !isProcessing) {
-          processWithAI(input, mode, language, targetLanguage);
-        }
-      }
+      // Ctrl/Cmd + Enter is now handled by the textarea itself, not here
 
       // Ctrl/Cmd + K to clear output
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -1740,20 +1788,20 @@ End with 3-5 questions to test understanding of language differences and convers
 
     document.addEventListener('keydown', handleKeyboard);
     return () => document.removeEventListener('keydown', handleKeyboard);
-  }, [mode, englishInput, codeInput, language, targetLanguage, isProcessing, output, processWithAI, copyOutput]);
+  }, [output, copyOutput]);
 
   // Move output to practice editor
   const moveToEditor = () => {
     setPracticeCode(output);
   };
 
-  // Analyze practice code
+  // Analyze practice code - now requires Send button
   const analyzePracticeCode = () => {
     if (practiceCode.trim()) {
       setCodeInput(practiceCode);
       const analysisMode = mode === 'generate' ? 'explain' : mode;
       setMode(analysisMode);
-      processWithAI(practiceCode, analysisMode, language, targetLanguage);
+      // User needs to click Send button to process
     }
   };
 
@@ -2256,31 +2304,106 @@ User message: ${userMessage.content}`,
 
         {/* Right controls */}
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          {/* Theme Color Selector */}
-          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <span style={{ fontSize: '10px', color: colors.muted }}>THEME:</span>
-            <div style={{ display: 'flex', gap: '4px' }}>
-              {Object.entries(colorThemes).map(([key, theme]) => (
-                <button
-                  key={key}
-                  onClick={() => setCurrentTheme(key as keyof typeof colorThemes)}
-                  title={theme.name}
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '4px',
-                    border: currentTheme === key ? `2px solid ${colors.primary}` : `1px solid ${colors.border}`,
-                    background: key === 'green' ? '#00ff00' :
-                                key === 'red' ? '#ff3333' :
-                                key === 'orange' ? '#ff9933' :
-                                key === 'purple' ? '#cc66ff' : '#3399ff',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s',
-                    transform: currentTheme === key ? 'scale(1.1)' : 'scale(1)'
-                  }}
-                />
-              ))}
-            </div>
+          {/* Theme Color Selector Dropdown */}
+          <div style={{ position: 'relative' }} data-dropdown-theme>
+            <button
+              onClick={() => setShowThemeDropdown(!showThemeDropdown)}
+              style={{
+                background: showThemeDropdown ? colors.border : colors.panelBg,
+                border: `1px solid ${colors.border}`,
+                borderRadius: '6px',
+                padding: '6px 12px',
+                color: colors.primary,
+                fontSize: '12px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                minWidth: '120px',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '2px',
+                  background: currentTheme === 'green' ? '#00ff00' :
+                              currentTheme === 'red' ? '#ff3333' :
+                              currentTheme === 'orange' ? '#ff9933' :
+                              currentTheme === 'purple' ? '#cc66ff' : '#3399ff'
+                }} />
+                <span>{colorThemes[currentTheme].name}</span>
+              </div>
+              <span style={{ fontSize: '10px' }}>{showThemeDropdown ? '▲' : '▼'}</span>
+            </button>
+
+            {/* Theme Dropdown Menu */}
+            {showThemeDropdown && (
+              <div style={{
+                position: 'absolute',
+                top: '100%',
+                right: 0,
+                marginTop: '4px',
+                background: colors.panelBg,
+                border: `1px solid ${colors.border}`,
+                borderRadius: '6px',
+                padding: '4px',
+                minWidth: '140px',
+                zIndex: 1000,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+              }}>
+                {Object.entries(colorThemes).map(([key, theme]) => (
+                  <button
+                    key={key}
+                    onClick={() => {
+                      setCurrentTheme(key as keyof typeof colorThemes);
+                      setShowThemeDropdown(false);
+                    }}
+                    style={{
+                      width: '100%',
+                      background: currentTheme === key ? colors.border : 'transparent',
+                      border: 'none',
+                      borderRadius: '4px',
+                      padding: '6px 8px',
+                      color: colors.primary,
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      textAlign: 'left',
+                      transition: 'background 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (currentTheme !== key) {
+                        e.currentTarget.style.background = `${colors.border}80`;
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentTheme !== key) {
+                        e.currentTarget.style.background = 'transparent';
+                      }
+                    }}
+                  >
+                    <div style={{
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '2px',
+                      background: key === 'green' ? '#00ff00' :
+                                  key === 'red' ? '#ff3333' :
+                                  key === 'orange' ? '#ff9933' :
+                                  key === 'purple' ? '#cc66ff' : '#3399ff',
+                      flexShrink: 0
+                    }} />
+                    <span>{theme.name}</span>
+                    {currentTheme === key && (
+                      <span style={{ marginLeft: 'auto', fontSize: '10px', color: colors.success }}>✓</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Language selector */}
@@ -2422,7 +2545,7 @@ User message: ${userMessage.content}`,
           <div style={{ fontSize: '10px', color: colors.secondary, marginBottom: '12px', fontWeight: 600, letterSpacing: '1px' }}>
             {languages.find(l => l.id === language)?.name} QUICK REFERENCE
           </div>
-          {Object.entries(languageDictionary[language] || {}).map(([concept, code]) => (
+          {Object.entries(languageDictionary[language] || {}).map(([concept, data]) => (
             <div key={concept} style={{ marginBottom: '4px' }}>
               <button
                 onClick={() => setSelectedConcept(selectedConcept === concept ? '' : concept)}
@@ -2450,12 +2573,33 @@ User message: ${userMessage.content}`,
                   border: `1px solid ${colors.border}`,
                   borderRadius: '4px',
                   padding: '12px',
-                  margin: '4px 0 8px 0',
-                  fontFamily: 'monospace',
-                  fontSize: '11px',
-                  lineHeight: '1.5'
+                  margin: '4px 0 8px 0'
                 }}>
-                  {highlightCode(code, language)}
+                  {/* Simple explanation first */}
+                  <div style={{
+                    color: colors.success,
+                    fontSize: '12px',
+                    lineHeight: '1.6',
+                    marginBottom: '12px',
+                    padding: '8px',
+                    background: `${colors.success}15`,
+                    borderRadius: '4px',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
+                  }}>
+                    {data.explanation}
+                  </div>
+
+                  {/* Code example */}
+                  <div style={{
+                    fontFamily: 'monospace',
+                    fontSize: '11px',
+                    lineHeight: '1.5'
+                  }}>
+                    <div style={{ fontSize: '10px', color: colors.muted, marginBottom: '4px', fontWeight: 600 }}>
+                      EXAMPLE CODE:
+                    </div>
+                    {highlightCode(data.code, language)}
+                  </div>
                 </div>
               )}
             </div>
