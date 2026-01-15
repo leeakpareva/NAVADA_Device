@@ -381,6 +381,7 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
   const [codeInput, setCodeInput] = useState('');
   const [output, setOutput] = useState('');
   const [practiceCode, setPracticeCode] = useState('');
+  const [isRavenCollapsed, setIsRavenCollapsed] = useState(false);
 
   // AI Agent Chat State
   const [agentMessages, setAgentMessages] = useState<Array<{
@@ -1338,14 +1339,15 @@ User message: ${userMessage.content}`,
         </div>
       )}
 
-      {/* Main Content - Three Column Layout */}
+      {/* Main Content - Dynamic Column Layout */}
       <div style={{
         flex: 1,
         display: 'grid',
-        gridTemplateColumns: '1fr 1.3fr 1fr',
+        gridTemplateColumns: isRavenCollapsed ? '1fr 2fr 60px' : '1fr 1.3fr 1fr',
         gap: '12px',
         padding: '12px',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        transition: 'grid-template-columns 0.3s ease'
       }}>
         {/* Left Panel - Input */}
         <div style={{
@@ -1532,39 +1534,63 @@ User message: ${userMessage.content}`,
           </div>
         </div>
 
-        {/* Right Panel - AI Agent Chat */}
+        {/* Right Panel - AI Agent Chat (Collapsible) */}
         <div style={{
           background: colors.panelBg,
           borderRadius: '8px',
           border: `1px solid ${colors.border}`,
           display: 'flex',
           flexDirection: 'column',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          position: 'relative'
         }}>
-          {/* Agent Header */}
-          <div style={{
-            padding: '10px 14px',
-            borderBottom: `1px solid ${colors.border}`,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: colors.success }}>{Icons.agent}</span>
-              <span style={{ fontSize: '10px', fontWeight: 600, color: colors.secondary, letterSpacing: '1px' }}>
-                THE RAVEN'S SOUL
-              </span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: colors.muted }}>{Icons.chat}</span>
-              <span style={{ fontSize: '9px', color: colors.muted }}>
-                {agentMessages.length} messages
-              </span>
-            </div>
-          </div>
+          {!isRavenCollapsed ? (
+            <>
+              {/* Agent Header */}
+              <div style={{
+                padding: '10px 14px',
+                borderBottom: `1px solid ${colors.border}`,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ color: colors.success }}>{Icons.agent}</span>
+                  <span style={{ fontSize: '10px', fontWeight: 600, color: colors.secondary, letterSpacing: '1px' }}>
+                    THE RAVEN'S SOUL
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsRavenCollapsed(true)}
+                  style={{
+                    background: 'transparent',
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '4px',
+                    padding: '4px 8px',
+                    color: colors.muted,
+                    cursor: 'pointer',
+                    fontSize: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = colors.primary;
+                    e.currentTarget.style.color = colors.primary;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = colors.border;
+                    e.currentTarget.style.color = colors.muted;
+                  }}
+                >
+                  <span>Hide</span>
+                  <span style={{ fontSize: '12px' }}>→</span>
+                </button>
+              </div>
 
-          {/* Chat Messages */}
-          <div style={{
+              {/* Chat Messages */}
+              <div style={{
             flex: 1,
             overflowY: 'auto',
             padding: '8px',
@@ -1628,8 +1654,8 @@ User message: ${userMessage.content}`,
             ))}
           </div>
 
-          {/* Chat Input */}
-          <div style={{
+              {/* Chat Input */}
+              <div style={{
             borderTop: `1px solid ${colors.border}`,
             padding: '8px',
             display: 'flex',
@@ -1681,9 +1707,65 @@ User message: ${userMessage.content}`,
                 justifyContent: 'center'
               }}
             >
-              {Icons.send}
-            </button>
-          </div>
+                {Icons.send}
+              </button>
+            </div>
+            </>
+          ) : (
+            /* Collapsed State */
+            <div style={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '12px',
+              gap: '12px'
+            }}>
+              <button
+                onClick={() => setIsRavenCollapsed(false)}
+                style={{
+                  background: `linear-gradient(135deg, ${colors.success}20, ${colors.variable}20)`,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '8px',
+                  padding: '8px',
+                  color: colors.success,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = colors.success;
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = colors.border;
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+                title="Expand RAVEN Soul Chat"
+              >
+                <span style={{ fontSize: '16px' }}>←</span>
+                <span style={{
+                  writingMode: 'vertical-rl',
+                  textOrientation: 'mixed',
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '1px'
+                }}>RAVEN</span>
+              </button>
+              <div style={{
+                color: colors.muted,
+                fontSize: '9px',
+                writingMode: 'vertical-rl',
+                textOrientation: 'mixed'
+              }}>
+                {agentMessages.length} msgs
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
