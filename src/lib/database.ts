@@ -1,13 +1,17 @@
 import sqlite3 from 'sqlite3';
 import path from 'path';
-
-const dbPath = path.join(process.cwd(), 'data', 'signups.db');
-
-// Ensure data directory exists
 import fs from 'fs';
-const dataDir = path.dirname(dbPath);
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+
+const isVercel = process.env.VERCEL === '1';
+const dataRoot = isVercel ? '/tmp' : path.join(process.cwd(), 'data');
+const dbPath = path.join(dataRoot, 'signups.db');
+
+// Ensure data directory exists (only needed outside Vercel's writable /tmp)
+if (!isVercel) {
+  const dataDir = path.dirname(dbPath);
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
 }
 
 // Create database connection
