@@ -26,47 +26,103 @@ A modern, intelligent operating system interface optimized for 64x96mm micro-dis
 | **Terminal** | 💻 | Advanced terminal app with multiple commands and system info |
 | **YouTube** | 📺 | Full-featured YouTube video player with URL support |
 | **Leslie (AI)** | 🤖 | OpenAI-powered AI assistant with chat interface |
-| **RAVEN Terminal** | 🐍 | Integrated AI-powered terminal with Anthropic Claude API |
+| **RAVEN Terminal** | 🐍 | AI-powered educational coding terminal with Claude integration |
 | **DeepSeek AI** | 🧠 | DeepSeek-powered AI agent for advanced reasoning |
 | **Screensaver** | 🖼️ | Dynamic image gallery and screensaver system |
 
-## 🤖 RAVEN Terminal Features
+## 🤖 RAVEN Terminal - Advanced AI-Powered Learning Platform
 
-The RAVEN Terminal is a fully integrated AI-powered command-line interface that combines traditional terminal commands with advanced AI capabilities:
+The RAVEN Terminal is a comprehensive educational coding environment that combines intelligent AI assistance with advanced development tools. It's designed as a **learning-first platform** that teaches programming concepts while providing powerful productivity features.
 
-### Terminal Commands
-- `help` - Display available commands
-- `ls` - List directory contents
-- `cd` - Change directory
-- `pwd` - Print working directory
-- `cat` - Display file contents
-- `clear` - Clear terminal screen
-- `echo` - Print messages
-- `env` - Display environment variables
-- `export` - Set environment variables
-- `alias` - Create command shortcuts
-- `history` - View command history
-- `theme` - Change terminal theme
+### 🎓 Educational AI Modes
 
-### AI Commands (Powered by Anthropic Claude)
-- `raven generate "description"` - Convert natural language to code
-- `raven explain [file]` - Get code explanations
-- `raven debug [code]` - Find and fix errors
-- `raven optimize [code]` - Improve performance
-- `raven convert [code]` - Translate between languages
-- `raven test [code]` - Generate comprehensive tests
+#### **GENERATE Mode** - Complete Learning Experience
+- **🎯 Learning Objectives**: Clear educational goals for each session
+- **🌍 Real-World Analogies**: Connect programming to familiar concepts
+- **💻 Extensive Code Comments**: What/How/Why/Concept format for every line
+- **🔍 Step-by-Step Breakdowns**: Input → Process → Output → Concept flow
+- **📖 Multi-Level Explanations**: Beginner, intermediate, and advanced concepts
+- **💡 Alternative Approaches**: Multiple solutions with pros/cons analysis
+- **🧪 Practical Examples**: Real use cases, edge cases, and modifications
+- **🔧 Debugging Education**: Common errors and troubleshooting strategies
+- **🌟 Best Practices**: Professional coding standards demonstrated
+- **🚀 Learning Extensions**: Next steps, practice exercises, and advanced features
+- **📚 Comprehensive Summaries**: Complete skill and concept recaps
+- **🎯 Learning Checkpoints**: Questions to test understanding
 
-### Configuration Commands
-- `lang [language]` - Set programming language (javascript, python, typescript, etc.)
-- `setkey [api_key]` - Configure Anthropic API key for AI features
+#### **EXPLAIN Mode** - Deep Code Analysis
+- **📋 Code Overview**: Complete functionality and purpose analysis
+- **🏗️ Architecture Analysis**: Structure, patterns, and design decisions
+- **🔄 Execution Flow Visualization**: Step-by-step code trace
+- **💻 Technology Analysis**: Platform, dependencies, and tool insights
+- **🎯 Educational Insights**: Design principles and programming patterns
+- **🚀 Learning Extensions**: Related concepts and practice opportunities
 
-### Features
-- Real-time syntax highlighting
-- Command history with arrow key navigation
-- Tab autocomplete for commands
-- Virtual file system navigation
-- Customizable themes
-- Integrated with RAVEN loading sequence
+#### **DEBUG Mode** - Professional Debugging Education
+- **🔍 Systematic Analysis**: Professional debugging methodology
+- **🧠 Error Pattern Recognition**: Understanding different error types
+- **🛡️ Prevention Strategies**: Avoiding future issues through better practices
+- **🧪 Testing & Verification**: Ensuring fixes work properly
+- **📈 Debugging Skills**: Tool usage and systematic thinking development
+
+#### **OPTIMIZE Mode** - Performance Engineering Education
+- **📊 Performance Analysis**: Bottleneck identification and complexity analysis
+- **🔬 Optimization Methodology**: Scientific performance improvement approach
+- **🧮 Algorithmic Improvements**: Computer science principles in practice
+- **⚡ Advanced Concepts**: Parallel processing, caching, and async patterns
+
+#### **CONVERT Mode** - Cross-Language Mastery
+- **🧠 Language Paradigms**: Deep comparison of programming philosophies
+- **⚡ Translation Analysis**: Line-by-line conversion explanations
+- **🔧 Language-Specific Features**: Unique capabilities and best practices
+- **💡 Multi-Language Skills**: Cross-platform development abilities
+
+### 🚀 Advanced Development Features
+
+#### **Enhanced Context Memory & Session Persistence**
+- **💾 Persistent Chat History**: Stores last 50 messages with 24-hour retention
+- **🧠 Workspace Context**: Maintains history of last 10 code operations
+- **🔄 Smart Context References**: "optimize that function" works automatically
+- **⚙️ Session Preferences**: Saves language, mode, and settings
+- **🔄 Auto-Restore**: Continue conversations across page refreshes
+
+#### **Intelligent Code Streaming & Live Preview**
+- **⚡ Streaming Responses**: Real-time word-by-word AI response display
+- **🏃‍♂️ Live JavaScript Execution**: Sandboxed code testing with console output
+- **🔍 Real-Time Syntax Checking**: Validates JavaScript/TypeScript as you type
+- **📊 Execution Results Panel**: Clear output formatting with error handling
+- **🧹 Context Management**: Easy workspace reset and cleanup
+
+#### **Session-Based Color Themes**
+Choose from 5 professional color schemes (resets on session clear):
+- **🟢 Matrix Green** - Classic terminal aesthetic
+- **🔴 Cyber Red** - Cyberpunk-inspired warm tones
+- **🟠 Solar Orange** - Amber/golden technical theme
+- **🟣 Neon Purple** - Vibrant violet highlights
+- **🔵 Deep Blue** - Ocean-inspired cool palette
+
+### 🛠️ Technical Capabilities
+
+#### **Language Support**
+- **Python** - Complete syntax highlighting and AI assistance
+- **JavaScript** - Live execution with console output capture
+- **TypeScript** - Real-time error detection and type checking
+- **Java** - Professional enterprise development support
+- **SQL** - Database query optimization and explanation
+- **More Languages** - Extensible support for additional languages
+
+#### **Development Tools**
+- **Syntax Highlighting** - Custom color-coded display for all supported languages
+- **Error Detection** - Real-time syntax validation with helpful messages
+- **Code Execution** - Safe sandboxed environment for testing JavaScript
+- **Performance Analysis** - Big O complexity analysis and optimization suggestions
+- **Cross-Language Conversion** - Intelligent translation between programming languages
+
+#### **AI-Powered Features**
+- **Context-Aware Processing** - References previous code automatically
+- **Educational Focus** - Every response designed for learning
+- **Professional Standards** - Industry best practices integrated
+- **Comprehensive Coverage** - End-to-end explanations with summaries
 
 ## 🌐 Web Pages
 
@@ -156,7 +212,7 @@ npm run studio
 - **Framework**: Next.js 16.1.1 (App Router with Turbopack)
 - **AI Integration**:
   - OpenAI GPT-3.5-turbo API (Leslie Assistant)
-  - Anthropic Claude 3.5 Haiku (Python/RAVEN Assistant)
+  - Anthropic Claude 3.5 Haiku (RAVEN Terminal Educational AI)
   - DeepSeek API (DeepSeek AI Agent)
 - **Database**: SQLite3 with Prisma ORM and TypeScript types
 - **Database Management**: Prisma Studio for visual data management
