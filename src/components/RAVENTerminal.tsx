@@ -60,43 +60,182 @@ interface RAVENTerminalProps {
   onClose?: () => void;
 }
 
-// Enhanced Color Palette - Vibrant Terminal Colors
-const colors = {
-  // Background colors
-  bg: '#000000',
-  panelBg: '#0a0a0a',
-  outputBg: '#050505',
-  border: '#222222',
-  borderLight: '#333333',
-
-  // Text colors
-  primary: '#ffffff',
-  secondary: '#a0a0a0',
-  muted: '#606060',
-  gray: '#888888',
-
-  // Enhanced Syntax highlighting - More Vibrant
-  keyword: '#ff006a',        // Bright magenta for keywords
-  function: '#00ff00',       // Bright green for functions
-  string: '#00ffaa',         // Bright cyan for strings
-  number: '#ffaa00',         // Bright orange for numbers
-  comment: '#ffff00',        // Bright yellow for comments
-  operator: '#ff4444',       // Bright red for operators
-  variable: '#00aaff',       // Bright blue for variables
-  type: '#ff00ff',           // Bright purple for types
-  boolean: '#ff00aa',        // Pink for booleans
-  decorator: '#ffaa00',      // Gold for decorators
-  builtin: '#00ffff',        // Cyan for built-in functions
-  className: '#88ff00',      // Lime green for classes
-  bracket: '#ffffff',        // White for brackets
-  punctuation: '#808080',    // Gray for punctuation
-
-  // Status colors
-  success: '#00ff00',
-  error: '#ff0000',
-  warning: '#ffaa00',
-  info: '#00aaff',
+// Theme Color Palettes
+const colorThemes = {
+  green: {
+    name: 'Matrix Green',
+    // Background colors
+    bg: '#000000',
+    panelBg: '#0a0a0a',
+    outputBg: '#050505',
+    border: '#222222',
+    borderLight: '#333333',
+    // Text colors
+    primary: '#ffffff',
+    secondary: '#a0a0a0',
+    muted: '#606060',
+    gray: '#888888',
+    // Syntax highlighting
+    keyword: '#ff006a',
+    function: '#00ff00',
+    string: '#00ffaa',
+    number: '#ffaa00',
+    comment: '#ffff00',
+    operator: '#ff4444',
+    variable: '#00aaff',
+    type: '#ff00ff',
+    boolean: '#ff00aa',
+    decorator: '#ffaa00',
+    builtin: '#00ffff',
+    className: '#88ff00',
+    bracket: '#ffffff',
+    punctuation: '#808080',
+    // Status colors
+    success: '#00ff00',
+    error: '#ff0000',
+    warning: '#ffaa00',
+    info: '#00aaff',
+  },
+  red: {
+    name: 'Cyber Red',
+    // Background colors
+    bg: '#0a0000',
+    panelBg: '#150505',
+    outputBg: '#100303',
+    border: '#4a1111',
+    borderLight: '#5a1818',
+    // Text colors
+    primary: '#ffcccc',
+    secondary: '#ff9999',
+    muted: '#cc6666',
+    gray: '#aa5555',
+    // Syntax highlighting
+    keyword: '#ff0066',
+    function: '#ff3333',
+    string: '#ff6666',
+    number: '#ff9900',
+    comment: '#ffaa66',
+    operator: '#ff0000',
+    variable: '#ff6699',
+    type: '#ff00aa',
+    boolean: '#ff3366',
+    decorator: '#ff8800',
+    builtin: '#ff9999',
+    className: '#ff4466',
+    bracket: '#ffcccc',
+    punctuation: '#aa6666',
+    // Status colors
+    success: '#ff6666',
+    error: '#ff0000',
+    warning: '#ff9900',
+    info: '#ff66aa',
+  },
+  orange: {
+    name: 'Solar Orange',
+    // Background colors
+    bg: '#0a0500',
+    panelBg: '#1a0f00',
+    outputBg: '#150a00',
+    border: '#4a2200',
+    borderLight: '#5a3300',
+    // Text colors
+    primary: '#ffddcc',
+    secondary: '#ffaa66',
+    muted: '#cc8855',
+    gray: '#aa6644',
+    // Syntax highlighting
+    keyword: '#ff6600',
+    function: '#ff9933',
+    string: '#ffcc66',
+    number: '#ffaa00',
+    comment: '#ffdd99',
+    operator: '#ff5500',
+    variable: '#ff9966',
+    type: '#ff6633',
+    boolean: '#ff8844',
+    decorator: '#ffbb00',
+    builtin: '#ffcc99',
+    className: '#ff7733',
+    bracket: '#ffddcc',
+    punctuation: '#aa7755',
+    // Status colors
+    success: '#ff9933',
+    error: '#ff3300',
+    warning: '#ffaa00',
+    info: '#ff9966',
+  },
+  purple: {
+    name: 'Neon Purple',
+    // Background colors
+    bg: '#0a0010',
+    panelBg: '#150020',
+    outputBg: '#100015',
+    border: '#3a1155',
+    borderLight: '#4a2266',
+    // Text colors
+    primary: '#eeccff',
+    secondary: '#cc99ff',
+    muted: '#9966cc',
+    gray: '#7755aa',
+    // Syntax highlighting
+    keyword: '#ff00ff',
+    function: '#cc66ff',
+    string: '#ff99ff',
+    number: '#ff66cc',
+    comment: '#cc99ff',
+    operator: '#ff00aa',
+    variable: '#9966ff',
+    type: '#ff00ff',
+    boolean: '#ff66ff',
+    decorator: '#cc00ff',
+    builtin: '#cc99ff',
+    className: '#aa66ff',
+    bracket: '#eeccff',
+    punctuation: '#9966aa',
+    // Status colors
+    success: '#cc66ff',
+    error: '#ff0066',
+    warning: '#ff66cc',
+    info: '#9966ff',
+  },
+  blue: {
+    name: 'Deep Blue',
+    // Background colors
+    bg: '#000510',
+    panelBg: '#001020',
+    outputBg: '#000a15',
+    border: '#113355',
+    borderLight: '#224466',
+    // Text colors
+    primary: '#ccddff',
+    secondary: '#99bbff',
+    muted: '#6688cc',
+    gray: '#5577aa',
+    // Syntax highlighting
+    keyword: '#00aaff',
+    function: '#3399ff',
+    string: '#66ccff',
+    number: '#00ffff',
+    comment: '#99ddff',
+    operator: '#0099ff',
+    variable: '#00aaff',
+    type: '#6699ff',
+    boolean: '#33aaff',
+    decorator: '#00ccff',
+    builtin: '#66bbff',
+    className: '#4499ff',
+    bracket: '#ccddff',
+    punctuation: '#6688aa',
+    // Status colors
+    success: '#00ccff',
+    error: '#ff3366',
+    warning: '#ffaa00',
+    info: '#00aaff',
+  },
 };
+
+// Default to green theme
+const defaultTheme = 'green';
 
 // SVG Icon Components
 const Icons = {
@@ -372,25 +511,73 @@ const highlightCode = (code: string, language: string): JSX.Element[] => {
   });
 };
 
+// Helper function to manage localStorage safely
+const getStoredData = (key: string, defaultValue: any) => {
+  if (typeof window === 'undefined') return defaultValue;
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch {
+    return defaultValue;
+  }
+};
+
+const setStoredData = (key: string, value: any) => {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.error('Failed to save to localStorage:', e);
+  }
+};
+
 export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
-  // State
-  const [mode, setMode] = useState('generate');
-  const [language, setLanguage] = useState('python');
-  const [targetLanguage, setTargetLanguage] = useState('javascript');
+  // State with localStorage persistence
+  const [mode, setMode] = useState(() => getStoredData('raven-mode', 'generate'));
+  const [language, setLanguage] = useState(() => getStoredData('raven-language', 'python'));
+  const [targetLanguage, setTargetLanguage] = useState(() => getStoredData('raven-target-language', 'javascript'));
   const [englishInput, setEnglishInput] = useState('');
   const [codeInput, setCodeInput] = useState('');
   const [output, setOutput] = useState('');
   const [practiceCode, setPracticeCode] = useState('');
   const [isRavenCollapsed, setIsRavenCollapsed] = useState(false);
+  // Session-based theme (not persisted, resets on clear)
+  const [currentTheme, setCurrentTheme] = useState<keyof typeof colorThemes>('green');
 
-  // AI Agent Chat State
+  // Get current colors based on theme
+  const colors = colorThemes[currentTheme];
+
+  // Workspace context for maintaining code history
+  const [workspaceContext, setWorkspaceContext] = useState<{
+    lastGeneratedCode: string;
+    lastAnalyzedCode: string;
+    codeHistory: Array<{ code: string; operation: string; timestamp: Date }>;
+  }>(() => getStoredData('raven-workspace', {
+    lastGeneratedCode: '',
+    lastAnalyzedCode: '',
+    codeHistory: []
+  }));
+
+  // Load chat history from localStorage with timestamp pruning (24 hours)
+  const loadChatHistory = () => {
+    const stored = getStoredData('raven-chat-history', []);
+    const now = new Date();
+    const filtered = stored.filter((msg: any) => {
+      const msgDate = new Date(msg.timestamp);
+      const hoursDiff = (now.getTime() - msgDate.getTime()) / (1000 * 60 * 60);
+      return hoursDiff < 24; // Keep messages from last 24 hours
+    }).slice(-50); // Keep only last 50 messages
+    return filtered;
+  };
+
+  // AI Agent Chat State with persistence
   const [agentMessages, setAgentMessages] = useState<Array<{
     id: string;
     type: 'user' | 'agent';
     content: string;
     timestamp: Date;
     isProcessing?: boolean;
-  }>>([]);
+  }>>(loadChatHistory());
   const [agentInput, setAgentInput] = useState('');
   const [isAgentProcessing, setIsAgentProcessing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -400,32 +587,170 @@ export default function RAVENTerminal({ onClose }: RAVENTerminalProps) {
   const [showHelp, setShowHelp] = useState(false);
   const [copied, setCopied] = useState(false);
   const [selectedConcept, setSelectedConcept] = useState('');
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [streamingContent, setStreamingContent] = useState('');
+  const [executionResult, setExecutionResult] = useState<string>('');
+  const [syntaxErrors, setSyntaxErrors] = useState<string[]>([]);
 
   // Refs
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const streamIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Cleanup effect for debounce timeout
+  // Cleanup effect for debounce timeout and streaming
   useEffect(() => {
     return () => {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
+      if (streamIntervalRef.current) {
+        clearTimeout(streamIntervalRef.current);
+      }
     };
   }, []);
 
-  // Process with AI
+  // Save chat history to localStorage when it changes
+  useEffect(() => {
+    if (agentMessages.length > 0) {
+      const filtered = agentMessages.filter(msg => !msg.isProcessing);
+      setStoredData('raven-chat-history', filtered);
+    }
+  }, [agentMessages]);
+
+  // Save workspace context when it changes
+  useEffect(() => {
+    setStoredData('raven-workspace', workspaceContext);
+  }, [workspaceContext]);
+
+  // Save preferences when they change
+  useEffect(() => {
+    setStoredData('raven-mode', mode);
+  }, [mode]);
+
+  useEffect(() => {
+    setStoredData('raven-language', language);
+  }, [language]);
+
+  useEffect(() => {
+    setStoredData('raven-target-language', targetLanguage);
+  }, [targetLanguage]);
+
+  // Function to check JavaScript syntax
+  const checkSyntax = (code: string): string[] => {
+    const errors: string[] = [];
+    if (language === 'javascript' || language === 'typescript') {
+      try {
+        // Basic syntax check using Function constructor
+        new Function(code);
+      } catch (e: any) {
+        errors.push(e.message);
+      }
+    }
+    return errors;
+  };
+
+  // Function to execute JavaScript code safely
+  const executeCode = (code: string): string => {
+    if (language !== 'javascript') {
+      return 'Live execution only available for JavaScript';
+    }
+
+    try {
+      // Create a sandboxed environment
+      const sandbox = {
+        console: {
+          log: (...args: any[]) => args.join(' '),
+          error: (...args: any[]) => `ERROR: ${args.join(' ')}`,
+          warn: (...args: any[]) => `WARN: ${args.join(' ')}`
+        },
+        result: null
+      };
+
+      // Wrap code to capture output
+      const wrappedCode = `
+        let output = [];
+        const console = {
+          log: (...args) => output.push(args.join(' ')),
+          error: (...args) => output.push('ERROR: ' + args.join(' ')),
+          warn: (...args) => output.push('WARN: ' + args.join(' '))
+        };
+        ${code}
+        return output.join('\n');
+      `;
+
+      const func = new Function(wrappedCode);
+      const result = func();
+      return result || 'Code executed successfully (no output)';
+    } catch (e: any) {
+      return `Execution Error: ${e.message}`;
+    }
+  };
+
+  // Simulate streaming response
+  const simulateStreaming = (fullText: string, callback: (text: string) => void) => {
+    let index = 0;
+    const words = fullText.split(' ');
+
+    if (streamIntervalRef.current) {
+      clearInterval(streamIntervalRef.current);
+    }
+
+    streamIntervalRef.current = setInterval(() => {
+      if (index < words.length) {
+        const partialText = words.slice(0, index + 1).join(' ');
+        callback(partialText);
+        index++;
+      } else {
+        if (streamIntervalRef.current) {
+          clearInterval(streamIntervalRef.current);
+        }
+        setIsStreaming(false);
+      }
+    }, 50); // Adjust speed as needed
+  };
+
+  // Process with AI with streaming support
   const processWithAI = useCallback(async (inputText: string, aiMode: string, lang: string, targetLang?: string) => {
     if (!inputText.trim()) {
       setOutput('');
       return;
     }
 
+    // Check syntax for JavaScript/TypeScript
+    if ((aiMode === 'debug' || aiMode === 'optimize') && (lang === 'javascript' || lang === 'typescript')) {
+      const errors = checkSyntax(inputText);
+      setSyntaxErrors(errors);
+    } else {
+      setSyntaxErrors([]);
+    }
+
+    // Check if user is referencing previous context
+    let contextAwareInput = inputText;
+    if (inputText.includes('that') || inputText.includes('previous') || inputText.includes('last')) {
+      if (workspaceContext.lastGeneratedCode && aiMode !== 'generate') {
+        contextAwareInput = workspaceContext.lastGeneratedCode;
+      } else if (workspaceContext.lastAnalyzedCode) {
+        contextAwareInput = workspaceContext.lastAnalyzedCode;
+      }
+    }
+
+    // Update workspace context
+    setWorkspaceContext(prev => ({
+      ...prev,
+      lastAnalyzedCode: contextAwareInput,
+      codeHistory: [...prev.codeHistory.slice(-9), {
+        code: contextAwareInput,
+        operation: aiMode,
+        timestamp: new Date()
+      }]
+    }));
 
     setIsProcessing(true);
+    setIsStreaming(true);
+    setStreamingContent('Processing...');
     setOutput(`Processing ${aiMode} with RAVEN AI...`);
 
     const prompts: Record<string, string> = {
-      generate: `You are RAVEN, an expert coding assistant. Generate ${lang} code for: "${inputText}"
+      generate: `You are RAVEN, an expert coding assistant. Generate ${lang} code for: "${contextAwareInput}"
 
 IMPORTANT: Include comprehensive inline comments using the what/how/why format:
 - WHAT: Explain what the code does
@@ -455,7 +780,7 @@ For complex projects, also include:
 🔌 API ENDPOINTS - If applicable`,
 
       explain: `Provide an in-depth explanation of this ${lang} code:
-${inputText}
+${contextAwareInput}
 
 Format your response with these comprehensive sections:
 
@@ -504,7 +829,7 @@ For each significant section/function:
 - Important lessons for developers`,
 
       debug: `Debug this ${lang} code:
-${inputText}
+${contextAwareInput}
 
 Format with:
 🔴 ISSUES FOUND - Problems identified
@@ -513,7 +838,7 @@ Format with:
 🌍 DEBUGGING ANALOGY - Debugging process comparison`,
 
       optimize: `Optimize this ${lang} code for better performance:
-${inputText}
+${contextAwareInput}
 
 Format with:
 📊 ANALYSIS - Current performance issues
@@ -522,7 +847,7 @@ Format with:
 🌍 OPTIMIZATION ANALOGY - Performance comparison`,
 
       convert: `Convert this code to ${targetLang || 'javascript'}:
-${inputText}
+${contextAwareInput}
 
 Format with:
 🔄 CONVERSION - From ${lang} to ${targetLang}
@@ -552,7 +877,21 @@ Format with:
       }
 
       const data = await response.json();
-      setOutput(data.message || 'No response received');
+      const fullResponse = data.message || 'No response received';
+
+      // Simulate streaming effect
+      setOutput('');
+      simulateStreaming(fullResponse, (partialText) => {
+        setOutput(partialText);
+      });
+
+      // Update workspace context with generated code
+      if (aiMode === 'generate') {
+        setWorkspaceContext(prev => ({
+          ...prev,
+          lastGeneratedCode: fullResponse
+        }));
+      }
     } catch (error: any) {
       setOutput(`❌ Connection Error: ${error.message}\n\nPlease check your internet connection and try again.`);
     } finally {
@@ -560,12 +899,18 @@ Format with:
     }
   }, []);
 
-  // Enhanced input handling with better debouncing
+  // Enhanced input handling with better debouncing and syntax checking
   const handleInputChange = useCallback((value: string, isCode: boolean) => {
     if (isCode) {
       setCodeInput(value);
+      // Check syntax for JavaScript/TypeScript code input
+      if (language === 'javascript' || language === 'typescript') {
+        const errors = checkSyntax(value);
+        setSyntaxErrors(errors);
+      }
     } else {
       setEnglishInput(value);
+      setSyntaxErrors([]); // Clear syntax errors for English input
     }
 
     // Clear previous timeout
@@ -583,9 +928,10 @@ Format with:
         processWithAI(input, mode, language, targetLanguage);
       } else if (!input.trim()) {
         setOutput(''); // Clear output if input is empty
+        setExecutionResult(''); // Clear execution result
       }
     }, 800); // Reduced from 1000ms
-  }, [mode, language, targetLanguage, codeInput, isProcessing]);
+  }, [mode, language, targetLanguage, codeInput, isProcessing, processWithAI]);
 
   // Handle mode change
   const handleModeChange = (newMode: string) => {
@@ -1159,6 +1505,33 @@ User message: ${userMessage.content}`,
 
         {/* Right controls */}
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {/* Theme Color Selector */}
+          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <span style={{ fontSize: '10px', color: colors.muted }}>THEME:</span>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              {Object.entries(colorThemes).map(([key, theme]) => (
+                <button
+                  key={key}
+                  onClick={() => setCurrentTheme(key as keyof typeof colorThemes)}
+                  title={theme.name}
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '4px',
+                    border: currentTheme === key ? `2px solid ${colors.primary}` : `1px solid ${colors.border}`,
+                    background: key === 'green' ? '#00ff00' :
+                                key === 'red' ? '#ff3333' :
+                                key === 'orange' ? '#ff9933' :
+                                key === 'purple' ? '#cc66ff' : '#3399ff',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    transform: currentTheme === key ? 'scale(1.1)' : 'scale(1)'
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
           {/* Language selector */}
           <select
             value={language}
@@ -1407,7 +1780,12 @@ User message: ${userMessage.content}`,
               <span style={{ fontSize: '10px', fontWeight: 600, color: colors.secondary, letterSpacing: '1px' }}>
                 {aiModes.find(m => m.id === mode)?.name.toUpperCase()} OUTPUT
               </span>
-              {isProcessing && (
+              {isStreaming && (
+                <span style={{ fontSize: '9px', color: colors.warning, fontStyle: 'italic' }}>
+                  Streaming...
+                </span>
+              )}
+              {isProcessing && !isStreaming && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <div style={{
                     width: '8px',
@@ -1464,24 +1842,80 @@ User message: ${userMessage.content}`,
                 {Icons.arrow}
                 <span>Editor</span>
               </button>
-              <button
-                onClick={copyOutput}
-                style={{
-                  background: copied ? colors.success : colors.panelBg,
-                  border: `1px solid ${colors.border}`,
-                  borderRadius: '4px',
-                  padding: '4px 8px',
-                  color: copied ? colors.bg : colors.primary,
-                  fontSize: '10px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '3px'
-                }}
-              >
-                {copied ? Icons.check : Icons.copy}
-                <span>{copied ? 'Copied' : 'Copy'}</span>
-              </button>
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {/* Execute Button - Only for JavaScript */}
+                {language === 'javascript' && output && (
+                  <button
+                    onClick={() => {
+                      const result = executeCode(output.replace(/<[^>]*>/g, ''));
+                      setExecutionResult(result);
+                    }}
+                    style={{
+                      background: colors.variable,
+                      border: `1px solid ${colors.border}`,
+                      borderRadius: '4px',
+                      padding: '4px 8px',
+                      color: colors.bg,
+                      fontSize: '10px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3px'
+                    }}
+                  >
+                    {Icons.play || '▶'}
+                    <span>Execute</span>
+                  </button>
+                )}
+
+                {/* Copy Button */}
+                <button
+                  onClick={copyOutput}
+                  style={{
+                    background: copied ? colors.success : colors.panelBg,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '4px',
+                    padding: '4px 8px',
+                    color: copied ? colors.bg : colors.primary,
+                    fontSize: '10px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '3px'
+                  }}
+                >
+                  {copied ? Icons.check : Icons.copy}
+                  <span>{copied ? 'Copied' : 'Copy'}</span>
+                </button>
+
+                {/* Clear Context Button */}
+                <button
+                  onClick={() => {
+                    setWorkspaceContext({
+                      lastGeneratedCode: '',
+                      lastAnalyzedCode: '',
+                      codeHistory: []
+                    });
+                    setOutput('');
+                    setExecutionResult('');
+                    setSyntaxErrors([]);
+                    setCurrentTheme('green'); // Reset theme to default
+                  }}
+                  style={{
+                    background: colors.panelBg,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '4px',
+                    padding: '4px 8px',
+                    color: colors.muted,
+                    fontSize: '10px',
+                    cursor: 'pointer'
+                  }}
+                  title="Clear workspace context"
+                >
+                  Clear
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1530,6 +1964,81 @@ User message: ${userMessage.content}`,
               minHeight: '100%'
             }}>
               {formatOutput(output)}
+
+              {/* Syntax Errors Display */}
+              {syntaxErrors.length > 0 && (
+                <div style={{
+                  marginTop: '12px',
+                  padding: '8px',
+                  background: `${colors.error}20`,
+                  border: `1px solid ${colors.error}40`,
+                  borderRadius: '4px'
+                }}>
+                  <div style={{ fontSize: '10px', color: colors.error, fontWeight: 600, marginBottom: '4px' }}>
+                    ⚠️ Syntax Errors Detected:
+                  </div>
+                  {syntaxErrors.map((error, i) => (
+                    <div key={i} style={{ fontSize: '11px', color: colors.error, marginLeft: '12px' }}>
+                      • {error}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Execution Result Display */}
+              {executionResult && (
+                <div style={{
+                  marginTop: '12px',
+                  padding: '8px',
+                  background: `${colors.success}10`,
+                  border: `1px solid ${colors.success}30`,
+                  borderRadius: '4px'
+                }}>
+                  <div style={{ fontSize: '10px', color: colors.success, fontWeight: 600, marginBottom: '4px' }}>
+                    ▶ Execution Result:
+                  </div>
+                  <pre style={{
+                    fontSize: '11px',
+                    color: colors.primary,
+                    marginLeft: '12px',
+                    fontFamily: 'monospace',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word'
+                  }}>
+                    {executionResult}
+                  </pre>
+                  <button
+                    onClick={() => setExecutionResult('')}
+                    style={{
+                      marginTop: '6px',
+                      background: 'transparent',
+                      border: `1px solid ${colors.success}30`,
+                      borderRadius: '3px',
+                      padding: '2px 6px',
+                      color: colors.success,
+                      fontSize: '9px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Clear Result
+                  </button>
+                </div>
+              )}
+
+              {/* Workspace Context Info */}
+              {workspaceContext.codeHistory.length > 0 && (
+                <div style={{
+                  marginTop: '12px',
+                  padding: '6px',
+                  background: colors.panelBg,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '4px'
+                }}>
+                  <div style={{ fontSize: '9px', color: colors.muted }}>
+                    📚 Context: {workspaceContext.codeHistory.length} operations in workspace
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
