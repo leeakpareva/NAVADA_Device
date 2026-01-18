@@ -25,6 +25,54 @@ export default function RavenPage() {
               </div>
             </section>
 
+            {/* Research Dashboard */}
+            <section className="bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-3 text-white flex items-center">
+                <span className="mr-2">📊</span>
+                RAVEN Research Dashboard
+              </h3>
+              <p className="text-gray-200 leading-relaxed mb-4">
+                Explore comprehensive research data, analytics, and insights about the RAVEN platform's educational impact and technical capabilities through our interactive dashboard.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="https://raven-dashboard-research.streamlit.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  View Research Dashboard
+                </a>
+                <div className="flex items-center text-sm text-gray-400">
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Powered by Streamlit
+                </div>
+              </div>
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                <div className="bg-black/30 rounded p-2">
+                  <div className="text-2xl font-bold text-purple-400">Live</div>
+                  <div className="text-xs text-gray-400">Data Analytics</div>
+                </div>
+                <div className="bg-black/30 rounded p-2">
+                  <div className="text-2xl font-bold text-blue-400">Interactive</div>
+                  <div className="text-xs text-gray-400">Visualizations</div>
+                </div>
+                <div className="bg-black/30 rounded p-2">
+                  <div className="text-2xl font-bold text-green-400">Real-time</div>
+                  <div className="text-xs text-gray-400">Metrics</div>
+                </div>
+                <div className="bg-black/30 rounded p-2">
+                  <div className="text-2xl font-bold text-orange-400">Research</div>
+                  <div className="text-xs text-gray-400">Insights</div>
+                </div>
+              </div>
+            </section>
+
             <section>
               <h3 className="text-xl font-bold mb-3 text-white">Design Philosophy</h3>
               <p className="text-gray-200 leading-relaxed">
