@@ -2820,7 +2820,7 @@ User message: ${userMessage.content}`,
                       gap: '3px'
                     }}
                   >
-                    {Icons.play || '▶'}
+                    {Icons.send || '▶'}
                     <span>Execute</span>
                   </button>
                 )}
