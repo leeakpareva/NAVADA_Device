@@ -17,7 +17,6 @@ export default function Header({ onNavigate }: HeaderProps) {
   const [activeMenu, setActiveMenu] = useState('');
 
   const menuItems: MenuItem[] = [
-    { id: 'about', icon: '?' },
     { id: 'designs', icon: '◈' },
     { id: 'learn', icon: '⊞' },
     { id: 'agent', icon: '⬡', desktopOnly: true },

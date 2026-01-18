@@ -6,7 +6,6 @@ import CoverPage from '@/components/layout/CoverPage';
 import BootLoader from '@/components/layout/BootLoader';
 import Desktop from '@/components/os/Desktop';
 import Header from '@/components/layout/Header';
-import AboutPage from '@/components/pages/AboutPage';
 import DesignsPage from '@/components/pages/DesignsPage';
 import LearnPage from '@/components/pages/LearnPage';
 import AgentPage from '@/components/pages/AgentPage';
@@ -104,8 +103,6 @@ export default function Home() {
 
   const renderCurrentPage = () => {
     switch (currentPage) {
-      case 'about':
-        return <AboutPage />;
       case 'designs':
         return <DesignsPage />;
       case 'learn':
