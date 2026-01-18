@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -34,6 +35,19 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className="antialiased touch-manipulation select-none" suppressHydrationWarning>
+        {/* Google tag (gtag.js) for Google Ads */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17886628864"
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17886628864');
+          `}
+        </Script>
         {children}
       </body>
     </html>

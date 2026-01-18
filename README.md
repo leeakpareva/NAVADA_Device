@@ -170,6 +170,33 @@ OPENAI_API_KEY=your_openai_api_key_here
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```
 
+## 📊 Google Ads Tracking
+
+The application includes Google Ads conversion tracking for measuring marketing effectiveness. The tracking code is automatically included in all pages through the main layout.
+
+### Configuration Details
+- **Google Ads ID**: AW-17886628864
+- **Implementation**: Next.js Script component with `afterInteractive` strategy
+- **Location**: `src/app/layout.tsx`
+- **Domain**: https://raventerminal.xyz/
+
+### Features
+- **Automatic Page View Tracking**: All page visits are tracked
+- **Conversion Measurement**: Enables tracking of key user actions
+- **Optimized Loading**: Uses Next.js Script component for performance
+- **Privacy Compliant**: Loads after page interaction to improve initial load times
+
+### Verification
+To verify the tracking is working:
+1. Visit https://raventerminal.xyz/ in your browser
+2. Open browser Developer Tools (F12)
+3. Go to Network tab
+4. Filter for "googletagmanager" or "gtag"
+5. You should see the tracking script loading
+
+### Note
+Google Ads will review the implementation before ads go live. This is a standard process to ensure compliance with advertising policies.
+
 ## 💾 Database Features
 
 - **Email Capture**: Automatic SQLite database for signup emails
